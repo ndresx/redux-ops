@@ -1,4 +1,4 @@
-import { OpsState, Ops, Operation } from './typedefs';
+import { OpsState, Ops, Operation, OperationStatus } from './typedefs';
 
 let reducerName = 'ops';
 
@@ -22,11 +22,17 @@ export function getOps<T>(state: T): Ops {
   return getOpsState(state);
 }
 
-export function getOpById<T>(state: T, id: string): Operation | undefined {
+export function getOpById<T, TData, TStatus>(
+  state: T,
+  id: string
+): Operation<TData, TStatus | OperationStatus> | undefined {
   return getOps(state)[id];
 }
 
-export function searchOps<T>(state: T, query: RegExp): Operation[] {
+export function searchOps<T, TData, TStatus>(
+  state: T,
+  query: RegExp
+): Operation<TData, TStatus | OperationStatus>[] {
   const ops = getOps(state);
   return Object.keys(ops)
     .filter(id => !!id.match(query))

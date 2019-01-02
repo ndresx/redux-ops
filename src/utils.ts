@@ -1,9 +1,9 @@
 import { Operation, OperationStatus } from './typedefs';
 
-export function buildOperation(
+export function buildOperation<TData = any, TStatus = OperationStatus>(
   id: string,
-  status: OperationStatus = OperationStatus.default,
-  data?: any
-): Operation {
-  return { id, status, data };
+  status?: TStatus,
+  data?: TData
+): Operation<TData, TStatus | OperationStatus> {
+  return { id, status: status || OperationStatus.default, data };
 }

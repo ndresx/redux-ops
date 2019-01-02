@@ -19,9 +19,9 @@
   },
   "homepage": "https://github.com/ndresx/redux-ops",
   "keywords": [
-    "operation",
-    "ops",
     "async",
+    "request",
+    "operation",
     "redux"
   ],
   "scripts": {

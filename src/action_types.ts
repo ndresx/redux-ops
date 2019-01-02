@@ -1,5 +1,6 @@
 export const prefix = '@@redux-ops/';
 
-export const CREATE_OP = `${prefix}CREATE_OP`;
-export const UPDATE_OP = `${prefix}UPDATE_OP`;
-export const CLEAR_OPS = `${prefix}CLEAR_OPS`;
+export const CREATE = `${prefix}CREATE`;
+export const UPDATE = `${prefix}UPDATE`;
+export const DELETE = `${prefix}DELETE`;
+export const CLEAR = `${prefix}CLEAR`;

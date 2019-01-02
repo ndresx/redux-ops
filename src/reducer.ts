@@ -31,12 +31,19 @@ const updateOperation: ActionHandler = (state, action) => {
   return { ...state, [id]: { ...action.payload } };
 };
 
+const deleteOperation: ActionHandler = (state, action) => {
+  const newState = { ...state };
+  delete newState[action.payload.id];
+  return newState;
+};
+
 const clearOperations: ActionHandler = (state, action) => ({ ...defaultState });
 
 const handlers = {
-  [actionTypes.CREATE_OP]: createOperation,
-  [actionTypes.UPDATE_OP]: updateOperation,
-  [actionTypes.CLEAR_OPS]: clearOperations,
+  [actionTypes.CREATE]: createOperation,
+  [actionTypes.UPDATE]: updateOperation,
+  [actionTypes.DELETE]: deleteOperation,
+  [actionTypes.CLEAR]: clearOperations,
 };
 
 export default function reducer(state: OpsState = defaultState, action: AnyAction): OpsState {
