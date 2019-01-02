@@ -1,0 +1,13 @@
+config/
+coverage/
+examples/
+node_modules/
+src/
+*.config.js
+*.idea
+*.lock
+*.log
+*.test.js
+*.test.ts
+*.test.d.ts
+*.vscode

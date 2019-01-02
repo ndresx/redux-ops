@@ -1,0 +1,82 @@
+{
+  "name": "redux-ops",
+  "version": "0.1.1",
+  "description": "A redux enhancer for persisting operational states.",
+  "main": "./dist/index.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ndresx/redux-ops.git"
+  },
+  "author": "Martin Veith",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ndresx/redux-ops/issues"
+  },
+  "homepage": "https://github.com/ndresx/redux-ops",
+  "keywords": [
+    "operation",
+    "ops",
+    "async",
+    "redux"
+  ],
+  "scripts": {
+    "build": "yarn build:clean && yarn rollup --config",
+    "build:clean": "rm -rf ./dist mkdir dist",
+    "build:watch": "yarn build:clean && yarn rollup --config --watch",
+    "clean": "rm -rf ./node_modules && rm -rf ./coverage && yarn build:clean",
+    "lint": "yarn prettier-check && tslint --config tslint.json --project tsconfig.json ./src/**/*.{ts,tsx} && tsc --noEmit",
+    "prebuild": "yarn lint && yarn test",
+    "prepublish": "yarn build",
+    "prettier-check": "prettier --list-different ./src/**/*.{ts,tsx}",
+    "prettier": "prettier --write ./src/**/*.{ts,tsx}",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testMatch": [
+      "<rootDir>/**/?(*.)+(spec|test).ts?(x)"
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/config"
+    ],
+    "globals": {
+      "ts-jest": {
+        "diagnostics": false
+      }
+    }
+  },
+  "dependencies": {
+    "redux": "^4.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.0",
+    "@babel/preset-env": "^7.2.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.1.0",
+    "@types/jest": "^23.3.9",
+    "@types/redux": "^3.6.0",
+    "coveralls": "^3.0.2",
+    "jest": "^23.6.0",
+    "prettier": "^1.15.2",
+    "rollup": "^1.0.0",
+    "rollup-plugin-typescript2": "^0.18.1",
+    "ts-jest": "^23.10.4",
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "tslint-config-prettier": "^1.16.0",
+    "typescript": "^3.1.6"
+  },
+  "peerDependencies": {
+    "redux": "^2.0.0 || ^3.0.0 || ^4.0.0-0"
+  }
+}
