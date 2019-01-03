@@ -1,10 +1,10 @@
 # redux-ops [![npm][npm]][npm-url] [![Build Status](https://travis-ci.org/ndresx/redux-ops.svg?branch=master)](https://travis-ci.org/ndresx/redux-ops) [![Coverage Status](https://coveralls.io/repos/github/ndresx/redux-ops/badge.svg?branch=master)](https://coveralls.io/github/ndresx/redux-ops?branch=master)
 
-A redux enhancer for persisting operational states.
+A Redux reducer for persisting operational and async states.
 
-* [Getting Started](#getting-started)
-* __WIP: Coming soon__
-* [License](#license)
+- [Getting Started](#getting-started)
+- **WIP: Coming soon**
+- [License](#license)
 
 ## Getting Started
 
