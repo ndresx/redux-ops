@@ -5,18 +5,18 @@ describe('utils', () => {
   const id = '123';
 
   it('should build operation without data', () => {
-    expect(buildOperation(id, OperationStatus.default)).toEqual({
+    expect(buildOperation(id, OperationStatus.Default)).toEqual({
       id,
-      status: OperationStatus.default,
+      status: OperationStatus.Default,
       data: undefined,
     });
   });
 
   it('should build operation with data', () => {
     const data = { abc: 123 };
-    expect(buildOperation(id, OperationStatus.default, data)).toEqual({
+    expect(buildOperation(id, OperationStatus.Default, data)).toEqual({
       id,
-      status: OperationStatus.default,
+      status: OperationStatus.Default,
       data,
     });
   });

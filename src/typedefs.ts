@@ -1,23 +1,23 @@
 import { AnyAction } from 'redux';
 import { Operation } from './typedefs';
 
-export interface Ops {
-  readonly [key: string]: Operation;
+export interface Ops<TData = any, TStatus = OperationStatus> {
+  readonly [key: string]: Operation<TData, TStatus>;
 }
 
 export interface OpsState extends Ops {}
 
 export interface Operation<TData = any, TStatus = OperationStatus> {
   readonly id: string;
-  readonly status: TStatus;
+  readonly status: TStatus | OperationStatus;
   readonly data?: TData;
 }
 
 export const enum OperationStatus {
-  default = 'default',
-  loading = 'loading',
-  success = 'success',
-  error = 'error',
+  Default = 'default',
+  Loading = 'loading',
+  Success = 'success',
+  Error = 'error',
 }
 
 export type ActionHandler = (state: OpsState, action: AnyAction) => OpsState;
@@ -36,3 +36,11 @@ export interface DeleteOperationAction extends AnyAction {
 }
 
 export interface ClearOperationsAction extends AnyAction {}
+
+export interface OperationActionCreator {
+  <TData = any, TStatus = OperationStatus>(
+    id: string,
+    status?: TStatus,
+    data?: TData
+  ): OperationAction<TData, TStatus | OperationStatus>;
+}

@@ -44,15 +44,15 @@ describe('reducer', () => {
 
   it('should update existing operation', () => {
     state = reducer(state, actions.createOperation(id));
-    state = reducer(state, actions.updateOperation(id, OperationStatus.loading));
-    expect(state).toEqual({ ...defaultState, [id]: buildOperation(id, OperationStatus.loading) });
+    state = reducer(state, actions.updateOperation(id, OperationStatus.Loading));
+    expect(state).toEqual({ ...defaultState, [id]: buildOperation(id, OperationStatus.Loading) });
 
-    state = reducer(state, actions.updateOperation(id, OperationStatus.success));
-    expect(state).toEqual({ ...defaultState, [id]: buildOperation(id, OperationStatus.success) });
+    state = reducer(state, actions.updateOperation(id, OperationStatus.Success));
+    expect(state).toEqual({ ...defaultState, [id]: buildOperation(id, OperationStatus.Success) });
   });
 
   it('should not be able to update non-existing operation', () => {
-    state = reducer(state, actions.updateOperation(id, OperationStatus.loading));
+    state = reducer(state, actions.updateOperation(id, OperationStatus.Loading));
     expect(state).toEqual(defaultState);
   });
 

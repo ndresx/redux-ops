@@ -24,7 +24,7 @@ const updateOperation: ActionHandler = (state, action) => {
   } = action;
 
   if (!state[id]) {
-    console.error(`ERROR: Cannot update operation. Operation with ${id} doesn't exist.`);
+    console.error(`ERROR: Cannot update operation. Operation with "${id}" doesn't exist.`);
     return state;
   }
 

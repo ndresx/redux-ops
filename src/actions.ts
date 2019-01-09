@@ -1,19 +1,6 @@
-import {
-  OperationStatus,
-  DeleteOperationAction,
-  ClearOperationsAction,
-  OperationAction,
-} from './typedefs';
+import { DeleteOperationAction, ClearOperationsAction, OperationActionCreator } from './typedefs';
 import { CREATE, UPDATE, DELETE, CLEAR } from './action_types';
 import { buildOperation } from './utils';
-
-interface OperationActionCreator {
-  <TData = any, TStatus = OperationStatus>(
-    id: string,
-    status?: TStatus,
-    data?: TData
-  ): OperationAction<TData, TStatus | OperationStatus>;
-}
 
 export const createOperation: OperationActionCreator = (id, status?, data?) => ({
   type: CREATE,
