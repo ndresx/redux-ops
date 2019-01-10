@@ -22,17 +22,18 @@ yarn add redux-ops
 
 ## Motivation
 
-Maintaining asynchronous and operational states is an integral component of almost every modern app, but still an often discussed topic when it comes to structuring your Redux store's state accordingly.
+Maintaining asynchronous and operational states is an integral component of almost every modern app, but still an often discussed topic when it comes to structuring your Redux store state accordingly.
 
 `redux-ops` is trying to take this concern away by providing an `ops`-reducer, actions and selectors in order to
 
-- maintain aforementioned states in a consistent way (e.g. requests)
+- maintain aforementioned states in a consistent way (e.g. requests),
+- communicate directly whether something was successful or not,
 - prevent cluttering state slices with individual state keys
-- and having a centralized place to store them.
+- and to have a centralized place to store them.
 
 ## Example
 
-The most common use case is probably async request state handling. `redux-ops` consists of a collection of "operations" that get stored in its reducer, which why ids are needed to persist and read them again.
+The most common use case is probably async request state handling. 
 
 ```js
 import { createStore, combineReducers } from 'redux';
@@ -51,7 +52,7 @@ dispatch(actions.createOperation(opId));
 fetch('http://example.com/movies.json')
   .then(response => response.json())
   .then(movies => dispatch(actions.updateOperation(opId, OperationStatus.Success, movies)))
-  .catch(err => dispatch(actions.updateOperation(opId, OperationStatus.Error, err)));
+  .catch(err => dispatch(actions.updateOperation(opId, OperationStatus.Error, err.message)));
 
 // Get the operation state by one of the available selectors
 console.log(selectors.getOpById(store.getState(), opId));
