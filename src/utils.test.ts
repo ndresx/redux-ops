@@ -1,4 +1,4 @@
-import { buildOperation } from './utils';
+import { buildOperation, getOpById } from './utils';
 import { OperationStatus } from './typedefs';
 
 describe('utils', () => {
@@ -19,5 +19,14 @@ describe('utils', () => {
       status: OperationStatus.Default,
       data,
     });
+  });
+
+  it('should return operation by id', () => {
+    const op1 = buildOperation('123', OperationStatus.Default);
+    const op2 = buildOperation('456', OperationStatus.Default);
+    const ops = { [op1.id]: op1, [op2.id]: op2 };
+    expect(getOpById(ops, op1.id)).toEqual(op1);
+    expect(getOpById(ops, op2.id)).toEqual(op2);
+    expect(getOpById(ops, 'abc')).toBeUndefined();
   });
 });
