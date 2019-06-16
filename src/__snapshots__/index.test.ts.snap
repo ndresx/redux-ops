@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`index should export 1`] = `
+Object {
+  "OpStatus": Object {
+    "Default": "default",
+    "Error": "error",
+    "Intermediate": "intermediate",
+    "Loading": "loading",
+    "Success": "success",
+  },
+  "actionTypes": Object {
+    "CLEAR": "@@redux-ops/CLEAR",
+    "CREATE": "@@redux-ops/CREATE",
+    "DELETE": "@@redux-ops/DELETE",
+    "UPDATE": "@@redux-ops/UPDATE",
+    "prefix": "@@redux-ops/",
+  },
+  "actions": Object {
+    "clearOperations": [Function],
+    "createOperation": [Function],
+    "deleteOperation": [Function],
+    "updateOperation": [Function],
+  },
+  "default": [Function],
+  "defaultState": Object {},
+  "selectors": Object {
+    "getOpById": [Function],
+    "getOpByIds": [Function],
+    "getOps": [Function],
+    "getOpsState": [Function],
+    "searchOps": [Function],
+    "setReducerName": [Function],
+  },
+  "utils": Object {
+    "constructOperation": [Function],
+    "getOpById": [Function],
+    "getOpByIds": [Function],
+    "searchOps": [Function],
+  },
+}
+`;

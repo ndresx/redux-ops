@@ -1,7 +1,7 @@
 {
   "name": "redux-ops",
-  "version": "0.2.0",
-  "description": "A Redux reducer for persisting operational and async states.",
+  "version": "0.6.0",
+  "description": "A Redux reducer for persisting async and operational states.",
   "main": "./dist/index.js",
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
@@ -29,31 +29,15 @@
     "build:clean": "rm -rf ./dist mkdir dist",
     "build:watch": "yarn build:clean && yarn rollup --config --watch",
     "clean": "rm -rf ./node_modules && rm -rf ./coverage && yarn build:clean",
-    "lint": "yarn prettier-check && tslint --config tslint.json --project tsconfig.json ./src/**/*.{ts,tsx} && tsc --noEmit",
-    "prebuild": "yarn lint && yarn test",
-    "prepublish": "yarn build",
+    "lint": "yarn lint:prettier && yarn lint:tslint && yarn lint:tsc",
+    "lint:prettier": "yarn prettier-check",
+    "lint:tslint": "tslint --config tslint.json --project tsconfig.json ./src/**/*.{ts,tsx}",
+    "lint:tsc": "tsc --noEmit",
     "prettier-check": "prettier --list-different ./src/**/*.{ts,tsx}",
     "prettier": "prettier --write ./src/**/*.{ts,tsx}",
-    "test": "jest --coverage",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
     "test:watch": "jest --watch"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "node",
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "testMatch": [
-      "<rootDir>/**/?(*.)+(spec|test).ts?(x)"
-    ],
-    "coveragePathIgnorePatterns": [
-      "<rootDir>/config"
-    ],
-    "globals": {
-      "ts-jest": {
-        "diagnostics": false
-      }
-    }
   },
   "dependencies": {
     "redux": "^4.0.1"

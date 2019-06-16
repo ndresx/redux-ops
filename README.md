@@ -5,7 +5,7 @@ A Redux reducer for persisting asynchronous and operational states.
 - [Getting Started](#getting-started)
 - [Motivation](#motivation)
 - [Example](#example)
-- [API Reference](#api-reference)
+- [Documentation](#documentation)
 - [License](#license)
 
 ## Getting Started
@@ -22,18 +22,18 @@ yarn add redux-ops
 
 ## Motivation
 
-Maintaining asynchronous and operational states is an integral component of almost every modern app, but still an often discussed topic when it comes to structuring your Redux store state accordingly.
+Maintaining asynchronous and operational states is an integral part of almost every modern (web) app, but an often discussed topic when it comes to structuring the Redux store state accordingly for their persistence.
 
-`redux-ops` is trying to take this concern away by providing an `ops`-reducer, actions and selectors in order to
+`redux-ops` is trying to take this concern away by providing an `ops`-reducer, actions and selectors to
 
-- maintain aforementioned states in a consistent way (e.g. requests),
-- communicate directly whether something was successful or not,
-- prevent cluttering state slices with individual state keys
-- and to have a centralized place to store them.
+- **maintain** aforementioned states in a more consistent way (e.g. requests),
+- **communicate** whether something was successful or not,
+- **prevent cluttering** of state slices with individual sub-states
+- and to have a **centralized place** to store them.
 
 ## Example
 
-The most common use case is probably async request state handling. 
+The most common use case is probably async request state handling.
 
 ```js
 import { createStore, combineReducers } from 'redux';
@@ -46,19 +46,23 @@ const store = createStore(combineReducers({ ops: opsReducer }));
 const opId = '74168d';
 
 // Create an operation in its default state
-dispatch(actions.createOperation(opId));
+const op = new Op(opId);
+dispatch(op.create(OpStatus.Loading));
 
 // Fetch movies and update the previously created operation
-fetch('http://example.com/movies.json')
+fetch('https://example.com/movies.json')
   .then(response => response.json())
-  .then(movies => dispatch(actions.updateOperation(opId, OperationStatus.Success, movies)))
-  .catch(err => dispatch(actions.updateOperation(opId, OperationStatus.Error, err.message)));
+  .then(movies => dispatch(op.update(OpStatus.Success, movies)))
+  .catch(error => dispatch(op.update(OpStatus.Error, error.message)));
 
-// Get the operation state by one of the available selectors
+// Get the operation state by using one of the provided selectors
 console.log(selectors.getOpById(store.getState(), opId));
+
+// Delete the operation if needed
+op.delete();
 ```
 
-If the movie request was successful, the selector `getOpById` returns the operation, which is an `object` consisting of `id`, `status` and `data`.
+If the movie request was successful, the selector [`getOpById`](#getOpById) returns the operation, which is an `object` consisting of `id`, `status` and `data`.
 
 ```js
 {
@@ -68,9 +72,31 @@ If the movie request was successful, the selector `getOpById` returns the operat
 }
 ```
 
-## API Reference
+### redux-saga
 
-**WIP**
+Because `redux-ops` is simply using actions to update its states, it's useable in any combination with middlewares like `redux-thunk`, or like the example below shows, `redux-saga`.
+
+```js
+function* fetchMovies(opId) {
+  const op = new Op(opId);
+  yield put(op.create(OpStatus.Loading));
+
+  try {
+    const response = yield call(fetch, 'https://example.com/movies.json');
+    yield put(op.update(OpStatus.Success, response.json().data));
+  } catch (error) {
+    yield put(op.update(OpStatus.Error, error.message));
+  }
+
+  yield put(op.delete());
+}
+```
+
+## Documentation
+
+- [Actions](docs/Actions.md)
+- [Selectors](docs/Selectors.md)
+- [Utility](docs/Utility.md)
 
 ## License
 

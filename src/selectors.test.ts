@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 
-import reducer, { defaultState } from './index';
+import reducer, { defaultState } from './reducer';
 import * as actions from './actions';
 import * as selectors from './selectors';
-import { buildOperation } from './utils';
+import { constructOperation } from './utils';
 
-describe('reducer', () => {
+describe('selectors', () => {
   const id = '123';
   let appReducer;
   let state;
@@ -17,30 +17,45 @@ describe('reducer', () => {
 
   it('should return ops state', () => {
     state = appReducer(state, actions.createOperation(id));
-    expect(selectors.getOpsState(state)).toEqual({ ...defaultState, [id]: buildOperation(id) });
+    expect(selectors.getOpsState(state)).toEqual({ ...defaultState, [id]: constructOperation(id) });
   });
 
-  it('should return ops', () => {
+  it('should return all operations', () => {
     state = appReducer(state, actions.createOperation(id));
-    expect(selectors.getOps(state)).toEqual({ [id]: buildOperation(id) });
+    expect(selectors.getOps(state)).toEqual({ [id]: constructOperation(id) });
   });
 
-  it('should return op by id', () => {
+  it('should return operations by id', () => {
     state = appReducer(state, actions.createOperation('123'));
     state = appReducer(state, actions.createOperation('456'));
-    expect(selectors.getOpById(state, '456')).not.toEqual(buildOperation('123'));
-    expect(selectors.getOpById(state, '456')).toEqual(buildOperation('456'));
+    expect(selectors.getOpById(state, '456')).not.toEqual(constructOperation('123'));
+    expect(selectors.getOpById(state, '456')).toEqual(constructOperation('456'));
   });
 
-  it('should search ops by id', () => {
+  it('should return operations by ids', () => {
     state = appReducer(state, actions.createOperation('123'));
     state = appReducer(state, actions.createOperation('456'));
-    expect(selectors.searchOps(state, /abc/)).toEqual([]);
-    expect(selectors.searchOps(state, /45/)).toEqual([buildOperation('456')]);
-    expect(selectors.searchOps(state, /2|6/)).toEqual([
-      buildOperation('123'),
-      buildOperation('456'),
-    ]);
+    state = appReducer(state, actions.createOperation('789'));
+    expect(selectors.getOpByIds(state, ['456', '123'])).toEqual({
+      ['123']: constructOperation('123'),
+      ['456']: constructOperation('456'),
+    });
+  });
+
+  it('should search operations by id', () => {
+    state = appReducer(state, actions.createOperation('123'));
+    state = appReducer(state, actions.createOperation('456'));
+    state = appReducer(state, actions.createOperation(789));
+    expect(selectors.searchOps(state, /abc/)).toEqual({});
+    expect(selectors.searchOps(state, /45/)).toEqual({ ['456']: constructOperation('456') });
+    expect(selectors.searchOps(state, '456')).toEqual({ ['456']: constructOperation('456') });
+    expect(selectors.searchOps(state, '45')).toEqual({ ['456']: constructOperation('456') });
+    expect(selectors.searchOps(state, '789')).toEqual({ [789]: constructOperation(789) });
+    expect(selectors.searchOps(state, '0')).toEqual({});
+    expect(selectors.searchOps(state, /2|6/)).toEqual({
+      ['123']: constructOperation('123'),
+      ['456']: constructOperation('456'),
+    });
   });
 
   it('should allow custom reducer names', () => {
