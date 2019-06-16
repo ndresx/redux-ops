@@ -15,19 +15,19 @@ Returns all stored operations as key/value pair.
 Returns the operation that matches a given `id`.
 Returns `undefined` if no matching operation can be found.
 
-Also available as [utility](Utility.md#getOpById-state--id-) function.
+Also available as [utility](Utility.md#getopbyidops-id) function.
 
 ## `getOpByIds(state, ids)`
 
 Returns operations that match a given array of `ids`. Returns an empty `object` if no matching operations can be found.
 
-Also available as [utility](Utility.md#getOpByIds-state--ids-) function.
+Also available as [utility](Utility.md#getopbyidsops-ids) function.
 
 ## `searchOps(state, query)`
 
 Returns operations that match a given `query` in `string`/`RegEx` format. Returns an empty `object` if no matching operations can be found.
 
-Also available as [utility](Utility.md#searchOps-state--query-) function.
+Also available as [utility](Utility.md#searchopsops-query) function.
 
 ## `setReducerName(state, name)`
 
