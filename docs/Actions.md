@@ -14,4 +14,4 @@ Deletes one or multiple operation based on the given `id`s.
 
 ## `clearOperations()`
 
-Cleares the `ops`-reducer and effectively deletes all operations.
+Clears the `ops`-reducer and effectively deletes all operations.

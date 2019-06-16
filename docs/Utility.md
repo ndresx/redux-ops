@@ -23,7 +23,7 @@ const id = op.getId(); // myId
 
 ## `constructOperation(id, [status, data])`
 
-`constructOperation` can be used to generate an `op` object, consisting of `id`, `status` and a `data` property.
+Can be used to generate an `op` object, consisting of `id`, `status` and a `data` property.
 
 ```ts
 constructOperation('myId', OpStatus.Default, { name: 'Endgame' });
@@ -32,13 +32,13 @@ constructOperation('myId', OpStatus.Default, { name: 'Endgame' });
 
 ## `getOpById(ops, id)`
 
-`getOpById` returns the operation that matches a given `id` in the provided `ops` object.
+Returns the operation that matches a given `id` in the provided `ops` object.
 Returns `undefined` if no matching operation can be found.
 
 ## `getOpByIds(ops, ids)`
 
-`getOpByIds` returns operations that match a given array of `ids` in the provided `ops` object. Returns an empty `object` if no matching operations can be found.
+Returns operations that match a given array of `ids` in the provided `ops` object. Returns an empty `object` if no matching operations can be found.
 
 ## `searchOps(ops, query)`
 
-`searchOps` returns operations that match a given `query` in `string`/`RegEx` format in the provided `ops` object. Returns an empty `object` if no matching operations can be found.
+Returns operations that match a given `query` in `string`/`RegEx` format in the provided `ops` object. Returns an empty `object` if no matching operations can be found.
