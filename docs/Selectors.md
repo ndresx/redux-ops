@@ -1,6 +1,6 @@
 # Selectors
 
-The following selectors can be used to obtain data from the `redux-ops` state slice. Some of them are also available as [utility](utility.md) functions.
+The following selectors can be used to obtain data from the `redux-ops` state slice. Some of them are also available as [utility](Utility.md) functions.
 
 ## `getOpsState(state)`
 
@@ -15,19 +15,19 @@ Returns all stored operations as key/value pair.
 Returns the operation that matches a given `id`.
 Returns `undefined` if no matching operation can be found.
 
-Also available as [utility](utility.md#getOpById-state--id-) function.
+Also available as [utility](Utility.md#getOpById-state--id-) function.
 
 ## `getOpByIds(state, ids)`
 
 Returns operations that match a given array of `ids`. Returns an empty `object` if no matching operations can be found.
 
-Also available as [utility](utility.md#getOpByIds-state--ids-) function.
+Also available as [utility](Utility.md#getOpByIds-state--ids-) function.
 
 ## `searchOps(state, query)`
 
 Returns operations that match a given `query` in `string`/`RegEx` format. Returns an empty `object` if no matching operations can be found.
 
-Also available as [utility](utility.md#searchOps-state--query-) function.
+Also available as [utility](Utility.md#searchOps-state--query-) function.
 
 ## `setReducerName(state, name)`
 
