@@ -41,28 +41,33 @@ import opsReducer, { actions, selectors } from 'redux-ops';
 
 // Create store and set up reducer(s)
 const store = createStore(combineReducers({ ops: opsReducer }));
+```
 
-// Generate an id (string or number)
-const opId = '74168d';
-
+```js
 // Create an operation in its default state
-const op = new Op(opId);
+const op = new Op('74168d');
 dispatch(op.create(OpStatus.Loading));
+```
 
+```js
 // Fetch movies and update the previously created operation
 fetch('https://example.com/movies.json')
   .then(response => response.json())
   .then(movies => dispatch(op.update(OpStatus.Success, movies)))
   .catch(error => dispatch(op.update(OpStatus.Error, error.message)));
+```
 
+```js
 // Get the operation state by using one of the provided selectors
-console.log(selectors.getOpById(store.getState(), opId));
+console.log(selectors.getOpById(store.getState(), op.getId()));
 
 // Delete the operation if needed
-op.delete();
+dispatch(op.delete());
 ```
 
 [Live Demo](https://codesandbox.io/s/sharp-buck-120j0)
+
+### Op Data
 
 If the movie request was successful, the selector [`getOpById`](#getOpById) returns the operation, which is an `object` consisting of `id`, `status` and `data`.
 
@@ -78,9 +83,31 @@ If the movie request was successful, the selector [`getOpById`](#getOpById) retu
 }
 ```
 
-### redux-saga
+### Examples with Middlewares
 
-Because `redux-ops` is simply using actions to update its states, it's useable in any combination with middlewares like `redux-thunk`, or like the example below shows, `redux-saga`.
+Here are two more examples of how `redux-ops` looks in combination with middlewares like `redux-thunk` or `redux-saga`.
+
+#### redux-thunk
+
+```js
+function fetchMovies(opId) {
+  return async dispatch => {
+    const op = new Op(opId);
+    dispatch(op.create(OpStatus.Loading));
+
+    try {
+      const response = await fetch('https://example.com/movies.json');
+      const data = await response.json();
+      dispatch(op.update(OpStatus.Success, data));
+    }
+    catch(error) {
+      dispatch(op.update(OpStatus.Error, error.message));
+    }
+  }
+}
+```
+
+#### redux-saga
 
 ```js
 function* fetchMovies(opId) {
@@ -89,12 +116,11 @@ function* fetchMovies(opId) {
 
   try {
     const response = yield call(fetch, 'https://example.com/movies.json');
-    yield put(op.update(OpStatus.Success, response.json().data));
+    const data = yield call(response.json);
+    yield put(op.update(OpStatus.Success, data));
   } catch (error) {
     yield put(op.update(OpStatus.Error, error.message));
   }
-
-  yield put(op.delete());
 }
 ```
 
