@@ -62,13 +62,19 @@ console.log(selectors.getOpById(store.getState(), opId));
 op.delete();
 ```
 
+[Live Demo](https://codesandbox.io/s/sharp-buck-120j0)
+
 If the movie request was successful, the selector [`getOpById`](#getOpById) returns the operation, which is an `object` consisting of `id`, `status` and `data`.
 
 ```js
 {
   id: '74168d',
   status: 'success',
-  data: [{ name: 'The Dark Knight' }, { name: 'Jurassic World' }],
+  data: [
+    { "id": 1, "name": "The Dark Knight" },
+    { "id": 2, "name": "Jurassic World" },
+    { "id": 3, "name": "Avatar" }
+  ],
 }
 ```
 

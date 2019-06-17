@@ -1,0 +1,7 @@
+{
+  "movies": [
+    { "id": 1, "name": "The Dark Knight" },
+    { "id": 2, "name": "Jurassic World" },
+    { "id": 3, "name": "Avatar" }
+  ]
+}
