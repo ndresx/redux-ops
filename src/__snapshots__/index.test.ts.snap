@@ -2,6 +2,7 @@
 
 exports[`index should export 1`] = `
 Object {
+  "Op": [Function],
   "OpStatus": Object {
     "Default": "default",
     "Error": "error",
