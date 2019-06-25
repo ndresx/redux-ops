@@ -1,24 +1,18 @@
 import { Operation, OpStatus, Ops, OpId } from './typedefs';
 
-export function constructOperation<TStatus = OpStatus, TData = any>(
+export function createOperation<TData = any>(
   id: OpId,
-  status?: TStatus,
+  status: OpStatus = OpStatus.Started,
   data?: TData
-): Operation<TStatus, TData> {
+): Operation<TData> {
   return { id, status, data };
 }
 
-export function getOpById<TStatus = OpStatus, TData = any>(
-  ops: Ops<TStatus, TData>,
-  id: OpId
-): Operation<TStatus, TData> | undefined {
+export function getOpById<TData = any>(ops: Ops<TData>, id: OpId): Operation<TData> | undefined {
   return ops[id];
 }
 
-export function getOpByIds<TStatus = OpStatus, TData = any>(
-  ops: Ops<TStatus, TData>,
-  ids: OpId[]
-): Ops<TStatus, TData> {
+export function getOpByIds<TData = any>(ops: Ops<TData>, ids: OpId[]): Ops<TData> {
   const result = {};
 
   ids.forEach(id => {
@@ -29,10 +23,7 @@ export function getOpByIds<TStatus = OpStatus, TData = any>(
   return result;
 }
 
-export function searchOps<TStatus = OpStatus, TData = any>(
-  ops: Ops<TStatus, TData>,
-  query: string | RegExp
-): Ops<TStatus, TData> {
+export function searchOps<TData = any>(ops: Ops<TData>, query: string | RegExp): Ops<TData> {
   const result = {};
 
   Object.keys(ops).forEach(id => {

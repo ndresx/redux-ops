@@ -1,22 +1,21 @@
 import { AnyAction, Action } from 'redux';
 
-export interface Ops<TStatus = OpStatus, TData = any> {
-  readonly [key: string]: Operation<TStatus, TData>;
+export interface Ops<TData = any> {
+  readonly [key: string]: Operation<TData>;
 }
 
-export interface OpsState<TStatus = OpStatus, TData = any> extends Ops<TStatus, TData> {}
+export interface OpsState<TData = any> extends Ops<TData> {}
 
-export interface Operation<TStatus = OpStatus, TData = any> {
+export interface Operation<TData = any> {
   readonly id: OpId;
-  readonly status?: TStatus;
+  readonly status: OpStatus;
   readonly data?: TData;
 }
 
 export type OpId = number | string;
 
 export enum OpStatus {
-  Default = 'default',
-  Loading = 'loading',
+  Started = 'started',
   Intermediate = 'intermediate',
   Success = 'success',
   Error = 'error',
@@ -31,8 +30,8 @@ export type TActionCreator<P = undefined> = AnyAction & {
 export type OperationActionHandler = (state: OpsState, action: OperationAction) => OpsState;
 
 // Actions
-export interface OperationAction<TStatus = OpStatus, TData = any> extends Action {
-  readonly payload: Operation<TStatus, TData>;
+export interface OperationAction<TData = any> extends Action {
+  readonly payload: Operation<TData>;
 }
 
 export interface DeleteOperationAction extends AnyAction {
@@ -44,10 +43,7 @@ export interface DeleteOperationAction extends AnyAction {
 export interface ClearOperationsAction extends AnyAction {}
 
 export interface OperationActionCreatorFn {
-  <TStatus = OpStatus, TData = any>(id: OpId, status?: TStatus, data?: TData): OperationAction<
-    TStatus,
-    TData
-  >;
+  <TData = any>(id: OpId, status?: OpStatus, data?: TData): OperationAction<TData>;
 }
 
 export interface DeleteOperationActionCreatorFn {

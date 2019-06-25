@@ -4,13 +4,13 @@ exports[`index should export 1`] = `
 Object {
   "Op": [Function],
   "OpStatus": Object {
-    "Default": "default",
     "Error": "error",
     "Intermediate": "intermediate",
     "Loading": "loading",
     "Success": "success",
   },
   "actionTypes": Object {
+    "BLUEPRINT": "@@redux-ops/BLUEPRINT",
     "CLEAR": "@@redux-ops/CLEAR",
     "CREATE": "@@redux-ops/CREATE",
     "DELETE": "@@redux-ops/DELETE",
@@ -19,7 +19,7 @@ Object {
   },
   "actions": Object {
     "clearOperations": [Function],
-    "createOperation": [Function],
+    "startOperation": [Function],
     "deleteOperation": [Function],
     "updateOperation": [Function],
   },
@@ -34,7 +34,7 @@ Object {
     "setReducerName": [Function],
   },
   "utils": Object {
-    "constructOperation": [Function],
+    "createOperation": [Function],
     "getOpById": [Function],
     "getOpByIds": [Function],
     "searchOps": [Function],

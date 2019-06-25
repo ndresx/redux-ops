@@ -1,33 +1,12 @@
 # Utility
 
-## `Op` Class
-
-The `Op` `class` essentially wraps the create, update and delete actions into a re-usable class without the necessity of having to pass the op id into each of the operational actions anymore and by making it easier to type used data on object instantation.
-
-```js
-// Instantiate new operation
-const op = new Op('myId');
-
-// Create operation; same as createOperation() action
-dispatch(op.create());
-
-// Update operation; same as updateOperation() action
-dispatch(op.update(OpStatus.Success, { name: 'Avatar' }));
-
-// Delete operation; same as deleteOperation() action
-dispatch(op.delete());
-
-// Get id
-const id = op.getId(); // myId
-```
-
-## `constructOperation(id, [status, data])`
+## `createOperation(id, [status, data])`
 
 Can be used to generate an `op` object, consisting of `id`, `status` and a `data` property.
 
 ```ts
-constructOperation('myId', OpStatus.Default, { name: 'Endgame' });
-// { id: 'myId', status: 'default', data: { name: 'Endgame' }}
+createOperation('myId', OpStatus.Started, { name: 'Endgame' });
+// { id: 'myId', status: 'started', data: { name: 'Endgame' }}
 ```
 
 ## `getOpById(ops, id)`

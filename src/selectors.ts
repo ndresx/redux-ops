@@ -7,7 +7,7 @@ export function setReducerName(name: string): void {
   reducerName = name;
 }
 
-export function getOpsState<T, TStatus, TData>(state: T): OpsState<TStatus, TData> {
+export function getOpsState<T, TData>(state: T): OpsState<TData> {
   const subState = state[reducerName];
 
   if (subState === undefined) {
@@ -19,24 +19,18 @@ export function getOpsState<T, TStatus, TData>(state: T): OpsState<TStatus, TDat
   return subState;
 }
 
-export function getOps<T, TStatus, TData>(state: T): Ops<TStatus, TData> {
-  return getOpsState<T, TStatus, TData>(state);
+export function getOps<T, TData>(state: T): Ops<TData> {
+  return getOpsState<T, TData>(state);
 }
 
-export function getOpById<T, TStatus, TData>(
-  state: T,
-  id: OpId
-): Operation<TStatus, TData> | undefined {
-  return utils.getOpById<TStatus, TData>(getOps<T, TStatus, TData>(state), id);
+export function getOpById<T, TData>(state: T, id: OpId): Operation<TData> | undefined {
+  return utils.getOpById<TData>(getOps<T, TData>(state), id);
 }
 
-export function getOpByIds<T, TStatus, TData>(state: T, ids: OpId[]): Ops<TStatus, TData> {
-  return utils.getOpByIds<TStatus, TData>(getOps<T, TStatus, TData>(state), ids);
+export function getOpByIds<T, TData>(state: T, ids: OpId[]): Ops<TData> {
+  return utils.getOpByIds<TData>(getOps<T, TData>(state), ids);
 }
 
-export function searchOps<T, TStatus, TData>(
-  state: T,
-  query: string | RegExp
-): Ops<TStatus, TData> | undefined {
-  return utils.searchOps<TStatus, TData>(getOps<T, TStatus, TData>(state), query);
+export function searchOps<T, TData>(state: T, query: string | RegExp): Ops<TData> | undefined {
+  return utils.searchOps<TData>(getOps<T, TData>(state), query);
 }
