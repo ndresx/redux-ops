@@ -5,6 +5,8 @@ A Redux reducer/middleware for persisting asynchronous and operational states.
 - [Getting Started](#getting-started)
 - [Motivation](#motivation)
 - [Example](#example)
+  - [Introduction: Operations](#introduction-operations)
+  - [Extended: Blueprint Middleware](#extended-blueprint-middleware)
 - [Documentation](#documentation)
 - [License](#license)
 
@@ -22,54 +24,99 @@ yarn add redux-ops
 
 ## Motivation
 
-Maintaining asynchronous and operational states is an integral part of almost every modern (web) app, but an often discussed topic when it comes to structuring the Redux store state accordingly for their persistence.
+Maintaining asynchronous and operational states is an integral part of almost every modern (web) app, but an often discussed topic when it comes to their implementation and the Redux state structure to store them accordingly.
 
-`redux-ops` is trying to take this concern away by providing an `ops`-reducer, a middleware, actions and selectors to
+`redux-ops` is trying to take this concern away by providing a reducer, an optional middleware, actions, selectors and utilities to
 
-- **maintain** aforementioned states in a more consistent way (e.g. requests),
-- **communicate** whether something was successful or not,
+- **maintain** aforementioned states in a more consistent way (e.g. requests, transaction-like processes),
+- **communicate** these async/operational state transitions,
 - **prevent cluttering** of state slices with individual sub-states
 - and to have a **centralized place** to store them.
 
 ## Example
 
-We are going to fetch some movie data from a server and use `redux-ops` on a side to have more control of the states of our request by applying the provided custom middleware.
+### Introduction: Operations
 
-### Pre/Initial Setup
+At its core, `redux-ops` provides actions for the creation, update and deletion of Operations, with the option, to also use it as a data store to some extent if you want to.
+
+An Operation represents any async or operational task in form of the following object that gets updated and persisted within the `ops-reducer`.
+
+```js
+{
+  id: '74168d',
+  status: 'success',
+  data: [{ "id": 2, "name": "Jurassic World" }],
+}
+```
+
+In the following example, We are going to fetch some movie data from a server and use these core actions to perform the state transitions.
+
+```js
+import { createStore, combineReducers } from 'redux';
+import opsReducer, { actions, selectors } from 'redux-ops';
+
+// Create store and set up the reducer
+const store = createStore(combineReducers({ ops: opsReducer }));
+```
+
+```js
+// Create an Operation in its default state
+const opId = '74168d';
+dispatch(actions.startOperation(opId));
+
+// State => { ops: { id: '74168d', status: 'started' } }
+```
+
+```js
+// Fetch movies and update the previously created Operation
+fetch('https://example.com/movies.json')
+  .then(response => response.json())
+  .then(movies => dispatch(actions.update(opId, OpStatus.Success, movies)))
+  .catch(error => dispatch(actions.update(opId, OpStatus.Error, error.message)));
+
+// State => { ops: { id: '74168d', status: 'success', data: {...} } }
+```
+
+A set of selectors and utility functions allows to, for example, retrieve the current state of an Operation, or clean it up when it's no longer needed.
+
+```js
+// Get the Operation state by using one of the provided selectors
+console.log(selectors.getOpById(store.getState(), opId));
+
+// Delete the Operation if needed
+dispatch(op.delete());
+
+// State => { ops: {} }
+```
+
+[Live Demo](https://codesandbox.io/s/sharp-buck-120j0)
+
+### Extended: Blueprint Middleware
+
+While it's not required to use the built-in `opsMiddleware`, it enables the usage of `redux-ops`' action blueprints to reduce boilerplate by either using already defined action creators like the ones below, or by soley relying on the Operations themselves that can `broadcast` new actions based on the provided blueprint type.
+
+#### Setup
 
 ```js
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import opsReducer, { middleware } from 'redux-ops';
 
-// Set up reducer and apply middleware
+// Set up reducer and apply the middleware
 const store = createStore(
   combineReducers({ ops: opsReducer },
-  applyMiddleware(middleware))
+  applyMiddleware(middleware)
 );
 ```
 
-While it's not required to use the middleware (see low-level API), it enables the usage of `redux-ops`' action blueprints to reduce boilerplate by either using already defined action creators
-like the ones below, or by soley relying on the operations themselves.
-
 ```js
-// These action creators might already exist in our app
-function fetchMovies() {
-  return {
-    type: 'FETCH_MOVIES',
-  };
-}
-
-function didFetchMovies(movies) {
-  return {
-    type: 'FETCH_MOVIES_SUCCESS',
-    payload: { movies },
-  };
-}
+// We can either create/use existing actions (recommended), or let the blueprints handle it for us.
+const fetchMovies = () => ({ type: 'FETCH_MOVIES' });
+const didFetchMovies = movies => ({ type: 'FETCH_MOVIES_SUCCESS', payload: { movies } });
 ```
 
-The `blueprint` function simply wraps our action creators into actions that will then be handled by the middleware.
+The `blueprint` function simply wraps our action creators into actions that will go through the middleware.
 
-Since we already have two designated creators to initiate (`fetchMovies`) and complete (`didFetchMovies`) the operation, we can leverage them, or let the auto-generated action creators handle non-defined cases such as the `error` one, which we haven't defined.
+Since we already have two designated action creators to initiate (`fetchMovies`) and complete (`didFetchMovies`) the Operation, we can leverage them, or let the auto-generated action creators handle non-defined cases such as the `error` one, which we didn't define (yet).
 
 ```js
 import { blueprint } from 'redux-ops';
@@ -81,90 +128,48 @@ const movieFetcher = blueprint('FETCH_MOVIES', {
 });
 ```
 
-In order to kick-off the operation, we need to dispatch the `movieFetcher.start()` action.
+In order to kick-off the Operation, we need to dispatch the `movieFetcher.start()` action.
 
 ```js
 dispatch(movieFetcher.start());
 ```
 
-This will, on the one hand, start a new `op` state with the id `FETCH_MOVIES` (_which can be chosen arbitrarily and is not directly related to existing types_), and furthermore, dispatch the original `fetchMovies()` action through the middleware.
+This will, on the one hand, start a new Operation with the id `FETCH_MOVIES` (_which can be chosen arbitrarily and is not directly related to existing types_), and furthermore, dispatch the original `fetchMovies()` action through the middleware.
 
-The request itself can then be sent in whatever way. Note that we are dispatching `movieFetcher.error(...)` here. Because we didn't define our own action creator, the error state will be only handled by the `ops`-reducer.
+The request itself can then be sent in whatever way. Also, note that we are dispatching `movieFetcher.error(null, ...)` here. Because we didn't define our own action creator, the error state will be only handled by the `ops-reducer` as it was shownn before.
 
 ```js
-// Fetch movies and update the previously started operation
+// Fetch movies and update the previously started Operation
 fetch('https://example.com/movies.json')
   .then(response => response.json())
   .then(movies => dispatch(movieFetcher.success(movies)))
-  .catch(error => dispatch(movieFetcher.error(error.message));
+  .catch(error => dispatch(movieFetcher.error(null, error.message));
 ```
 
-A set of selectors and utility functions allows to, for example, retrieve the current state of an operation, or clean it up when it's no longer needed.
-
 ```js
-// Get the operation state by using one of the available selectors
+// Get the Operation state by using one of the available selectors
 console.log(movieFetcher.get(store.getState()));
 
-// Delete the operation if needed
+// Delete the Operation if needed
 dispatch(movieFetcher.delete());
 ```
 
-[Live Demo](https://codesandbox.io/s/sharp-buck-120j0)
+#### Unique Operations
 
-### Op Data
+Each Operation has its own id. Depending on the use case, it should be either unique, or can simply be re-used. An app initialization doesn't necessarily require a unique id, whereas multiple requests of the same topic/action might do.
 
-If the movie request was successful, the selector [`getOpById`](#getOpById) returns the operation, which is an `object` consisting of `id`, `status` and `data`.
+Based on the example before, we can achieve this by wrapping the first initiator action into the `uniqueOp` function, which modifies the returned actions to inject this unique id.
 
 ```js
-{
-  id: '74168d',
-  status: 'success',
-  data: [
-    { "id": 1, "name": "The Dark Knight" },
-    { "id": 2, "name": "Jurassic World" },
-    { "id": 3, "name": "Avatar" }
-  ],
-}
+const startingAction = uniqueOp(movieFetcher.start();
+dispatch(startingAction);
+// getUniqueId(startingAction) => 'FETCH_MOVIES_1'
 ```
 
-### Examples with Middlewares
-
-Here are two more examples of how `redux-ops` looks in combination with middlewares like `redux-thunk` or `redux-saga`.
-
-#### redux-thunk
+In order to continue to work with this newly generated unique id, we either need access to the dispatched action, or pass it in manually the next time we are planning to update it.
 
 ```js
-function fetchMovies(opId) {
-  return async dispatch => {
-    const op = new Op(opId);
-    dispatch(op.start(OpStatus.Loading));
-
-    try {
-      const response = await fetch('https://example.com/movies.json');
-      const data = await response.json();
-      dispatch(op.update(OpStatus.Success, data));
-    } catch (error) {
-      dispatch(op.update(OpStatus.Error, error.message));
-    }
-  };
-}
-```
-
-#### redux-saga
-
-```js
-function* fetchMovies(opId) {
-  const op = new Op(opId);
-  yield put(op.start(OpStatus.Loading));
-
-  try {
-    const response = yield call(fetch, 'https://example.com/movies.json');
-    const data = yield call(response.json);
-    yield put(op.update(OpStatus.Success, data));
-  } catch (error) {
-    yield put(op.update(OpStatus.Error, error.message));
-  }
-}
+dispatch(uniqueOp(movieFetcher.success(), startingAction));
 ```
 
 ## Documentation
@@ -172,6 +177,7 @@ function* fetchMovies(opId) {
 - [Actions](docs/Actions.md)
 - [Selectors](docs/Selectors.md)
 - [Utility](docs/Utility.md)
+- [Middleware](docs/Middleware.md)
 
 ## License
 
