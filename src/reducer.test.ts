@@ -77,14 +77,14 @@ describe('reducer', () => {
   it('should clear all existing operations', () => {
     state = reducer(state, actions.startOperation('123'));
     state = reducer(state, actions.startOperation('456'));
-    state = reducer(state, actions.clearOperations());
+    state = reducer(state, actions.resetOperations());
     expect(state).toEqual(defaultState);
   });
 
   it('should extend the default reducer', () => {
     state = reducer(state, actions.startOperation('123'));
     state = reducer(state, actions.startOperation('456'));
-    state = reducer(state, actions.clearOperations());
+    state = reducer(state, actions.resetOperations());
     expect(state).toEqual(defaultState);
   });
 });

@@ -1,11 +1,5 @@
 import { AnyAction, Action } from 'redux';
 
-export interface Ops<TData = any> {
-  readonly [key: string]: Operation<TData>;
-}
-
-export interface OpsState<TData = any> extends Ops<TData> {}
-
 export interface Operation<TData = any> {
   readonly id: OpId;
   readonly status: OpStatus;
@@ -21,11 +15,14 @@ export enum OpStatus {
   Error = 'error',
 }
 
-export type TReducerHandler<S = OpsState, A = AnyAction> = (state: S, action: A) => S;
+// State
+export interface Ops<TData = any> {
+  readonly [key: string]: Operation<TData>;
+}
 
-export type TActionCreator<P = undefined> = AnyAction & {
-  readonly payload?: P;
-};
+export interface OpsState extends Ops {}
+
+export type OpReducerHandler<S = OpsState, A = AnyAction> = (state: S, action: A) => S;
 
 export type OperationActionHandler = (state: OpsState, action: OperationAction) => OpsState;
 
@@ -40,16 +37,16 @@ export interface DeleteOperationAction extends AnyAction {
   };
 }
 
-export interface ClearOperationsAction extends AnyAction {}
+export interface ResetOperationsAction extends AnyAction {}
 
-export interface OperationActionCreatorFn {
+export interface OperationActionCreator {
   <TData = any>(id: OpId, status?: OpStatus, data?: TData): OperationAction<TData>;
 }
 
-export interface DeleteOperationActionCreatorFn {
+export interface DeleteOperationActionCreator {
   (id: OpId | OpId[]): DeleteOperationAction;
 }
 
-export interface ClearOperationsActionCreatorFn {
+export interface ResetOperationsActionCreator {
   (): AnyAction;
 }

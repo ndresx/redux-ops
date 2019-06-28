@@ -1,6 +1,12 @@
-import { createBlueprint, uniqueOp, broadcastOp, getUniqueId } from './index';
+import {
+  createBlueprint,
+  uniqueOp,
+  broadcastOp,
+  getUniqueId,
+  createBlueprintActionTypes,
+} from './index';
 import { OpBlueprint, BlueprintActionKey } from './typedefs';
-import { requestFetchMovies, didFetchMovies, FETCH_MOVIES, movies } from './fixtures';
+import { fetchMovies, FETCH_MOVIES, movies } from './fixtures';
 import { prefix } from '../action_types';
 
 describe('blueprint', () => {
@@ -34,10 +40,7 @@ describe('blueprint', () => {
     describe('should create blueprint with custom actions', () => {
       testActions(
         createBlueprint(FETCH_MOVIES, {
-          start: requestFetchMovies,
-          success: didFetchMovies,
-          error: message => ({ type: 'FETCH_MOVIES_ERROR', payload: { message } }),
-          delete: () => ({ type: 'FETCH_MOVIES_DELETE' }),
+          start: fetchMovies,
         }),
         {
           start: ['Science-Fiction', 1],
@@ -45,6 +48,10 @@ describe('blueprint', () => {
           error: [new Error('404').message],
         }
       );
+    });
+
+    it('should create blueprint action types', () => {
+      expect(createBlueprintActionTypes(FETCH_MOVIES)).toMatchSnapshot();
     });
   });
 
@@ -90,7 +97,7 @@ describe('blueprint', () => {
 
     it('should assign custom unique id to custom blueprint action', () => {
       const blueprint = blueprintModule.createBlueprint(FETCH_MOVIES, {
-        start: requestFetchMovies,
+        start: fetchMovies,
       });
       const startAction = blueprint.start();
 

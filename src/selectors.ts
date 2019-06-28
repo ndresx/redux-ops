@@ -7,7 +7,7 @@ export function setReducerName(name: string): void {
   reducerName = name;
 }
 
-export function getOpsState<T, TData>(state: T): OpsState<TData> {
+export function getOpsState<T>(state: T): OpsState {
   const subState = state[reducerName];
 
   if (subState === undefined) {
@@ -20,7 +20,7 @@ export function getOpsState<T, TData>(state: T): OpsState<TData> {
 }
 
 export function getOps<T, TData>(state: T): Ops<TData> {
-  return getOpsState<T, TData>(state);
+  return getOpsState<T>(state);
 }
 
 export function getOpById<T, TData>(state: T, id: OpId): Operation<TData> | undefined {

@@ -12,6 +12,6 @@ Updates an operation with a new `status` and `data` as optional argument.
 
 Deletes one or multiple operation based on the given `id`s.
 
-## `clearOperations()`
+## `resetOperations()`
 
 Clears the `ops`-reducer and effectively deletes all operations.

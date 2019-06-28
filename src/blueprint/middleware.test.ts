@@ -1,8 +1,8 @@
 import { combineReducers, createStore, AnyAction } from 'redux';
 
 import { createBlueprint, uniqueOp, broadcastOp, getUniqueId } from './index';
-import { OpBlueprint, BlueprintActionKey, OpBlueprintFn } from './typedefs';
-import { requestFetchMovies, didFetchMovies, FETCH_MOVIES, movies } from './fixtures';
+import { OpBlueprint, OpBlueprintFn } from './typedefs';
+import { fetchMovies, didFetchMovies, FETCH_MOVIES, movies } from './fixtures';
 import { prefix } from '../action_types';
 import reducer from '../reducer';
 import middleware from './middleware';
@@ -10,13 +10,13 @@ import middleware from './middleware';
 const store = createStore(combineReducers({ ops: reducer }));
 
 interface MovieFetcherOp extends OpBlueprint {
-  readonly start: OpBlueprintFn<typeof requestFetchMovies>;
+  readonly start: OpBlueprintFn<typeof fetchMovies>;
   readonly success: OpBlueprintFn<typeof didFetchMovies>;
 }
 
 describe('middleware', () => {
-  let dispatch;
-  let next;
+  let dispatch: jest.Mock;
+  let next: jest.Mock;
 
   beforeEach(() => {
     dispatch = jest.fn();
@@ -45,7 +45,7 @@ describe('middleware', () => {
   });
 
   it('should process blueprint start action with always preceding op action', () => {
-    const blueprint = createBlueprint(FETCH_MOVIES, { start: requestFetchMovies });
+    const blueprint = createBlueprint(FETCH_MOVIES, { start: fetchMovies });
     const action = blueprint.start();
 
     testMiddleware(action);
@@ -86,7 +86,7 @@ describe('middleware', () => {
 
     it('should attach unique id to custom action', () => {
       const blueprint = createBlueprint<MovieFetcherOp>(FETCH_MOVIES, {
-        start: requestFetchMovies,
+        start: fetchMovies,
       });
       const action = uniqueOp(blueprint.start('Science-Fiction'));
 
@@ -99,7 +99,7 @@ describe('middleware', () => {
 
     it('should attach unique id to broadcast action', () => {
       const blueprint = createBlueprint<MovieFetcherOp>(FETCH_MOVIES, {
-        start: requestFetchMovies,
+        start: fetchMovies,
       });
       const action = uniqueOp(broadcastOp(blueprint.start('Science-Fiction')));
 

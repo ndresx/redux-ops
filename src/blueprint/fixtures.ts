@@ -8,7 +8,7 @@ export const movies = [
 
 export const FETCH_MOVIES = 'FETCH_MOVIES';
 
-export function requestFetchMovies(genre: string, page?: number): AnyAction {
+export function fetchMovies(genre: string, page?: number): AnyAction {
   return {
     type: FETCH_MOVIES,
     payload: { genre, page },
@@ -17,7 +17,7 @@ export function requestFetchMovies(genre: string, page?: number): AnyAction {
 
 export function didFetchMovies(movies: object): AnyAction {
   return {
-    type: `${FETCH_MOVIES}_SUCCESS`,
+    type: `${FETCH_MOVIES}_SUCCESS_CUSTOM`,
     payload: { movies },
   };
 }

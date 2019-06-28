@@ -45,6 +45,15 @@ Object {
 }
 `;
 
+exports[`blueprint createBlueprint should create blueprint action types 1`] = `
+Object {
+  "ERROR": "FETCH_MOVIES_ERROR",
+  "INTERMEDIATE": "FETCH_MOVIES_INTERMEDIATE",
+  "STARTED": "FETCH_MOVIES_STARTED",
+  "SUCCESS": "FETCH_MOVIES_SUCCESS",
+}
+`;
+
 exports[`blueprint createBlueprint should create blueprint with custom actions Delete 1`] = `
 Object {
   "@@redux-ops/": Object {
@@ -127,7 +136,7 @@ Object {
           },
         ],
       },
-      "type": "FETCH_MOVIES_SUCCESS",
+      "type": "FETCH_MOVIES_SUCCESS_CUSTOM",
     },
     "op": Object {
       "payload": Object {

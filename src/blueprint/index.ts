@@ -5,8 +5,10 @@ import {
   OpBlueprintOriginalAction,
   OpBlueprintAction,
   OpBlueprint,
-  BlueprintComposers,
-  BlueprintActionCreatorFn,
+  BlueprintActionComposers,
+  BlueprintActionCreator,
+  BlueprintActionTypes,
+  ComposedBlueprintAction,
 } from './typedefs';
 import { OperationAction, DeleteOperationAction, OpId, OpStatus } from '../typedefs';
 
@@ -22,16 +24,45 @@ function createBlueprintAction(
   };
 }
 
-function composeActions(createBlueprintAction: BlueprintActionCreatorFn, composer?: Function) {
-  return composer
+function composeActions(
+  blueprintActionCreator: BlueprintActionCreator,
+  actionCreator?: Function
+): ComposedBlueprintAction {
+  return actionCreator
     ? compose(
-        createBlueprintAction,
-        composer
+        blueprintActionCreator,
+        actionCreator
       )
-    : createBlueprintAction;
+    : blueprintActionCreator;
 }
 
-function generateActionTypes(opId: OpId): OpBlueprint['actionTypes'] {
+function createStartAction(opId: OpId): BlueprintActionCreator {
+  return (action, data) =>
+    createBlueprintAction(actions.startOperation(opId, OpStatus.Started, data), action);
+}
+
+function createUpdateAction(opId: OpId, opStatus: OpStatus): BlueprintActionCreator {
+  return (action, data) =>
+    createBlueprintAction(actions.updateOperation(opId, opStatus, data), action);
+}
+
+function createDeleteAction(opId: OpId): BlueprintActionCreator {
+  return action => createBlueprintAction(actions.deleteOperation(opId), action);
+}
+
+export function createBlueprint<T extends OpBlueprint>(
+  opId: OpId,
+  composers: BlueprintActionComposers = {}
+): T {
+  return {
+    start: composeActions(createStartAction(opId), composers.start),
+    success: composeActions(createUpdateAction(opId, OpStatus.Success), composers.success),
+    error: composeActions(createUpdateAction(opId, OpStatus.Error), composers.error),
+    delete: composeActions(createDeleteAction(opId), composers.delete),
+  } as T;
+}
+
+export function createBlueprintActionTypes(opId: OpId): BlueprintActionTypes {
   return Object.keys(OpStatus).reduce(
     (acc, value) => {
       const key = value.toUpperCase();
@@ -42,42 +73,15 @@ function generateActionTypes(opId: OpId): OpBlueprint['actionTypes'] {
   );
 }
 
-function createStartAction(opId: OpId): BlueprintActionCreatorFn {
-  return (action, data) =>
-    createBlueprintAction(actions.startOperation(opId, OpStatus.Started, data), action);
-}
-
-function createUpdateAction(opId: OpId, opStatus: OpStatus): BlueprintActionCreatorFn {
-  return (action, data) =>
-    createBlueprintAction(actions.updateOperation(opId, opStatus, data), action);
-}
-
-function createDeleteAction(opId: OpId): BlueprintActionCreatorFn {
-  return action => createBlueprintAction(actions.deleteOperation(opId), action);
-}
-
-export function createBlueprint<T extends OpBlueprint>(
-  opId: OpId,
-  composers: BlueprintComposers = {}
-): T {
-  return {
-    start: composeActions(createStartAction(opId), composers.start),
-    success: composeActions(createUpdateAction(opId, OpStatus.Success), composers.success),
-    error: composeActions(createUpdateAction(opId, OpStatus.Error), composers.error),
-    delete: composeActions(createDeleteAction(opId), composers.delete),
-    actionTypes: generateActionTypes(opId),
-  } as T;
-}
-
 export function uniqueOp(
   action: OpBlueprintAction,
-  uniqueOpAction?: OpBlueprintOriginalAction | OpId
+  uniqueOpAction?: OpBlueprintAction | OpId
 ): OpBlueprintAction {
   const opsData = action[actionTypes.prefix];
   const uniqueId = uniqueOpAction
-    ? typeof uniqueOpAction === 'number' || typeof uniqueOpAction === 'string'
-      ? uniqueOpAction
-      : getUniqueId(uniqueOpAction)
+    ? typeof uniqueOpAction === 'object'
+      ? getUniqueId(uniqueOpAction)
+      : uniqueOpAction
     : `${actionTypes.prefix}_${++uniqueCounter}`;
 
   if (opsData.action) {

@@ -10,14 +10,14 @@ Object {
   },
   "actionTypes": Object {
     "BLUEPRINT": "@@redux-ops/BLUEPRINT",
-    "CLEAR": "@@redux-ops/CLEAR",
+    "RESET": "@@redux-ops/RESET",
     "DELETE": "@@redux-ops/DELETE",
     "START": "@@redux-ops/START",
     "UPDATE": "@@redux-ops/UPDATE",
     "prefix": "@@redux-ops/",
   },
   "actions": Object {
-    "clearOperations": [Function],
+    "resetOperations": [Function],
     "deleteOperation": [Function],
     "startOperation": [Function],
     "updateOperation": [Function],
