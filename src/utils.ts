@@ -13,24 +13,19 @@ export function getOpById<TData = any>(ops: Ops<TData>, id: OpId): Operation<TDa
 }
 
 export function getOpByIds<TData = any>(ops: Ops<TData>, ids: OpId[]): Ops<TData> {
-  const result = {};
-
-  ids.forEach(id => {
+  return ids.reduce((acc, id) => {
     const op = ops[id];
-    op && (result[id] = op);
-  });
-
-  return result;
+    op && (acc[id] = op);
+    return acc;
+  }, {});
 }
 
 export function searchOps<TData = any>(ops: Ops<TData>, query: string | RegExp): Ops<TData> {
-  const result = {};
-
-  Object.keys(ops).forEach(id => {
+  return Object.keys(ops).reduce((acc, id) => {
     if (query instanceof RegExp ? !!String(id).match(query) : String(id).indexOf(query) > -1) {
-      result[id] = ops[id];
+      acc[id] = ops[id];
     }
-  });
 
-  return result;
+    return acc;
+  }, {});
 }

@@ -2,29 +2,32 @@
 
 exports[`index should export 1`] = `
 Object {
-  "Op": [Function],
   "OpStatus": Object {
     "Error": "error",
     "Intermediate": "intermediate",
-    "Loading": "loading",
+    "Started": "started",
     "Success": "success",
   },
   "actionTypes": Object {
     "BLUEPRINT": "@@redux-ops/BLUEPRINT",
     "CLEAR": "@@redux-ops/CLEAR",
-    "CREATE": "@@redux-ops/CREATE",
     "DELETE": "@@redux-ops/DELETE",
+    "START": "@@redux-ops/START",
     "UPDATE": "@@redux-ops/UPDATE",
     "prefix": "@@redux-ops/",
   },
   "actions": Object {
     "clearOperations": [Function],
-    "startOperation": [Function],
     "deleteOperation": [Function],
+    "startOperation": [Function],
     "updateOperation": [Function],
   },
+  "broadcastOp": [Function],
+  "createBlueprint": [Function],
   "default": [Function],
   "defaultState": Object {},
+  "getUniqueId": [Function],
+  "opsMiddleware": [Function],
   "selectors": Object {
     "getOpById": [Function],
     "getOpByIds": [Function],
@@ -33,6 +36,7 @@ Object {
     "searchOps": [Function],
     "setReducerName": [Function],
   },
+  "uniqueOp": [Function],
   "utils": Object {
     "createOperation": [Function],
     "getOpById": [Function],

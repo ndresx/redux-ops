@@ -93,7 +93,7 @@ dispatch(op.delete());
 
 ### Extended: Blueprint Middleware
 
-While it's not required to use the built-in `opsMiddleware`, it enables the usage of `redux-ops`' action blueprints to reduce boilerplate by either using already defined action creators like the ones below, or by soley relying on the Operations themselves that can `broadcast` new actions based on the provided blueprint type.
+While it's not required to use the built-in `opsMiddleware`, it enables the usage of `redux-ops`' action Blueprints to reduce boilerplate by either using already defined action creators like the ones in the example below, or by soley relying on the Operations themselves.
 
 #### Setup
 
@@ -128,6 +128,8 @@ const movieFetcher = blueprint('FETCH_MOVIES', {
 });
 ```
 
+When creating a new Blueprint, a type needs to be passed in. This can be either a `string` or `number` and is needed to enable action broadcasting and the unique Operations.
+
 In order to kick-off the Operation, we need to dispatch the `movieFetcher.start()` action.
 
 ```js
@@ -147,8 +149,8 @@ fetch('https://example.com/movies.json')
 ```
 
 ```js
-// Get the Operation state by using one of the available selectors
-console.log(movieFetcher.get(store.getState()));
+// Get the Operation state by using one of the provided selectors
+console.log(selectors.getOpById(store.getState(), movieFetcher.getUniqueId()));
 
 // Delete the Operation if needed
 dispatch(movieFetcher.delete());
@@ -160,16 +162,29 @@ Each Operation has its own id. Depending on the use case, it should be either un
 
 Based on the example before, we can achieve this by wrapping the first initiator action into the `uniqueOp` function, which modifies the returned actions to inject this unique id.
 
+##### Auto-generated Id
+
 ```js
-const startingAction = uniqueOp(movieFetcher.start();
-dispatch(startingAction);
-// getUniqueId(startingAction) => 'FETCH_MOVIES_1'
+const startingAction = movieFetcher.start();
+
+// Auto-generated id
+uniqueOp(startingAction);
+
+// Custom id
+uniqueOp(startingAction, '74168d');
 ```
 
-In order to continue to work with this newly generated unique id, we either need access to the dispatched action, or pass it in manually the next time we are planning to update it.
+In order to continue to work with this unique id, we either need to be able to access the generated action, or pass it in manually the next time we are planning to update it.
 
 ```js
+// Auto-apply id from starting action
 dispatch(uniqueOp(movieFetcher.success(), startingAction));
+
+// Custom id
+dispatch(uniqueOp(movieFetcher.success(), '74168d'));
+
+// getUniqueId(action)
+dispatch(actions.update(getUniqueId(startingAction), OpStatus.success));
 ```
 
 ## Documentation

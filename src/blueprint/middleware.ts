@@ -8,11 +8,6 @@ function createOpsMiddleware(): Middleware {
   return ({ dispatch }) => next => action => {
     if (action[actionTypes.prefix]) {
       const blueprintAction: OpsData = action[actionTypes.prefix];
-
-      if (!blueprintAction) {
-        return next(action);
-      }
-
       let opAction = blueprintAction.op;
       const opActionPayload = opAction.payload;
       const opActionId = opActionPayload.id;
@@ -26,7 +21,7 @@ function createOpsMiddleware(): Middleware {
         if (blueprintAction.broadcast) {
           broadcastAction = {
             type: `${opActionId}_${opStatus.toUpperCase()}`,
-            payload: opActionPayload.data,
+            payload: opActionPayload,
             [actionTypes.prefix]: undefined,
           };
         }

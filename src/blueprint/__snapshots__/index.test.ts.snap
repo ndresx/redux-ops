@@ -1,0 +1,288 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[` 1`] = `
+Object {
+  "actionTypes": Object {
+    "ERROR": "FETCH_MOVIES_ERROR",
+    "INTERMEDIATE": "FETCH_MOVIES_INTERMEDIATE",
+    "STARTED": "FETCH_MOVIES_STARTED",
+    "SUCCESS": "FETCH_MOVIES_SUCCESS",
+  },
+  "delete": [Function],
+  "error": [Function],
+  "start": [Function],
+  "success": [Function],
+}
+`;
+
+exports[` 2`] = `
+Object {
+  "actionTypes": Object {
+    "ERROR": "FETCH_MOVIES_ERROR",
+    "INTERMEDIATE": "FETCH_MOVIES_INTERMEDIATE",
+    "STARTED": "FETCH_MOVIES_STARTED",
+    "SUCCESS": "FETCH_MOVIES_SUCCESS",
+  },
+  "delete": [Function],
+  "error": [Function],
+  "start": [Function],
+  "success": [Function],
+}
+`;
+
+exports[` 3`] = `
+Object {
+  "actionTypes": Object {
+    "ERROR": "FETCH_MOVIES_ERROR",
+    "INTERMEDIATE": "FETCH_MOVIES_INTERMEDIATE",
+    "STARTED": "FETCH_MOVIES_STARTED",
+    "SUCCESS": "FETCH_MOVIES_SUCCESS",
+  },
+  "delete": [Function],
+  "error": [Function],
+  "start": [Function],
+  "success": [Function],
+}
+`;
+
+exports[`blueprint createBlueprint should create blueprint with custom actions Delete 1`] = `
+Object {
+  "@@redux-ops/": Object {
+    "action": Object {
+      "type": "FETCH_MOVIES_DELETE",
+    },
+    "op": Object {
+      "payload": Object {
+        "id": "FETCH_MOVIES",
+      },
+      "type": "@@redux-ops/DELETE",
+    },
+  },
+  "type": "@@redux-ops/BLUEPRINT",
+}
+`;
+
+exports[`blueprint createBlueprint should create blueprint with custom actions Error 1`] = `
+Object {
+  "@@redux-ops/": Object {
+    "action": Object {
+      "payload": Object {
+        "message": "404",
+      },
+      "type": "FETCH_MOVIES_ERROR",
+    },
+    "op": Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "FETCH_MOVIES",
+        "status": "error",
+      },
+      "type": "@@redux-ops/UPDATE",
+    },
+  },
+  "type": "@@redux-ops/BLUEPRINT",
+}
+`;
+
+exports[`blueprint createBlueprint should create blueprint with custom actions Start 1`] = `
+Object {
+  "@@redux-ops/": Object {
+    "action": Object {
+      "payload": Object {
+        "genre": "Science-Fiction",
+        "page": 1,
+      },
+      "type": "FETCH_MOVIES",
+    },
+    "op": Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "FETCH_MOVIES",
+        "status": "started",
+      },
+      "type": "@@redux-ops/START",
+    },
+  },
+  "type": "@@redux-ops/BLUEPRINT",
+}
+`;
+
+exports[`blueprint createBlueprint should create blueprint with custom actions Success 1`] = `
+Object {
+  "@@redux-ops/": Object {
+    "action": Object {
+      "payload": Object {
+        "movies": Array [
+          Object {
+            "id": 1,
+            "name": "The Dark Knight",
+          },
+          Object {
+            "id": 2,
+            "name": "Jurassic World",
+          },
+          Object {
+            "id": 3,
+            "name": "Avatar",
+          },
+        ],
+      },
+      "type": "FETCH_MOVIES_SUCCESS",
+    },
+    "op": Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "FETCH_MOVIES",
+        "status": "success",
+      },
+      "type": "@@redux-ops/UPDATE",
+    },
+  },
+  "type": "@@redux-ops/BLUEPRINT",
+}
+`;
+
+exports[`blueprint createBlueprint should create blueprint with default actions Delete 1`] = `
+Object {
+  "@@redux-ops/": Object {
+    "action": undefined,
+    "op": Object {
+      "payload": Object {
+        "id": "FETCH_MOVIES",
+      },
+      "type": "@@redux-ops/DELETE",
+    },
+  },
+  "type": "@@redux-ops/BLUEPRINT",
+}
+`;
+
+exports[`blueprint createBlueprint should create blueprint with default actions Error 1`] = `
+Object {
+  "@@redux-ops/": Object {
+    "action": undefined,
+    "op": Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "FETCH_MOVIES",
+        "status": "error",
+      },
+      "type": "@@redux-ops/UPDATE",
+    },
+  },
+  "type": "@@redux-ops/BLUEPRINT",
+}
+`;
+
+exports[`blueprint createBlueprint should create blueprint with default actions Start 1`] = `
+Object {
+  "@@redux-ops/": Object {
+    "action": undefined,
+    "op": Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "FETCH_MOVIES",
+        "status": "started",
+      },
+      "type": "@@redux-ops/START",
+    },
+  },
+  "type": "@@redux-ops/BLUEPRINT",
+}
+`;
+
+exports[`blueprint createBlueprint should create blueprint with default actions Success 1`] = `
+Object {
+  "@@redux-ops/": Object {
+    "action": undefined,
+    "op": Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "FETCH_MOVIES",
+        "status": "success",
+      },
+      "type": "@@redux-ops/UPDATE",
+    },
+  },
+  "type": "@@redux-ops/BLUEPRINT",
+}
+`;
+
+exports[`blueprint createBlueprint should create blueprint with default actions and custom payloads Delete 1`] = `
+Object {
+  "@@redux-ops/": Object {
+    "action": undefined,
+    "op": Object {
+      "payload": Object {
+        "id": "FETCH_MOVIES",
+      },
+      "type": "@@redux-ops/DELETE",
+    },
+  },
+  "type": "@@redux-ops/BLUEPRINT",
+}
+`;
+
+exports[`blueprint createBlueprint should create blueprint with default actions and custom payloads Error 1`] = `
+Object {
+  "@@redux-ops/": Object {
+    "action": "404",
+    "op": Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "FETCH_MOVIES",
+        "status": "error",
+      },
+      "type": "@@redux-ops/UPDATE",
+    },
+  },
+  "type": "@@redux-ops/BLUEPRINT",
+}
+`;
+
+exports[`blueprint createBlueprint should create blueprint with default actions and custom payloads Start 1`] = `
+Object {
+  "@@redux-ops/": Object {
+    "action": "Science-Fiction",
+    "op": Object {
+      "payload": Object {
+        "data": 1,
+        "id": "FETCH_MOVIES",
+        "status": "started",
+      },
+      "type": "@@redux-ops/START",
+    },
+  },
+  "type": "@@redux-ops/BLUEPRINT",
+}
+`;
+
+exports[`blueprint createBlueprint should create blueprint with default actions and custom payloads Success 1`] = `
+Object {
+  "@@redux-ops/": Object {
+    "action": Array [
+      Object {
+        "id": 1,
+        "name": "The Dark Knight",
+      },
+      Object {
+        "id": 2,
+        "name": "Jurassic World",
+      },
+      Object {
+        "id": 3,
+        "name": "Avatar",
+      },
+    ],
+    "op": Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "FETCH_MOVIES",
+        "status": "success",
+      },
+      "type": "@@redux-ops/UPDATE",
+    },
+  },
+  "type": "@@redux-ops/BLUEPRINT",
+}
+`;

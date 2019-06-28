@@ -6,7 +6,7 @@ import {
 import { START, UPDATE, DELETE, CLEAR } from './action_types';
 import { createOperation } from './utils';
 
-export const startOperation: OperationActionCreatorFn = (id, status, data?) => ({
+export const startOperation: OperationActionCreatorFn = (id, status?, data?) => ({
   type: START,
   payload: createOperation(id, status, data),
 });

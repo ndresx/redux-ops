@@ -1,32 +1,28 @@
 import { AnyAction } from 'redux';
-import { blueprint, OpBlueprint, OpBlueprintFn } from 'redux-ops';
+import { createBlueprint, OpBlueprint, OpBlueprintFn } from 'redux-ops';
+
+const FETCH_MOVIES = 'FETCH_MOVIES';
 
 function requestFetchMovies(genre: string, page?: number): AnyAction {
   return {
-    type: 'FETCH_MOVIES',
+    type: FETCH_MOVIES,
     payload: { genre, page },
   };
 }
 
 function didFetchMovies(movies: object): AnyAction {
   return {
-    type: 'FETCH_MOVIES_SUCCESS',
+    type: movieFetcher.actionTypes.SUCCESS,
     payload: { movies },
   };
 }
-
-const FETCH_MOVIES_TYPE = 'FETCH_MOVIES';
 
 interface MovieFetcherOp extends OpBlueprint {
   readonly start: OpBlueprintFn<typeof requestFetchMovies>;
   readonly success: OpBlueprintFn<typeof didFetchMovies>;
 }
 
-function movieFetcherOp() {
-  return blueprint<MovieFetcherOp>(FETCH_MOVIES_TYPE, {
-    start: requestFetchMovies,
-    success: didFetchMovies,
-  });
-}
-
-export const movieFetcher = movieFetcherOp();
+export const movieFetcher = createBlueprint<MovieFetcherOp>(FETCH_MOVIES, {
+  start: requestFetchMovies,
+  success: didFetchMovies,
+});

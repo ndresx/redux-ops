@@ -1,7 +1,6 @@
 import { AnyAction } from 'redux';
 
 import * as actionTypes from '../action_types';
-import * as selectors from '../selectors';
 import { OperationAction, DeleteOperationAction, OpId } from '../typedefs';
 
 export interface OpsData extends OpsOriginalActionData {
@@ -23,23 +22,28 @@ export interface OpBlueprintOriginalAction extends AnyAction {
   [actionTypes.prefix]?: OpsOriginalActionData;
 }
 
-export interface BlueprintPrepareFn {
+export interface BlueprintActionCreatorFn {
   (action?: OpBlueprintOriginalAction | null, data?: any): OpBlueprintAction;
 }
 
-enum BlueprintActionKey {
+export enum BlueprintActionKey {
   Start = 'start',
   Success = 'success',
   Error = 'error',
   Delete = 'delete',
 }
 
-export type BlueprintComposers = { [key in BlueprintActionKey]?: Function } & {
-  unique?: boolean;
+type BlueprintActionTypes = {
+  readonly STARTED: string;
+  readonly INTERMEDIATE: string;
+  readonly SUCCESS: string;
+  readonly ERROR: string;
 };
 
-export type OpBlueprint = { [key in BlueprintActionKey]: BlueprintPrepareFn | Function } & {
-  readonly get: (state: unknown) => ReturnType<typeof selectors.getOpById>;
+export type BlueprintComposers = { [key in BlueprintActionKey]?: Function };
+
+export type OpBlueprint = { [key in BlueprintActionKey]: BlueprintActionCreatorFn | Function } & {
+  readonly actionTypes: BlueprintActionTypes;
 };
 
 export type OpBlueprintFn<T extends (...args: any) => any> = (

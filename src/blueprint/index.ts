@@ -1,19 +1,18 @@
 import { compose } from 'redux';
 import * as actions from '../actions';
 import * as actionTypes from '../action_types';
-import * as selectors from '../selectors';
 import {
   OpBlueprintOriginalAction,
   OpBlueprintAction,
   OpBlueprint,
   BlueprintComposers,
-  BlueprintPrepareFn,
+  BlueprintActionCreatorFn,
 } from './typedefs';
 import { OperationAction, DeleteOperationAction, OpId, OpStatus } from '../typedefs';
 
 let uniqueCounter = 0;
 
-function prepare(
+function createBlueprintAction(
   op: OperationAction | DeleteOperationAction,
   action?: OpBlueprintOriginalAction | null
 ): OpBlueprintAction {
@@ -23,41 +22,63 @@ function prepare(
   };
 }
 
-function composeBlueprint(prepare: BlueprintPrepareFn, composer?: Function) {
+function composeActions(createBlueprintAction: BlueprintActionCreatorFn, composer?: Function) {
   return composer
     ? compose(
-        prepare,
+        createBlueprintAction,
         composer
       )
-    : prepare;
+    : createBlueprintAction;
 }
 
-export function blueprint<T extends OpBlueprint>(
-  actionType: string,
+function generateActionTypes(opId: OpId): OpBlueprint['actionTypes'] {
+  return Object.keys(OpStatus).reduce(
+    (acc, value) => {
+      const key = value.toUpperCase();
+      acc[key] = `${String(opId)}_${key}`;
+      return acc;
+    },
+    {} as any
+  );
+}
+
+function createStartAction(opId: OpId): BlueprintActionCreatorFn {
+  return (action, data) =>
+    createBlueprintAction(actions.startOperation(opId, OpStatus.Started, data), action);
+}
+
+function createUpdateAction(opId: OpId, opStatus: OpStatus): BlueprintActionCreatorFn {
+  return (action, data) =>
+    createBlueprintAction(actions.updateOperation(opId, opStatus, data), action);
+}
+
+function createDeleteAction(opId: OpId): BlueprintActionCreatorFn {
+  return action => createBlueprintAction(actions.deleteOperation(opId), action);
+}
+
+export function createBlueprint<T extends OpBlueprint>(
+  opId: OpId,
   composers: BlueprintComposers = {}
 ): T {
-  const start: BlueprintPrepareFn = (action, data) =>
-    prepare(actions.startOperation(actionType, OpStatus.Started, data), action);
-  const update = (opStatus: OpStatus): BlueprintPrepareFn => (action, data) =>
-    prepare(actions.updateOperation(actionType, opStatus, data), action);
-
   return {
-    start: composeBlueprint(start, composers.start),
-    success: composeBlueprint(update(OpStatus.Success), composers.success),
-    error: composeBlueprint(update(OpStatus.Error), composers.error),
-    delete: composeBlueprint(() => prepare(actions.deleteOperation(actionType)), composers.delete),
-    get: (state: unknown) => selectors.getOpById(state, actionType),
+    start: composeActions(createStartAction(opId), composers.start),
+    success: composeActions(createUpdateAction(opId, OpStatus.Success), composers.success),
+    error: composeActions(createUpdateAction(opId, OpStatus.Error), composers.error),
+    delete: composeActions(createDeleteAction(opId), composers.delete),
+    actionTypes: generateActionTypes(opId),
   } as T;
 }
 
 export function uniqueOp(
   action: OpBlueprintAction,
-  uniqueOpAction?: OpBlueprintOriginalAction
+  uniqueOpAction?: OpBlueprintOriginalAction | OpId
 ): OpBlueprintAction {
   const opsData = action[actionTypes.prefix];
   const uniqueId = uniqueOpAction
-    ? getUniqueId(uniqueOpAction)
-    : `${opsData.op.payload.id}_${++uniqueCounter}`;
+    ? typeof uniqueOpAction === 'number' || typeof uniqueOpAction === 'string'
+      ? uniqueOpAction
+      : getUniqueId(uniqueOpAction)
+    : `${actionTypes.prefix}_${++uniqueCounter}`;
 
   if (opsData.action) {
     opsData.action[actionTypes.prefix] = { uniqueId };
