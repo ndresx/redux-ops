@@ -21,6 +21,7 @@
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.0",
     "redux": "^4.0.1",
+    "redux-ops": "^0.6.2",
     "typescript": "3.4.5"
   }
 }

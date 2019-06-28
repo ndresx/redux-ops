@@ -10,21 +10,21 @@ import { fetchMovies, FETCH_MOVIES, movies, didFetchMovies } from './fixtures';
 import { prefix } from '../action_types';
 
 describe('blueprint', () => {
-  describe('createBlueprint', () => {
-    function testActions(
-      blueprint: OpBlueprint,
-      blueprintArguments: { [key in BlueprintActionKey]?: unknown[] } = {}
-    ): void {
-      expect(blueprint).toMatchSnapshot();
+  function testActions(
+    blueprint: OpBlueprint,
+    blueprintArguments: { [key in BlueprintActionKey]?: unknown[] } = {}
+  ): void {
+    expect(blueprint).toMatchSnapshot();
 
-      for (const key in BlueprintActionKey) {
-        it(key, () => {
-          const keyValue = BlueprintActionKey[key];
-          expect(blueprint[keyValue](...(blueprintArguments[keyValue] || []))).toMatchSnapshot();
-        });
-      }
+    for (const key in BlueprintActionKey) {
+      it(key, () => {
+        const keyValue = BlueprintActionKey[key];
+        expect(blueprint[keyValue](...(blueprintArguments[keyValue] || []))).toMatchSnapshot();
+      });
     }
+  }
 
+  describe('createBlueprint', () => {
     describe('should create blueprint with default actions', () => {
       testActions(createBlueprint(FETCH_MOVIES));
     });
@@ -68,10 +68,10 @@ describe('blueprint', () => {
       const startAction = blueprint.start();
 
       const firstStartAction = blueprintModule.opUnique(startAction);
-      expect(firstStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"@@redux-ops/_1"`);
+      expect(firstStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"@@redux-ops/1"`);
 
       const secondStartAction = blueprintModule.opUnique(startAction);
-      expect(secondStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"@@redux-ops/_2"`);
+      expect(secondStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"@@redux-ops/2"`);
     });
 
     it('should re-assign unique id to existing blueprint action', () => {
@@ -79,10 +79,10 @@ describe('blueprint', () => {
       const startAction = blueprint.start();
 
       const firstStartAction = blueprintModule.opUnique(startAction);
-      expect(firstStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"@@redux-ops/_1"`);
+      expect(firstStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"@@redux-ops/1"`);
 
       const secondStartAction = blueprintModule.opUnique(startAction, firstStartAction);
-      expect(secondStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"@@redux-ops/_1"`);
+      expect(secondStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"@@redux-ops/1"`);
     });
 
     it('should assign custom unique id to blueprint action', () => {
@@ -112,8 +112,20 @@ describe('blueprint', () => {
 
       expect(getUniqueId(startAction)).toBeUndefined();
       expect(getUniqueId(blueprintModule.opUnique(startAction))).toMatchInlineSnapshot(
-        `"@@redux-ops/_1"`
+        `"@@redux-ops/1"`
       );
+    });
+
+    it('should create blueprint with actions using unique ids', () => {
+      const module: typeof import('./index') = require('./index');
+      const blueprint = module.opsUnique(module.createBlueprint(FETCH_MOVIES));
+      const blueprintCustomId = module.opsUnique(module.createBlueprint(FETCH_MOVIES), '123');
+
+      for (const key in BlueprintActionKey) {
+        const keyValue = BlueprintActionKey[key];
+        expect(blueprint[keyValue]()[prefix].uniqueId).toBe('@@redux-ops/1');
+        expect(blueprintCustomId[keyValue]()[prefix].uniqueId).toBe('123');
+      }
     });
 
     afterEach(() => {
@@ -128,6 +140,16 @@ describe('blueprint', () => {
 
       expect(startAction[prefix].broadcast).toBeUndefined();
       expect(opBroadcast(startAction)[prefix].broadcast).toBe(true);
+    });
+
+    it('should create blueprint with broadcast actions', () => {
+      const module: typeof import('./index') = require('./index');
+      const blueprint = module.opsBroadcast(module.createBlueprint(FETCH_MOVIES));
+
+      for (const key in BlueprintActionKey) {
+        const keyValue = BlueprintActionKey[key];
+        expect(blueprint[keyValue]()[prefix].broadcast).toBe(true);
+      }
     });
   });
 });

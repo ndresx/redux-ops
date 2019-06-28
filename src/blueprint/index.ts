@@ -9,6 +9,7 @@ import {
   BlueprintActionCreator,
   BlueprintActionTypes,
   ComposedBlueprintAction,
+  BlueprintActionKey,
 } from './typedefs';
 import { OperationAction, DeleteOperationAction, OpId, OpStatus } from '../typedefs';
 
@@ -22,6 +23,23 @@ function createBlueprintAction(
     type: actionTypes.BLUEPRINT,
     [actionTypes.prefix]: { op, action },
   };
+}
+
+export function composeBlueprint<T extends OpBlueprint>(
+  blueprint: OpBlueprint,
+  composer: Function
+): T {
+  return Object.keys(BlueprintActionKey).reduce(
+    (acc, value) => {
+      const key = BlueprintActionKey[value];
+      acc[key] = compose(
+        composer,
+        blueprint[key]
+      );
+      return acc;
+    },
+    {} as T
+  );
 }
 
 function composeActions(
@@ -69,20 +87,20 @@ export function createBlueprintActionTypes(opId: OpId): BlueprintActionTypes {
       acc[key] = `${String(opId)}_${key}`;
       return acc;
     },
-    {} as any
+    {} as BlueprintActionTypes
   );
 }
 
 export function opUnique(
   action: OpBlueprintAction,
-  opUniqueAction?: OpBlueprintAction | OpId
+  uniqueValue?: OpBlueprintAction | OpId
 ): OpBlueprintAction {
   const opsData = action[actionTypes.prefix];
-  const uniqueId = opUniqueAction
-    ? typeof opUniqueAction === 'object'
-      ? getUniqueId(opUniqueAction)
-      : opUniqueAction
-    : `${actionTypes.prefix}_${++uniqueCounter}`;
+  const uniqueId = uniqueValue
+    ? typeof uniqueValue === 'object'
+      ? getUniqueId(uniqueValue)
+      : uniqueValue
+    : generateUniqueId();
 
   if (opsData.action) {
     opsData.action[actionTypes.prefix] = { uniqueId };
@@ -93,9 +111,27 @@ export function opUnique(
   return action;
 }
 
+export function opsUnique<T extends OpBlueprint>(
+  blueprint: OpBlueprint,
+  uniqueValue?: OpBlueprintAction | OpId
+): T {
+  return composeBlueprint<T>(
+    blueprint,
+    (action: OpBlueprintAction): OpBlueprintAction => opUnique(action, uniqueValue)
+  );
+}
+
+function generateUniqueId(): string {
+  return `${actionTypes.prefix}${++uniqueCounter}`;
+}
+
 export function opBroadcast(action: OpBlueprintAction): OpBlueprintAction {
   action[actionTypes.prefix].broadcast = true;
   return action;
+}
+
+export function opsBroadcast<T extends OpBlueprint>(blueprint: OpBlueprint): T {
+  return composeBlueprint<T>(blueprint, opBroadcast);
 }
 
 export function getUniqueId(action: OpBlueprintOriginalAction): OpId | undefined {

@@ -1,18 +1,12 @@
 import { combineReducers, createStore, AnyAction } from 'redux';
 
 import { createBlueprint, opUnique, opBroadcast, getUniqueId } from './index';
-import { OpBlueprint, OpBlueprintFn } from './typedefs';
-import { fetchMovies, didFetchMovies, FETCH_MOVIES, movies } from './fixtures';
+import { fetchMovies, didFetchMovies, FETCH_MOVIES, movies, MovieFetcherOp } from './fixtures';
 import { prefix } from '../action_types';
 import reducer from '../reducer';
 import middleware from './middleware';
 
 const store = createStore(combineReducers({ ops: reducer }));
-
-interface MovieFetcherOp extends OpBlueprint {
-  readonly start: OpBlueprintFn<typeof fetchMovies>;
-  readonly success: OpBlueprintFn<typeof didFetchMovies>;
-}
 
 describe('middleware', () => {
   let dispatch: jest.Mock;
@@ -81,7 +75,7 @@ describe('middleware', () => {
 
       const nextActionId = next.mock.calls[0][0].payload.id;
       expect(nextActionId).not.toBe(action[prefix].op.payload.id);
-      expect(nextActionId).toMatchInlineSnapshot(`"@@redux-ops/_1"`);
+      expect(nextActionId).toMatchInlineSnapshot(`"@@redux-ops/1"`);
     });
 
     it('should attach unique id to custom action', () => {

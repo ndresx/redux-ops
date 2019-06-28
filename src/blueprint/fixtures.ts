@@ -1,4 +1,10 @@
 import { AnyAction } from 'redux';
+import { OpBlueprint, OpBlueprintFn } from './typedefs';
+
+export interface MovieFetcherOp extends OpBlueprint {
+  readonly start: OpBlueprintFn<typeof fetchMovies>;
+  readonly success: OpBlueprintFn<typeof didFetchMovies>;
+}
 
 export const movies = [
   { id: 1, name: 'The Dark Knight' },

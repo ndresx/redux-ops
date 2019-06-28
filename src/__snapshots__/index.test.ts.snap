@@ -28,6 +28,7 @@ Object {
     "startOperation": [Function],
     "updateOperation": [Function],
   },
+  "composeBlueprint": [Function],
   "createBlueprint": [Function],
   "createBlueprintActionTypes": [Function],
   "default": [Function],
@@ -35,7 +36,9 @@ Object {
   "getUniqueId": [Function],
   "opBroadcast": [Function],
   "opUnique": [Function],
+  "opsBroadcast": [Function],
   "opsMiddleware": [Function],
+  "opsUnique": [Function],
   "selectors": Object {
     "getOpById": [Function],
     "getOpByIds": [Function],
