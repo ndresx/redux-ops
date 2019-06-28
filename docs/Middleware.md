@@ -1,6 +1,6 @@
 # Middleware
 
-The `opsMiddleware` enables the usage of `redux-ops` [Blueprints](Blueprints.md) to reduce boilerplate by either using already defined action creators or by relying on the auto-generated Operations.
+The `opsMiddleware` enables the usage of `redux-ops` [Blueprints](Blueprints.md) to reduce boilerplate by either using already defined action creators or by relying on the built-in Operations.
 
 ## Setup
 

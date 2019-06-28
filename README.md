@@ -37,7 +37,7 @@ Maintaining asynchronous and operational states is an integral part of almost ev
 
 ### Introduction: Operations
 
-At its core, `redux-ops` provides actions for the creation, update and deletion of Operations, with the option, to also use it as a data store to some extent if you want to.
+At its core, `redux-ops` provides actions for the creation, update and deletion of Operations, with the option, to also use it as a data store to some extent if needed.
 
 An Operation represents any async or operational task in form of the following object that gets updated and persisted within the `ops-reducer`.
 
@@ -83,7 +83,7 @@ A set of selectors and utility functions allows to, for example, retrieve the cu
 // Get the Operation state by using one of the provided selectors
 console.log(selectors.getOpById(store.getState(), opId));
 
-// Delete the Operation if needed
+// Delete the Operation
 dispatch(op.delete());
 
 // State => { ops: {} }
@@ -93,7 +93,7 @@ dispatch(op.delete());
 
 ### Extended: Blueprints & Middleware
 
-`redux-ops` also comes with an optional [middleware](docs/Middleware.md) that enables the usage of [Blueprints](docs/Blueprints.md) to reduce boilerplate by either using already defined action creators like the ones in the example below, or by soley relying on the Operations themselves.
+`redux-ops` also comes with an optional [middleware](docs/Middleware.md) that enables the usage of action [Blueprints](docs/Blueprints.md) to reduce boilerplate by either using already defined action creators like the ones in the example below, or by soley relying on the built-in Operations.
 
 #### Setup
 
@@ -114,23 +114,23 @@ const fetchMovies = () => ({ type: 'FETCH_MOVIES' });
 const didFetchMovies = movies => ({ type: 'FETCH_MOVIES_SUCCESS', payload: { movies } });
 ```
 
-The [`createBlueprint`](docs/Blueprints.md#getting-started) function simply wraps our action creators into actions that will go through the middleware.
+The [`createBlueprint`](docs/Blueprints.md) function simply wraps our action creators into actions that will then be processed by the middleware.
 
 Since we already have two designated action creators to initiate (`fetchMovies`) and complete (`didFetchMovies`) the Operation, we can leverage them, or let the auto-generated action creators handle non-defined cases such as the `error` one, which we didn't define (yet).
 
 ```js
 import { createBlueprint } from 'redux-ops';
 
-// Create a with Blueprints enhanced fetcher object
+// Create a new Blueprint for managing state
 const movieFetcher = createBlueprint('FETCH_MOVIES', {
   start: fetchMovies,
   success: didFetchMovies,
 });
 ```
 
-When creating a new Blueprint, a type needs to be passed in. This can be either a `string` or `number` and is utilized for Operation [broadcasting](docs/Blueprints.md#operation-broadcasting) and [unique](docs/Blueprints.md#unique-operations) Operations.
+When creating a new Blueprint, an id/action type needs to be passed in. This can be either a `string` or `number` and is utilized for Operation [broadcasting](docs/Blueprints.md#operation-broadcasting) and [unique](docs/Blueprints.md#unique-operations) Operations.
 
-In order to kick-off the Operation, we need to dispatch the `movieFetcher.start()` action.
+To kick-off the Operation, we need to dispatch the `movieFetcher.start()` action.
 
 ```js
 dispatch(movieFetcher.start());

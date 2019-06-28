@@ -5,7 +5,7 @@ import { OpStatus, Operation } from '../typedefs';
 import { OpsData, OpBlueprintOriginalAction } from './typedefs';
 
 function createOpsMiddleware(): Middleware {
-  return ({ dispatch }) => next => action => {
+  return store => next => action => {
     if (action[actionTypes.prefix]) {
       const blueprintAction: OpsData = action[actionTypes.prefix];
       let opAction = blueprintAction.op;

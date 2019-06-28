@@ -4,7 +4,7 @@ import {
   createBlueprintActionTypes,
   OpBlueprint,
   OpBlueprintFn,
-  opsUnique,
+  opUnique,
 } from 'redux-ops';
 
 const FETCH_MOVIES = 'FETCH_MOVIES';
@@ -29,7 +29,7 @@ interface MovieFetcherOp extends OpBlueprint {
   readonly success: OpBlueprintFn<typeof didFetchMovies>;
 }
 
-export const movieFetcher = opsUnique<MovieFetcherOp>(
+export const movieFetcher = opUnique<MovieFetcherOp>(
   createBlueprint<MovieFetcherOp>(FETCH_MOVIES, {
     start: fetchMovies,
     success: didFetchMovies,
