@@ -2,12 +2,6 @@
 
 exports[` 1`] = `
 Object {
-  "actionTypes": Object {
-    "ERROR": "FETCH_MOVIES_ERROR",
-    "INTERMEDIATE": "FETCH_MOVIES_INTERMEDIATE",
-    "STARTED": "FETCH_MOVIES_STARTED",
-    "SUCCESS": "FETCH_MOVIES_SUCCESS",
-  },
   "delete": [Function],
   "error": [Function],
   "start": [Function],
@@ -17,12 +11,6 @@ Object {
 
 exports[` 2`] = `
 Object {
-  "actionTypes": Object {
-    "ERROR": "FETCH_MOVIES_ERROR",
-    "INTERMEDIATE": "FETCH_MOVIES_INTERMEDIATE",
-    "STARTED": "FETCH_MOVIES_STARTED",
-    "SUCCESS": "FETCH_MOVIES_SUCCESS",
-  },
   "delete": [Function],
   "error": [Function],
   "start": [Function],
@@ -32,12 +20,6 @@ Object {
 
 exports[` 3`] = `
 Object {
-  "actionTypes": Object {
-    "ERROR": "FETCH_MOVIES_ERROR",
-    "INTERMEDIATE": "FETCH_MOVIES_INTERMEDIATE",
-    "STARTED": "FETCH_MOVIES_STARTED",
-    "SUCCESS": "FETCH_MOVIES_SUCCESS",
-  },
   "delete": [Function],
   "error": [Function],
   "start": [Function],
@@ -57,9 +39,7 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with custom actions Delete 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": Object {
-      "type": "FETCH_MOVIES_DELETE",
-    },
+    "action": undefined,
     "op": Object {
       "payload": Object {
         "id": "FETCH_MOVIES",
@@ -74,15 +54,10 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with custom actions Error 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": Object {
-      "payload": Object {
-        "message": "404",
-      },
-      "type": "FETCH_MOVIES_ERROR",
-    },
+    "action": null,
     "op": Object {
       "payload": Object {
-        "data": undefined,
+        "data": "404",
         "id": "FETCH_MOVIES",
         "status": "error",
       },

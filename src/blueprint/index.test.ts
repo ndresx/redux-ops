@@ -6,7 +6,7 @@ import {
   createBlueprintActionTypes,
 } from './index';
 import { OpBlueprint, BlueprintActionKey } from './typedefs';
-import { fetchMovies, FETCH_MOVIES, movies } from './fixtures';
+import { fetchMovies, FETCH_MOVIES, movies, didFetchMovies } from './fixtures';
 import { prefix } from '../action_types';
 
 describe('blueprint', () => {
@@ -41,11 +41,12 @@ describe('blueprint', () => {
       testActions(
         createBlueprint(FETCH_MOVIES, {
           start: fetchMovies,
+          success: didFetchMovies,
         }),
         {
           start: ['Science-Fiction', 1],
           success: [movies],
-          error: [new Error('404').message],
+          error: [null, new Error('404').message],
         }
       );
     });
