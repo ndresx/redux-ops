@@ -59,21 +59,6 @@ describe('reducer', () => {
     expect(state).toEqual({ ...defaultState, ['456']: createOperation('456') });
   });
 
-  it('should delete multiple operations', () => {
-    state = reducer(state, actions.startOperation('123'));
-    state = reducer(state, actions.startOperation('456'));
-    state = reducer(state, actions.startOperation('789'));
-    expect(state).toEqual({
-      ...defaultState,
-      ['123']: createOperation('123'),
-      ['456']: createOperation('456'),
-      ['789']: createOperation('789'),
-    });
-
-    state = reducer(state, actions.deleteOperation(['456', '789']));
-    expect(state).toEqual({ ...defaultState, ['123']: createOperation('123') });
-  });
-
   it('should clear all existing operations', () => {
     state = reducer(state, actions.startOperation('123'));
     state = reducer(state, actions.startOperation('456'));

@@ -4,6 +4,7 @@ exports[` 1`] = `
 Object {
   "delete": [Function],
   "error": [Function],
+  "id": "FETCH_MOVIES",
   "start": [Function],
   "success": [Function],
 }
@@ -13,6 +14,7 @@ exports[` 2`] = `
 Object {
   "delete": [Function],
   "error": [Function],
+  "id": "FETCH_MOVIES",
   "start": [Function],
   "success": [Function],
 }
@@ -22,6 +24,7 @@ exports[` 3`] = `
 Object {
   "delete": [Function],
   "error": [Function],
+  "id": "FETCH_MOVIES",
   "start": [Function],
   "success": [Function],
 }
@@ -54,7 +57,7 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with custom actions Error 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": null,
+    "action": undefined,
     "op": Object {
       "payload": Object {
         "data": "404",
@@ -210,10 +213,10 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with default actions and custom payloads Error 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": "404",
+    "action": undefined,
     "op": Object {
       "payload": Object {
-        "data": undefined,
+        "data": "404",
         "id": "FETCH_MOVIES",
         "status": "error",
       },
@@ -227,10 +230,10 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with default actions and custom payloads Start 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": "Science-Fiction",
+    "action": undefined,
     "op": Object {
       "payload": Object {
-        "data": 1,
+        "data": "Science-Fiction",
         "id": "FETCH_MOVIES",
         "status": "started",
       },
@@ -244,23 +247,23 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with default actions and custom payloads Success 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": Array [
-      Object {
-        "id": 1,
-        "name": "The Dark Knight",
-      },
-      Object {
-        "id": 2,
-        "name": "Jurassic World",
-      },
-      Object {
-        "id": 3,
-        "name": "Avatar",
-      },
-    ],
+    "action": undefined,
     "op": Object {
       "payload": Object {
-        "data": undefined,
+        "data": Array [
+          Object {
+            "id": 1,
+            "name": "The Dark Knight",
+          },
+          Object {
+            "id": 2,
+            "name": "Jurassic World",
+          },
+          Object {
+            "id": 3,
+            "name": "Avatar",
+          },
+        ],
         "id": "FETCH_MOVIES",
         "status": "success",
       },

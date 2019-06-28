@@ -46,7 +46,9 @@ export type BlueprintActionComposers = { [key in BlueprintActionKey]?: OpBluepri
 
 export type ComposedBlueprintAction = BlueprintActionCreator | OpBlueprintActionCreator;
 
-export type OpBlueprint = { [key in BlueprintActionKey]: ComposedBlueprintAction };
+export type OpBlueprint = { [key in BlueprintActionKey]: ComposedBlueprintAction } & {
+  readonly id: OpId;
+};
 
 export type OpBlueprintFn<T extends (...args: any) => any> = (
   ...args: Parameters<T>

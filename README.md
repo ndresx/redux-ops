@@ -5,8 +5,8 @@ A Redux reducer/middleware for persisting asynchronous and operational states.
 - [Getting Started](#getting-started)
 - [Motivation](#motivation)
 - [Example](#example)
-  - [Introduction: Operations](#introduction-operations)
-  - [Extended: Blueprint Middleware](#extended-blueprint-middleware)
+  - [Introduction: **Operations**](#introduction-operations)
+  - [**Blueprints & Middleware**](#extended-blueprints-middleware)
 - [Documentation](#documentation)
 - [License](#license)
 
@@ -91,9 +91,9 @@ dispatch(op.delete());
 
 [Live Demo](https://codesandbox.io/s/sharp-buck-120j0)
 
-### Extended: Blueprint Middleware
+### Extended: Blueprints & Middleware
 
-While it's not required to use the built-in `opsMiddleware`, it enables the usage of `redux-ops`' action Blueprints to reduce boilerplate by either using already defined action creators like the ones in the example below, or by soley relying on the Operations themselves.
+`redux-ops` also comes with an optional [middleware](docs/Middleware.md) that enables the usage of [Blueprints](docs/Blueprints.md) to reduce boilerplate by either using already defined action creators like the ones in the example below, or by soley relying on the Operations themselves.
 
 #### Setup
 
@@ -109,26 +109,26 @@ const store = createStore(
 ```
 
 ```js
-// We can either create/use existing actions (recommended), or let the blueprints handle it for us.
+// We can either create/use existing actions (recommended), or let the Blueprints handle it for us.
 const fetchMovies = () => ({ type: 'FETCH_MOVIES' });
 const didFetchMovies = movies => ({ type: 'FETCH_MOVIES_SUCCESS', payload: { movies } });
 ```
 
-The `blueprint` function simply wraps our action creators into actions that will go through the middleware.
+The [`createBlueprint`](docs/Blueprints.md#getting-started) function simply wraps our action creators into actions that will go through the middleware.
 
 Since we already have two designated action creators to initiate (`fetchMovies`) and complete (`didFetchMovies`) the Operation, we can leverage them, or let the auto-generated action creators handle non-defined cases such as the `error` one, which we didn't define (yet).
 
 ```js
-import { blueprint } from 'redux-ops';
+import { createBlueprint } from 'redux-ops';
 
-// Create a with blueprints enhanced fetcher object
-const movieFetcher = blueprint('FETCH_MOVIES', {
+// Create a with Blueprints enhanced fetcher object
+const movieFetcher = createBlueprint('FETCH_MOVIES', {
   start: fetchMovies,
   success: didFetchMovies,
 });
 ```
 
-When creating a new Blueprint, a type needs to be passed in. This can be either a `string` or `number` and is needed to enable action broadcasting and the unique Operations.
+When creating a new Blueprint, a type needs to be passed in. This can be either a `string` or `number` and is utilized for Operation [broadcasting](docs/Blueprints.md#operation-broadcasting) and [unique](docs/Blueprints.md#unique-operations) Operations.
 
 In order to kick-off the Operation, we need to dispatch the `movieFetcher.start()` action.
 
@@ -156,42 +156,12 @@ console.log(selectors.getOpById(store.getState(), movieFetcher.getUniqueId()));
 dispatch(movieFetcher.delete());
 ```
 
-#### Unique Operations
-
-Each Operation has its own id. Depending on the use case, it should be either unique, or can simply be re-used. An app initialization doesn't necessarily require a unique id, whereas multiple requests of the same topic/action might do.
-
-Based on the example before, we can achieve this by wrapping the first initiator action into the `opUnique` function, which modifies the returned actions to inject this unique id.
-
-##### Auto-generated Id
-
-```js
-const startingAction = movieFetcher.start();
-
-// Auto-generated id
-opUnique(startingAction);
-
-// Custom id
-opUnique(startingAction, '74168d');
-```
-
-In order to continue to work with this unique id, we either need to be able to access the generated action, or pass it in manually the next time we are planning to update it.
-
-```js
-// Auto-apply id from starting action
-dispatch(opUnique(movieFetcher.success(), startingAction));
-
-// Custom id
-dispatch(opUnique(movieFetcher.success(), '74168d'));
-
-// getUniqueId(action)
-dispatch(actions.update(getUniqueId(startingAction), OpStatus.success));
-```
-
 ## Documentation
 
 - [Actions](docs/Actions.md)
 - [Selectors](docs/Selectors.md)
 - [Utility](docs/Utility.md)
+- [Blueprints](docs/Blueprints.md)
 - [Middleware](docs/Middleware.md)
 
 ## License

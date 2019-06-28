@@ -8,24 +8,24 @@ Returns the entire state of the `redux-ops` state slice.
 
 ## `getOps(state)`
 
-Returns all stored operations as key/value pair.
+Returns all stored Operations as key/value pair.
 
 ## `getOpById(state, id)`
 
-Returns the operation that matches a given `id`.
-Returns `undefined` if no matching operation can be found.
+Returns the Operation that matches a given `id`.
+Returns `undefined` if no matching Operation can be found.
 
 Also available as [utility](Utility.md#getopbyidops-id) function.
 
 ## `getOpByIds(state, ids)`
 
-Returns operations that match a given array of `ids`. Returns an empty `object` if no matching operations can be found.
+Returns Operations that match a given array of `ids`. Returns an empty `object` if no matching Operations can be found.
 
 Also available as [utility](Utility.md#getopbyidsops-ids) function.
 
 ## `searchOps(state, query)`
 
-Returns operations that match a given `query` in `string`/`RegEx` format. Returns an empty `object` if no matching operations can be found.
+Returns Operations that match a given `query` in `string`/`RegEx` format. Returns an empty `object` if no matching Operations can be found.
 
 Also available as [utility](Utility.md#searchopsops-query) function.
 

@@ -46,7 +46,7 @@ describe('blueprint', () => {
         {
           start: ['Science-Fiction', 1],
           success: [movies],
-          error: [null, new Error('404').message],
+          error: [new Error('404').message],
         }
       );
     });
@@ -68,10 +68,14 @@ describe('blueprint', () => {
       const startAction = blueprint.start();
 
       const firstStartAction = blueprintModule.opUnique(startAction);
-      expect(firstStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"@@redux-ops/1"`);
+      expect(firstStartAction[prefix].uniqueId).toMatchInlineSnapshot(
+        `"@@redux-ops/FETCH_MOVIES_1"`
+      );
 
       const secondStartAction = blueprintModule.opUnique(startAction);
-      expect(secondStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"@@redux-ops/2"`);
+      expect(secondStartAction[prefix].uniqueId).toMatchInlineSnapshot(
+        `"@@redux-ops/FETCH_MOVIES_2"`
+      );
     });
 
     it('should re-assign unique id to existing blueprint action', () => {
@@ -79,10 +83,14 @@ describe('blueprint', () => {
       const startAction = blueprint.start();
 
       const firstStartAction = blueprintModule.opUnique(startAction);
-      expect(firstStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"@@redux-ops/1"`);
+      expect(firstStartAction[prefix].uniqueId).toMatchInlineSnapshot(
+        `"@@redux-ops/FETCH_MOVIES_1"`
+      );
 
       const secondStartAction = blueprintModule.opUnique(startAction, firstStartAction);
-      expect(secondStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"@@redux-ops/1"`);
+      expect(secondStartAction[prefix].uniqueId).toMatchInlineSnapshot(
+        `"@@redux-ops/FETCH_MOVIES_1"`
+      );
     });
 
     it('should assign custom unique id to blueprint action', () => {
@@ -112,20 +120,22 @@ describe('blueprint', () => {
 
       expect(getUniqueId(startAction)).toBeUndefined();
       expect(getUniqueId(blueprintModule.opUnique(startAction))).toMatchInlineSnapshot(
-        `"@@redux-ops/1"`
+        `"@@redux-ops/FETCH_MOVIES_1"`
       );
     });
 
     it('should create blueprint with actions using unique ids', () => {
       const module: typeof import('./index') = require('./index');
-      const blueprint = module.opsUnique(module.createBlueprint(FETCH_MOVIES));
-      const blueprintCustomId = module.opsUnique(module.createBlueprint(FETCH_MOVIES), '123');
+      const blueprint = module.opUnique(module.createBlueprint(FETCH_MOVIES));
+      const blueprintCustomId = module.opUnique(module.createBlueprint(FETCH_MOVIES), '123');
 
       for (const key in BlueprintActionKey) {
         const keyValue = BlueprintActionKey[key];
-        expect(blueprint[keyValue]()[prefix].uniqueId).toBe('@@redux-ops/1');
+        expect(blueprint[keyValue]()[prefix].uniqueId).toBe('@@redux-ops/FETCH_MOVIES_1');
         expect(blueprintCustomId[keyValue]()[prefix].uniqueId).toBe('123');
       }
+
+      jest.resetModules();
     });
 
     afterEach(() => {
@@ -134,7 +144,7 @@ describe('blueprint', () => {
   });
 
   describe('opBroadcast', () => {
-    it('should assign unique id(s) to blueprint action', () => {
+    it('should create broadcast blueprint action', () => {
       const blueprint = createBlueprint(FETCH_MOVIES);
       const startAction = blueprint.start();
 
@@ -144,12 +154,14 @@ describe('blueprint', () => {
 
     it('should create blueprint with broadcast actions', () => {
       const module: typeof import('./index') = require('./index');
-      const blueprint = module.opsBroadcast(module.createBlueprint(FETCH_MOVIES));
+      const blueprint = module.opBroadcast(module.createBlueprint(FETCH_MOVIES));
 
       for (const key in BlueprintActionKey) {
         const keyValue = BlueprintActionKey[key];
         expect(blueprint[keyValue]()[prefix].broadcast).toBe(true);
       }
+
+      jest.resetModules();
     });
   });
 });

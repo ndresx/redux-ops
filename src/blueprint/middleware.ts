@@ -1,7 +1,7 @@
 import { Middleware } from 'redux';
 
 import * as actionTypes from '../action_types';
-import { OpStatus } from '../typedefs';
+import { OpStatus, Operation } from '../typedefs';
 import { OpsData, OpBlueprintOriginalAction } from './typedefs';
 
 function createOpsMiddleware(): Middleware {
@@ -11,6 +11,7 @@ function createOpsMiddleware(): Middleware {
       let opAction = blueprintAction.op;
       const opActionPayload = opAction.payload;
       const opActionId = opActionPayload.id;
+      const originalAction = blueprintAction.action;
       let opStatus: OpStatus | undefined;
       let broadcastAction: OpBlueprintOriginalAction | undefined = undefined;
 
@@ -23,6 +24,14 @@ function createOpsMiddleware(): Middleware {
             type: `${opActionId}_${opStatus.toUpperCase()}`,
             payload: opActionPayload,
             [actionTypes.prefix]: undefined,
+          };
+
+          opAction = {
+            ...opAction,
+            payload: {
+              ...opAction.payload,
+              data: undefined,
+            } as Operation<any>,
           };
         }
       }
@@ -45,8 +54,6 @@ function createOpsMiddleware(): Middleware {
       }
 
       if (opStatus) {
-        const originalAction = blueprintAction.action;
-
         switch (opStatus) {
           case OpStatus.Started: {
             next(opAction);

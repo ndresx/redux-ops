@@ -1,23 +1,28 @@
 import { Reducer } from 'redux';
 
 import * as actionTypes from './action_types';
-import { OpReducerHandler, OpsState, OpId } from './typedefs';
+import {
+  OpReducerHandler,
+  OpsState,
+  OperationAction,
+  DeleteOperationAction,
+  ResetOperationsAction,
+} from './typedefs';
 
 export const defaultState: OpsState = {};
 
-const updateOperation: OpReducerHandler = (state, action) => {
+const updateOperation: OpReducerHandler<OperationAction> = (state, action) => {
   const { payload } = action;
   return { ...state, [payload.id]: { ...payload } };
 };
 
-const deleteOperation: OpReducerHandler = (state, { payload }) => {
+const deleteOperation: OpReducerHandler<DeleteOperationAction> = (state, action) => {
   const newState = { ...state };
-  const opIds = Array.isArray(payload.id) ? payload.id : [payload.id];
-  opIds.forEach((opId: OpId) => delete newState[opId]);
+  delete newState[action.payload.id];
   return newState;
 };
 
-const resetOperations: OpReducerHandler = () => ({ ...defaultState });
+const resetOperations: OpReducerHandler<ResetOperationsAction> = () => ({ ...defaultState });
 
 const handlers = {
   [actionTypes.START]: updateOperation,
@@ -26,7 +31,7 @@ const handlers = {
   [actionTypes.RESET]: resetOperations,
 };
 
-const reducer: Reducer = (state = defaultState, action) => {
+const reducer: Reducer = (state = defaultState, action: any) => {
   const handler = handlers[action.type];
   return handler ? handler(state, action) : state;
 };

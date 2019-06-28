@@ -65,6 +65,15 @@ describe('middleware', () => {
     expect(next).toBeCalledWith(action[prefix].op);
   });
 
+  it('should process broadcast blueprint delete action', () => {
+    const blueprint = createBlueprint(FETCH_MOVIES);
+    const action = blueprint.delete();
+
+    testMiddleware(action);
+    expect(next).toBeCalledTimes(1);
+    expect(next).toBeCalledWith(action[prefix].op);
+  });
+
   describe('unique id', () => {
     it('should overwrite original op action id with unique id', () => {
       const blueprint = createBlueprint(FETCH_MOVIES);
@@ -75,7 +84,7 @@ describe('middleware', () => {
 
       const nextActionId = next.mock.calls[0][0].payload.id;
       expect(nextActionId).not.toBe(action[prefix].op.payload.id);
-      expect(nextActionId).toMatchInlineSnapshot(`"@@redux-ops/1"`);
+      expect(nextActionId).toMatchInlineSnapshot(`"@@redux-ops/FETCH_MOVIES_1"`);
     });
 
     it('should attach unique id to custom action', () => {

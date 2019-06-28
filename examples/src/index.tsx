@@ -18,7 +18,7 @@ const dispatch = store.dispatch;
   await fetch('https://my-json-server.typicode.com/ndresx/redux-ops/movies')
     .then(response => response.json())
     .then(data => dispatch(movieFetcher.success(data)))
-    .catch(error => dispatch(movieFetcher.error(null, error.message)));
+    .catch(error => dispatch(movieFetcher.error(error.message)));
 
   dispatch(movieFetcher.delete());
 })();

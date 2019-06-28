@@ -22,7 +22,10 @@ export interface Ops<TData = any> {
 
 export interface OpsState extends Ops {}
 
-export type OpReducerHandler<S = OpsState, A = AnyAction> = (state: S, action: A) => S;
+export type OpReducerHandler<A extends AnyAction = AnyAction> = (
+  state: OpsState,
+  action: A
+) => OpsState;
 
 export type OperationActionHandler = (state: OpsState, action: OperationAction) => OpsState;
 
@@ -33,7 +36,7 @@ export interface OperationAction<TData = any> extends Action {
 
 export interface DeleteOperationAction extends AnyAction {
   readonly payload: {
-    readonly id: OpId | OpId[];
+    readonly id: OpId;
   };
 }
 
@@ -44,7 +47,7 @@ export interface OperationActionCreator {
 }
 
 export interface DeleteOperationActionCreator {
-  (id: OpId | OpId[]): DeleteOperationAction;
+  (id: OpId): DeleteOperationAction;
 }
 
 export interface ResetOperationsActionCreator {
