@@ -2,6 +2,12 @@
 
 exports[`index should export 1`] = `
 Object {
+  "BlueprintActionKey": Object {
+    "Delete": "delete",
+    "Error": "error",
+    "Start": "start",
+    "Success": "success",
+  },
   "OpStatus": Object {
     "Error": "error",
     "Intermediate": "intermediate",
@@ -22,12 +28,13 @@ Object {
     "startOperation": [Function],
     "updateOperation": [Function],
   },
-  "broadcastOp": [Function],
   "createBlueprint": [Function],
   "createBlueprintActionTypes": [Function],
   "default": [Function],
   "defaultState": Object {},
   "getUniqueId": [Function],
+  "opBroadcast": [Function],
+  "opUnique": [Function],
   "opsMiddleware": [Function],
   "selectors": Object {
     "getOpById": [Function],
@@ -37,7 +44,6 @@ Object {
     "searchOps": [Function],
     "setReducerName": [Function],
   },
-  "uniqueOp": [Function],
   "utils": Object {
     "createOperation": [Function],
     "getOpById": [Function],

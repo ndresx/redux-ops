@@ -1,7 +1,7 @@
 import {
   createBlueprint,
-  uniqueOp,
-  broadcastOp,
+  opUnique,
+  opBroadcast,
   getUniqueId,
   createBlueprintActionTypes,
 } from './index';
@@ -56,7 +56,7 @@ describe('blueprint', () => {
     });
   });
 
-  describe('uniqueOp', () => {
+  describe('opUnique', () => {
     let blueprintModule;
 
     beforeEach(() => {
@@ -67,10 +67,10 @@ describe('blueprint', () => {
       const blueprint = blueprintModule.createBlueprint(FETCH_MOVIES);
       const startAction = blueprint.start();
 
-      const firstStartAction = blueprintModule.uniqueOp(startAction);
+      const firstStartAction = blueprintModule.opUnique(startAction);
       expect(firstStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"@@redux-ops/_1"`);
 
-      const secondStartAction = blueprintModule.uniqueOp(startAction);
+      const secondStartAction = blueprintModule.opUnique(startAction);
       expect(secondStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"@@redux-ops/_2"`);
     });
 
@@ -78,10 +78,10 @@ describe('blueprint', () => {
       const blueprint = blueprintModule.createBlueprint(FETCH_MOVIES);
       const startAction = blueprint.start();
 
-      const firstStartAction = blueprintModule.uniqueOp(startAction);
+      const firstStartAction = blueprintModule.opUnique(startAction);
       expect(firstStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"@@redux-ops/_1"`);
 
-      const secondStartAction = blueprintModule.uniqueOp(startAction, firstStartAction);
+      const secondStartAction = blueprintModule.opUnique(startAction, firstStartAction);
       expect(secondStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"@@redux-ops/_1"`);
     });
 
@@ -89,10 +89,10 @@ describe('blueprint', () => {
       const blueprint = blueprintModule.createBlueprint(FETCH_MOVIES);
       const startAction = blueprint.start();
 
-      const firstStartAction = blueprintModule.uniqueOp(startAction, '123');
+      const firstStartAction = blueprintModule.opUnique(startAction, '123');
       expect(firstStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"123"`);
 
-      const secondStartAction = blueprintModule.uniqueOp(startAction, firstStartAction);
+      const secondStartAction = blueprintModule.opUnique(startAction, firstStartAction);
       expect(secondStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"123"`);
     });
 
@@ -103,7 +103,7 @@ describe('blueprint', () => {
       const startAction = blueprint.start();
 
       expect(startAction[prefix].action!.uniqueId).toBeUndefined();
-      expect(uniqueOp(startAction)[prefix].action!.uniqueId).toMatchInlineSnapshot(`undefined`);
+      expect(opUnique(startAction)[prefix].action!.uniqueId).toMatchInlineSnapshot(`undefined`);
     });
 
     it('should get unique id of blueprint action', () => {
@@ -111,7 +111,7 @@ describe('blueprint', () => {
       const startAction = blueprint.start();
 
       expect(getUniqueId(startAction)).toBeUndefined();
-      expect(getUniqueId(blueprintModule.uniqueOp(startAction))).toMatchInlineSnapshot(
+      expect(getUniqueId(blueprintModule.opUnique(startAction))).toMatchInlineSnapshot(
         `"@@redux-ops/_1"`
       );
     });
@@ -121,13 +121,13 @@ describe('blueprint', () => {
     });
   });
 
-  describe('broadcastOp', () => {
+  describe('opBroadcast', () => {
     it('should assign unique id(s) to blueprint action', () => {
       const blueprint = createBlueprint(FETCH_MOVIES);
       const startAction = blueprint.start();
 
       expect(startAction[prefix].broadcast).toBeUndefined();
-      expect(broadcastOp(startAction)[prefix].broadcast).toBe(true);
+      expect(opBroadcast(startAction)[prefix].broadcast).toBe(true);
     });
   });
 });

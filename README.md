@@ -160,7 +160,7 @@ dispatch(movieFetcher.delete());
 
 Each Operation has its own id. Depending on the use case, it should be either unique, or can simply be re-used. An app initialization doesn't necessarily require a unique id, whereas multiple requests of the same topic/action might do.
 
-Based on the example before, we can achieve this by wrapping the first initiator action into the `uniqueOp` function, which modifies the returned actions to inject this unique id.
+Based on the example before, we can achieve this by wrapping the first initiator action into the `opUnique` function, which modifies the returned actions to inject this unique id.
 
 ##### Auto-generated Id
 
@@ -168,20 +168,20 @@ Based on the example before, we can achieve this by wrapping the first initiator
 const startingAction = movieFetcher.start();
 
 // Auto-generated id
-uniqueOp(startingAction);
+opUnique(startingAction);
 
 // Custom id
-uniqueOp(startingAction, '74168d');
+opUnique(startingAction, '74168d');
 ```
 
 In order to continue to work with this unique id, we either need to be able to access the generated action, or pass it in manually the next time we are planning to update it.
 
 ```js
 // Auto-apply id from starting action
-dispatch(uniqueOp(movieFetcher.success(), startingAction));
+dispatch(opUnique(movieFetcher.success(), startingAction));
 
 // Custom id
-dispatch(uniqueOp(movieFetcher.success(), '74168d'));
+dispatch(opUnique(movieFetcher.success(), '74168d'));
 
 // getUniqueId(action)
 dispatch(actions.update(getUniqueId(startingAction), OpStatus.success));

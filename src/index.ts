@@ -4,7 +4,18 @@ import * as actions from './actions';
 import * as selectors from './selectors';
 import * as utils from './utils';
 export * from './blueprint';
-export * from './blueprint/typedefs';
+export {
+  BlueprintActionKey,
+  BlueprintActionTypes,
+  OpBlueprint,
+  OpBlueprintFn,
+  OpBlueprintAction,
+  OpsData,
+  OpsGenericActionData,
+  OpBlueprintOriginalAction,
+  BlueprintActionCreator,
+} from './blueprint/typedefs';
+
 import opsMiddleware from './blueprint/middleware';
 export * from './typedefs';
 

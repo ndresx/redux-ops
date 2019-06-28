@@ -73,15 +73,15 @@ export function createBlueprintActionTypes(opId: OpId): BlueprintActionTypes {
   );
 }
 
-export function uniqueOp(
+export function opUnique(
   action: OpBlueprintAction,
-  uniqueOpAction?: OpBlueprintAction | OpId
+  opUniqueAction?: OpBlueprintAction | OpId
 ): OpBlueprintAction {
   const opsData = action[actionTypes.prefix];
-  const uniqueId = uniqueOpAction
-    ? typeof uniqueOpAction === 'object'
-      ? getUniqueId(uniqueOpAction)
-      : uniqueOpAction
+  const uniqueId = opUniqueAction
+    ? typeof opUniqueAction === 'object'
+      ? getUniqueId(opUniqueAction)
+      : opUniqueAction
     : `${actionTypes.prefix}_${++uniqueCounter}`;
 
   if (opsData.action) {
@@ -93,7 +93,7 @@ export function uniqueOp(
   return action;
 }
 
-export function broadcastOp(action: OpBlueprintAction): OpBlueprintAction {
+export function opBroadcast(action: OpBlueprintAction): OpBlueprintAction {
   action[actionTypes.prefix].broadcast = true;
   return action;
 }
