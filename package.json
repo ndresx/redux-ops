@@ -1,7 +1,7 @@
 {
   "name": "redux-ops",
-  "version": "0.6.2",
-  "description": "A Redux reducer for persisting async and operational states.",
+  "version": "1.0.0",
+  "description": "A Redux reducer/middleware for managing async and operational states.",
   "main": "./dist/index.js",
   "module": "./dist/index.es.js",
   "types": "./dist/index.d.ts",
@@ -43,22 +43,22 @@
     "redux": "^4.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.2.0",
-    "@babel/preset-env": "^7.2.0",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
-    "@babel/preset-typescript": "^7.1.0",
-    "@types/jest": "^23.3.9",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/jest": "^24.0.15",
     "@types/redux": "^3.6.0",
-    "coveralls": "^3.0.2",
-    "jest": "^23.6.0",
-    "prettier": "^1.15.2",
-    "rollup": "^1.0.0",
-    "rollup-plugin-typescript2": "^0.18.1",
-    "ts-jest": "^23.10.4",
-    "tslint": "^5.11.0",
+    "coveralls": "^3.0.4",
+    "jest": "^24.8.0",
+    "prettier": "^1.18.2",
+    "rollup": "^1.16.3",
+    "rollup-plugin-typescript2": "^0.21.2",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.18.0",
     "tslint-config-airbnb": "^5.11.1",
-    "tslint-config-prettier": "^1.16.0",
-    "typescript": "^3.1.6"
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.5.2"
   },
   "peerDependencies": {
     "redux": "^2.0.0 || ^3.0.0 || ^4.0.0-0"

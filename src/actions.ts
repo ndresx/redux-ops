@@ -1,26 +1,26 @@
 import {
-  OperationActionCreatorFn,
-  DeleteOperationActionCreatorFn,
-  ClearOperationsActionCreatorFn,
+  OperationActionCreator,
+  DeleteOperationActionCreator,
+  ResetOperationsActionCreator,
 } from './typedefs';
-import { CREATE, UPDATE, DELETE, CLEAR } from './action_types';
-import { constructOperation } from './utils';
+import { START, UPDATE, DELETE, RESET } from './action_types';
+import { createOperation } from './utils';
 
-export const createOperation: OperationActionCreatorFn = (id, status?, data?) => ({
-  type: CREATE,
-  payload: constructOperation(id, status, data),
+export const startOperation: OperationActionCreator = (id, status?, data?) => ({
+  type: START,
+  payload: createOperation(id, status, data),
 });
 
-export const updateOperation: OperationActionCreatorFn = (id, status?, data?) => ({
+export const updateOperation: OperationActionCreator = (id, status, data?) => ({
   type: UPDATE,
-  payload: constructOperation(id, status, data),
+  payload: createOperation(id, status, data),
 });
 
-export const deleteOperation: DeleteOperationActionCreatorFn = id => ({
+export const deleteOperation: DeleteOperationActionCreator = id => ({
   type: DELETE,
   payload: { id },
 });
 
-export const clearOperations: ClearOperationsActionCreatorFn = () => ({
-  type: CLEAR,
+export const resetOperations: ResetOperationsActionCreator = () => ({
+  type: RESET,
 });

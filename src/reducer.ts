@@ -1,53 +1,37 @@
 import { Reducer } from 'redux';
 
 import * as actionTypes from './action_types';
-import { TReducerHandler, OpsState } from './typedefs';
+import {
+  OpsReducerHandler,
+  OpsState,
+  OperationAction,
+  DeleteOperationAction,
+  ResetOperationsAction,
+} from './typedefs';
 
 export const defaultState: OpsState = {};
 
-const createOperation: TReducerHandler = (state, action) => {
-  const {
-    payload: { id },
-  } = action;
-
-  if (state[id]) {
-    console.error(`Warning: Cannot create new operation "${id}" because it already exists.`);
-    return state;
-  }
-
-  return { ...state, [id]: { ...action.payload } };
+const updateOperation: OpsReducerHandler<OperationAction> = (state, action) => {
+  const { payload } = action;
+  return { ...state, [payload.id]: { ...payload } };
 };
 
-const updateOperation: TReducerHandler = (state, action) => {
-  const {
-    payload: { id },
-  } = action;
-
-  if (!state[id]) {
-    console.error(`Warning: Cannot update operation "${id}" because it doesn't exist.`);
-    return state;
-  }
-
-  return { ...state, [id]: { ...action.payload } };
-};
-
-const deleteOperation: TReducerHandler = (state, { payload }) => {
+const deleteOperation: OpsReducerHandler<DeleteOperationAction> = (state, action) => {
   const newState = { ...state };
-  const opIds = Array.isArray(payload.id) ? payload.id : [payload.id];
-  opIds.forEach(opId => delete newState[opId]);
+  delete newState[action.payload.id];
   return newState;
 };
 
-const clearOperations: TReducerHandler = () => ({ ...defaultState });
+const resetOperations: OpsReducerHandler<ResetOperationsAction> = () => ({ ...defaultState });
 
 const handlers = {
-  [actionTypes.CREATE]: createOperation,
+  [actionTypes.START]: updateOperation,
   [actionTypes.UPDATE]: updateOperation,
   [actionTypes.DELETE]: deleteOperation,
-  [actionTypes.CLEAR]: clearOperations,
+  [actionTypes.RESET]: resetOperations,
 };
 
-const reducer: Reducer = (state = defaultState, action) => {
+const reducer: Reducer = (state = defaultState, action: any) => {
   const handler = handlers[action.type];
   return handler ? handler(state, action) : state;
 };

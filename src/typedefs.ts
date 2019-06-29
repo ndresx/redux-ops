@@ -1,59 +1,55 @@
 import { AnyAction, Action } from 'redux';
 
-export interface Ops<TStatus = OpStatus, TData = any> {
-  readonly [key: string]: Operation<TStatus, TData>;
-}
-
-export interface OpsState<TStatus = OpStatus, TData = any> extends Ops<TStatus, TData> {}
-
-export interface Operation<TStatus = OpStatus, TData = any> {
+export interface Operation<TData = any> {
   readonly id: OpId;
-  readonly status?: TStatus;
+  readonly status: OpStatus;
   readonly data?: TData;
 }
 
 export type OpId = number | string;
 
 export enum OpStatus {
-  Default = 'default',
-  Loading = 'loading',
+  Started = 'started',
   Intermediate = 'intermediate',
   Success = 'success',
   Error = 'error',
 }
 
-export type TReducerHandler<S = OpsState, A = AnyAction> = (state: S, action: A) => S;
+// State
+export interface Ops<TData = any> {
+  readonly [key: string]: Operation<TData>;
+}
 
-export type TActionCreator<P = undefined> = AnyAction & {
-  readonly payload?: P;
-};
+export interface OpsState extends Ops {}
+
+export type OpsReducerHandler<A extends AnyAction = AnyAction> = (
+  state: OpsState,
+  action: A
+) => OpsState;
 
 export type OperationActionHandler = (state: OpsState, action: OperationAction) => OpsState;
 
 // Actions
-export interface OperationAction<TStatus = OpStatus, TData = any> extends Action {
-  readonly payload: Operation<TStatus, TData>;
+export interface OperationAction<TData = any> extends Action {
+  readonly payload: Operation<TData>;
 }
 
 export interface DeleteOperationAction extends AnyAction {
   readonly payload: {
-    readonly id: OpId | OpId[];
+    readonly id: OpId;
   };
 }
 
-export interface ClearOperationsAction extends AnyAction {}
+export interface ResetOperationsAction extends AnyAction {}
 
-export interface OperationActionCreatorFn {
-  <TStatus = OpStatus, TData = any>(id: OpId, status?: TStatus, data?: TData): OperationAction<
-    TStatus,
-    TData
-  >;
+export interface OperationActionCreator {
+  <TData = any>(id: OpId, status?: OpStatus, data?: TData): OperationAction<TData>;
 }
 
-export interface DeleteOperationActionCreatorFn {
-  (id: OpId | OpId[]): DeleteOperationAction;
+export interface DeleteOperationActionCreator {
+  (id: OpId): DeleteOperationAction;
 }
 
-export interface ClearOperationsActionCreatorFn {
+export interface ResetOperationsActionCreator {
   (): AnyAction;
 }

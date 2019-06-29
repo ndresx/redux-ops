@@ -1,22 +1,22 @@
-import { constructOperation } from './utils';
+import { createOperation } from './utils';
 import { OpStatus } from './typedefs';
 
 describe('utils', () => {
   const id = '123';
 
   it('should build operation without data', () => {
-    expect(constructOperation(id, OpStatus.Default)).toEqual({
+    expect(createOperation(id, OpStatus.Started)).toEqual({
       id,
-      status: OpStatus.Default,
+      status: OpStatus.Started,
       data: undefined,
     });
   });
 
   it('should build operation with data', () => {
     const data = { abc: 123 };
-    expect(constructOperation(id, OpStatus.Default, data)).toEqual({
+    expect(createOperation(id, OpStatus.Started, data)).toEqual({
       id,
-      status: OpStatus.Default,
+      status: OpStatus.Started,
       data,
     });
   });

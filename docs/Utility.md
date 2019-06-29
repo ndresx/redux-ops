@@ -1,44 +1,23 @@
 # Utility
 
-## `Op` Class
+## `createOperation(id, [status, data])`
 
-The `Op` `class` essentially wraps the create, update and delete actions into a re-usable class without the necessity of having to pass the op id into each of the operational actions anymore and by making it easier to type used data on object instantation.
-
-```js
-// Instantiate new operation
-const op = new Op('myId');
-
-// Create operation; same as createOperation() action
-dispatch(op.create());
-
-// Update operation; same as updateOperation() action
-dispatch(op.update(OpStatus.Success, { name: 'Avatar' }));
-
-// Delete operation; same as deleteOperation() action
-dispatch(op.delete());
-
-// Get id
-const id = op.getId(); // myId
-```
-
-## `constructOperation(id, [status, data])`
-
-Can be used to generate an `op` object, consisting of `id`, `status` and a `data` property.
+Can be used to generate an `op` object, consisting of `id`, `status` and `data` property.
 
 ```ts
-constructOperation('myId', OpStatus.Default, { name: 'Endgame' });
-// { id: 'myId', status: 'default', data: { name: 'Endgame' }}
+createOperation('myId', OpStatus.Started, { name: 'Endgame' });
+// { id: 'myId', status: 'started', data: { name: 'Endgame' }}
 ```
 
 ## `getOpById(ops, id)`
 
-Returns the operation that matches a given `id` in the provided `ops` object.
-Returns `undefined` if no matching operation can be found.
+Returns the Operation that matches a given `id` in the provided `ops` object.
+Returns `undefined` if no matching Operation are found.
 
 ## `getOpByIds(ops, ids)`
 
-Returns operations that match a given array of `ids` in the provided `ops` object. Returns an empty `object` if no matching operations can be found.
+Returns Operations that match a given array of `ids` in the provided `ops` object. Returns an empty `object` if no matching Operations are found.
 
 ## `searchOps(ops, query)`
 
-Returns operations that match a given `query` in `string`/`RegEx` format in the provided `ops` object. Returns an empty `object` if no matching operations can be found.
+Returns Operations that match a given `query` in `string`/`RegEx` format in the provided `ops` object. Returns an empty `object` if no matching Operationsare found.
