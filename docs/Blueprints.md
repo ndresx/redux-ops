@@ -206,4 +206,4 @@ Signalizes that all actions within a given Blueprint (created through [`createBl
 
 ### `getUniqueId(originalAction|broadcastAction)`
 
-Returns the unique id of a with [`opsUnique`](#opsunique-blueprint-blueprintaction-) and [`createBlueprint`](#introduction) composed custom action creator or Broadcast-Action.
+Returns the unique id of a with [`opsUnique`](#opsuniqueblueprintblueprintaction) and [`createBlueprint`](#introduction) composed custom action creator or Broadcast-Action.
