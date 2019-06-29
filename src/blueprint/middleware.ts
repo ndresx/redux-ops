@@ -2,18 +2,18 @@ import { Middleware } from 'redux';
 
 import * as actionTypes from '../action_types';
 import { OpStatus, Operation } from '../typedefs';
-import { OpsData, OpBlueprintOriginalAction } from './typedefs';
+import { OpsBlueprintActionData, OpsBlueprintOriginalAction } from './typedefs';
 
 function createOpsMiddleware(): Middleware {
   return store => next => action => {
     if (action[actionTypes.prefix]) {
-      const blueprintAction: OpsData = action[actionTypes.prefix];
+      const blueprintAction: OpsBlueprintActionData = action[actionTypes.prefix];
       let opAction = blueprintAction.op;
       const opActionPayload = opAction.payload;
       const opActionId = opActionPayload.id;
       const originalAction = blueprintAction.action;
       let opStatus: OpStatus | undefined;
-      let broadcastAction: OpBlueprintOriginalAction | undefined = undefined;
+      let broadcastAction: OpsBlueprintOriginalAction | undefined = undefined;
 
       // Create a custom action based on the operation's status
       if ('status' in opActionPayload) {

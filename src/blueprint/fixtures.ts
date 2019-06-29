@@ -1,9 +1,9 @@
 import { AnyAction } from 'redux';
-import { OpBlueprint, OpBlueprintFn } from './typedefs';
+import { OpsBlueprint, OpsBlueprintFn } from './typedefs';
 
-export interface MovieFetcherOp extends OpBlueprint {
-  readonly start: OpBlueprintFn<typeof fetchMovies>;
-  readonly success: OpBlueprintFn<typeof didFetchMovies>;
+export interface MovieFetcherOp extends OpsBlueprint {
+  readonly start: OpsBlueprintFn<typeof fetchMovies>;
+  readonly success: OpsBlueprintFn<typeof didFetchMovies>;
 }
 
 export const movies = [

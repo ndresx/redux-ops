@@ -8,15 +8,15 @@ export * from './typedefs';
 // Blueprint & Middleware
 export * from './blueprint';
 export {
-  BlueprintActionKey,
-  BlueprintActionTypes,
-  BlueprintActionCreator,
-  OpBlueprint,
-  OpBlueprintFn,
-  OpBlueprintAction,
-  OpBlueprintOriginalAction,
-  OpsData,
-  OpsGenericActionData,
+  OpsBlueprint,
+  OpsBlueprintAction,
+  OpsBlueprintActionCreator,
+  OpsBlueprintActionData,
+  OpsBlueprintActionKey,
+  OpsBlueprintActionTypes,
+  OpsBlueprintFn,
+  OpsBlueprintGenericActionData,
+  OpsBlueprintOriginalAction,
 } from './blueprint/typedefs';
 import opsMiddleware from './blueprint/middleware';
 

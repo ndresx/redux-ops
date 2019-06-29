@@ -3,53 +3,55 @@ import { AnyAction } from 'redux';
 import * as actionTypes from '../action_types';
 import { OperationAction, DeleteOperationAction, OpId } from '../typedefs';
 
-export enum BlueprintActionKey {
+export enum OpsBlueprintActionKey {
   Start = 'start',
   Success = 'success',
   Error = 'error',
   Delete = 'delete',
 }
 
-export type BlueprintActionTypes = {
+export type OpsBlueprintActionTypes = {
   readonly STARTED: string;
   readonly INTERMEDIATE: string;
   readonly SUCCESS: string;
   readonly ERROR: string;
 };
 
-export interface OpBlueprintAction {
+export interface OpsBlueprintAction {
   readonly type: string;
-  [actionTypes.prefix]: OpsData;
+  [actionTypes.prefix]: OpsBlueprintActionData;
 }
 
-export interface OpsData extends OpsGenericActionData {
+export interface OpsBlueprintActionData extends OpsBlueprintGenericActionData {
   op: OperationAction | DeleteOperationAction;
-  action?: OpBlueprintOriginalAction | null;
+  action?: OpsBlueprintOriginalAction | null;
 }
 
-export interface OpsGenericActionData {
+export interface OpsBlueprintGenericActionData {
   uniqueId?: OpId;
   broadcast?: boolean;
 }
 
-export interface OpBlueprintOriginalAction extends AnyAction {
-  [actionTypes.prefix]?: OpsGenericActionData;
+export interface OpsBlueprintOriginalAction extends AnyAction {
+  [actionTypes.prefix]?: OpsBlueprintGenericActionData;
 }
 
-export interface BlueprintActionCreator {
-  (data?: any, action?: OpBlueprintOriginalAction | null): OpBlueprintAction;
+export interface OpsBlueprintActionCreator {
+  (data?: any, action?: OpsBlueprintOriginalAction | null): OpsBlueprintAction;
 }
 
-type OpBlueprintActionCreator = (...args: any[]) => any;
+type OpsOpsBlueprintActionCreator = (...args: any[]) => any;
 
-export type BlueprintActionComposers = { [key in BlueprintActionKey]?: OpBlueprintActionCreator };
+export type BlueprintActionComposers = {
+  [key in OpsBlueprintActionKey]?: OpsOpsBlueprintActionCreator;
+};
 
-export type ComposedActionCreator = BlueprintActionCreator | OpBlueprintActionCreator;
+export type ComposedActionCreator = OpsBlueprintActionCreator | OpsOpsBlueprintActionCreator;
 
-export type OpBlueprint = { [key in BlueprintActionKey]: ComposedActionCreator } & {
+export type OpsBlueprint = { [key in OpsBlueprintActionKey]: ComposedActionCreator } & {
   readonly id: OpId;
 };
 
-export type OpBlueprintFn<T extends (...args: any) => any> = (
+export type OpsBlueprintFn<T extends (...args: any) => any> = (
   ...args: Parameters<T>
-) => OpBlueprintAction;
+) => OpsBlueprintAction;

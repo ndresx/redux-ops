@@ -2,16 +2,16 @@
 
 exports[`index should export 1`] = `
 Object {
-  "BlueprintActionKey": Object {
-    "Delete": "delete",
-    "Error": "error",
-    "Start": "start",
-    "Success": "success",
-  },
   "OpStatus": Object {
     "Error": "error",
     "Intermediate": "intermediate",
     "Started": "started",
+    "Success": "success",
+  },
+  "OpsBlueprintActionKey": Object {
+    "Delete": "delete",
+    "Error": "error",
+    "Start": "start",
     "Success": "success",
   },
   "actionTypes": Object {

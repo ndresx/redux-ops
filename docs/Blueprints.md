@@ -78,9 +78,9 @@ This has the advantage that we only have to dispatch a single action to manage o
 `redux-ops` supports TypeScript. `createBlueprint`, `opsUnique` and `opsBroadcast` support a generic type to type the mapped action creators accordingly to their original parameter signature.
 
 ```ts
-interface MovieFetcherOp extends OpBlueprint {
-  readonly start: OpBlueprintFn<typeof fetchMovies>;
-  readonly success: OpBlueprintFn<typeof didFetchMovies>;
+interface MovieFetcherOp extends OpsBlueprint {
+  readonly start: OpsBlueprintFn<typeof fetchMovies>;
+  readonly success: OpsBlueprintFn<typeof didFetchMovies>;
 }
 
 const movieFetcher = createBlueprint<MovieFetcherOp>('FETCH_MOVIES', {
@@ -102,7 +102,7 @@ const movieFetcherUnique = opsUnique(movieFetcher);
 
 When using `opsUnique`, every Operation within the Blueprint object gets a unique id. Instead of `FETCH_MOVIES`, the into `createBlueprint` previously passed id/action type would become something like `@@redux-ops/FETCH_MOVIES_1`.
 
-Both functions also allow you to pass in a custom id or re-using another Blueprint action's unique id as the second argument as you can see in the following example.
+Both functions also allow you to pass in a custom id or another Blueprint-Action's unique id as the second argument as you can see in the following examples.
 
 ```js
 // Auto-generated id
@@ -182,6 +182,19 @@ Through the [middleware](Middleware.md) effectively dispatched actions:
 Creates a new Blueprint with the given `id`/action type. The optional mapping can be used to compose new/existing action creators with the built-in Operations (`start`, `success`, `error` and `delete`).
 
 Please check the [introduction](#introduction) for more information and examples.
+
+### `createBlueprintActionTypes(id)`
+
+Creates the following four action types based on the given `id`/action type, e.g. `FETCH_MOVIES`. These can be used to create new actions and is helpful when [broadcasting](#operation-broadcasting) Operations.
+
+```js
+{
+  STARTED: 'FETCH_MOVIES_STARTED',
+  INTERMEDIATE: 'FETCH_MOVIES_INTERMEDIATE',
+  SUCCESS: 'FETCH_MOVIES_SUCCESS',
+  ERROR: 'FETCH_MOVIES_ERROR',
+}
+```
 
 ### `opsUnique(blueprint|blueprintAction)`
 

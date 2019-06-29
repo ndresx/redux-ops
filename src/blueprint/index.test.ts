@@ -5,20 +5,20 @@ import {
   getUniqueId,
   createBlueprintActionTypes,
 } from './index';
-import { OpBlueprint, BlueprintActionKey } from './typedefs';
+import { OpsBlueprint, OpsBlueprintActionKey } from './typedefs';
 import { fetchMovies, FETCH_MOVIES, movies, didFetchMovies } from './fixtures';
 import { prefix } from '../action_types';
 
 describe('blueprint', () => {
   function testActions(
-    blueprint: OpBlueprint,
-    blueprintArguments: { [key in BlueprintActionKey]?: unknown[] } = {}
+    blueprint: OpsBlueprint,
+    blueprintArguments: { [key in OpsBlueprintActionKey]?: unknown[] } = {}
   ): void {
     expect(blueprint).toMatchSnapshot();
 
-    for (const key in BlueprintActionKey) {
+    for (const key in OpsBlueprintActionKey) {
       it(key, () => {
-        const keyValue = BlueprintActionKey[key];
+        const keyValue = OpsBlueprintActionKey[key];
         expect(blueprint[keyValue](...(blueprintArguments[keyValue] || []))).toMatchSnapshot();
       });
     }
@@ -129,8 +129,8 @@ describe('blueprint', () => {
       const blueprint = module.opsUnique(module.createBlueprint(FETCH_MOVIES));
       const blueprintCustomId = module.opsUnique(module.createBlueprint(FETCH_MOVIES), '123');
 
-      for (const key in BlueprintActionKey) {
-        const keyValue = BlueprintActionKey[key];
+      for (const key in OpsBlueprintActionKey) {
+        const keyValue = OpsBlueprintActionKey[key];
         expect(blueprint[keyValue]()[prefix].uniqueId).toBe('@@redux-ops/FETCH_MOVIES_1');
         expect(blueprintCustomId[keyValue]()[prefix].uniqueId).toBe('123');
       }
@@ -156,8 +156,8 @@ describe('blueprint', () => {
       const module: typeof import('./index') = require('./index');
       const blueprint = module.opsBroadcast(module.createBlueprint(FETCH_MOVIES));
 
-      for (const key in BlueprintActionKey) {
-        const keyValue = BlueprintActionKey[key];
+      for (const key in OpsBlueprintActionKey) {
+        const keyValue = OpsBlueprintActionKey[key];
         expect(blueprint[keyValue]()[prefix].broadcast).toBe(true);
       }
 
