@@ -43,7 +43,7 @@ Blueprints utilize existing `redux-ops` functionality so that their resulting ac
 
 ```js
 // Get the Operation state by using one of the provided selectors
-console.log(selectors.getOpById(store.getState(), movieFetcher.getUniqueId()));
+console.log(selectors.getOpById(store.getState(), 'FETCH_MOVIES'));
 
 // Delete the Operation if needed
 dispatch(movieFetcher.delete());
@@ -203,3 +203,7 @@ Injects a [unique identifier](#unique-operations) into all actions within a give
 ### `opsBroadcast(blueprint|blueprintAction)`
 
 Signalizes that all actions within a given Blueprint (created through [`createBlueprint`](#introduction)) or a single Blueprint-Action should be [broadcasted](#operation-broadcasting) by the middleware.
+
+### `getUniqueId(originalAction|broadcastAction)`
+
+Returns the unique id of a with [`opsUnique`](#opsunique-blueprint-blueprintaction-) and [`createBlueprint`](#introduction) composed custom action creator or Broadcast-Action.

@@ -152,7 +152,7 @@ fetch('https://example.com/movies.json')
 
 ```js
 // Get the Operation state by using one of the provided selectors
-console.log(selectors.getOpById(store.getState(), movieFetcher.getUniqueId()));
+console.log(selectors.getOpById(store.getState(), 'FETCH_MOVIES'));
 ```
 
 ```js
