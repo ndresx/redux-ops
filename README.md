@@ -6,7 +6,7 @@ A Redux reducer/middleware for managing asynchronous and operational states.
 - [Motivation](#motivation)
 - [Example](#example)
   - [Introduction: **Operations**](#introduction-operations)
-  - [**Blueprints & Middleware**](#blueprints-middleware)
+  - [**Blueprints & Middleware**](#blueprints--middleware)
 - [Documentation](#documentation)
 - [License](#license)
 
@@ -45,7 +45,7 @@ An Operation represents any async or operational task in the form of the followi
 {
   id: '74168d',
   status: 'success',
-  data: [{ "id": 1, "name": "Jurassic World" }]
+  data: [{ "id": 1, "name": "Jurassic World" }],
 }
 ```
 

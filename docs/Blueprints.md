@@ -198,8 +198,8 @@ Creates the following four action types based on the given `id`/action type, e.g
 
 ### `opsUnique(blueprint|blueprintAction)`
 
-Injects a [unique identifier](#unique-operations) into all actions within a given Blueprint (created through [`createBlueprint`](#createBlueprint)) or a single Blueprint-Action.
+Injects a [unique identifier](#unique-operations) into all actions within a given Blueprint (created through [`createBlueprint`](#introduction)) or a single Blueprint-Action.
 
 ### `opsBroadcast(blueprint|blueprintAction)`
 
-Signalizes that all actions within a given Blueprint (created through [`createBlueprint`](#createBlueprint)) or a single Blueprint-Action should be [broadcasted](#operation-broadcasting) by the middleware.
+Signalizes that all actions within a given Blueprint (created through [`createBlueprint`](#introduction)) or a single Blueprint-Action should be [broadcasted](#operation-broadcasting) by the middleware.
