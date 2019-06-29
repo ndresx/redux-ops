@@ -20,9 +20,11 @@
   "homepage": "https://github.com/ndresx/redux-ops",
   "keywords": [
     "async",
+    "asynchronous",
     "request",
     "operation",
-    "redux"
+    "redux",
+    "state"
   ],
   "scripts": {
     "build": "yarn build:clean && yarn rollup --config",
