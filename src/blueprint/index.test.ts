@@ -1,7 +1,7 @@
 import {
   createBlueprint,
-  opUnique,
-  opBroadcast,
+  opsUnique,
+  opsBroadcast,
   getUniqueId,
   createBlueprintActionTypes,
 } from './index';
@@ -31,7 +31,7 @@ describe('blueprint', () => {
 
     describe('should create blueprint with default actions and custom payloads', () => {
       testActions(createBlueprint(FETCH_MOVIES), {
-        start: ['Science-Fiction', 1],
+        start: [fetchMovies('Science-Fiction', 1).payload],
         success: [movies],
         error: [new Error('404').message],
       });
@@ -56,7 +56,7 @@ describe('blueprint', () => {
     });
   });
 
-  describe('opUnique', () => {
+  describe('opsUnique', () => {
     let blueprintModule;
 
     beforeEach(() => {
@@ -67,12 +67,12 @@ describe('blueprint', () => {
       const blueprint = blueprintModule.createBlueprint(FETCH_MOVIES);
       const startAction = blueprint.start();
 
-      const firstStartAction = blueprintModule.opUnique(startAction);
+      const firstStartAction = blueprintModule.opsUnique(startAction);
       expect(firstStartAction[prefix].uniqueId).toMatchInlineSnapshot(
         `"@@redux-ops/FETCH_MOVIES_1"`
       );
 
-      const secondStartAction = blueprintModule.opUnique(startAction);
+      const secondStartAction = blueprintModule.opsUnique(startAction);
       expect(secondStartAction[prefix].uniqueId).toMatchInlineSnapshot(
         `"@@redux-ops/FETCH_MOVIES_2"`
       );
@@ -82,12 +82,12 @@ describe('blueprint', () => {
       const blueprint = blueprintModule.createBlueprint(FETCH_MOVIES);
       const startAction = blueprint.start();
 
-      const firstStartAction = blueprintModule.opUnique(startAction);
+      const firstStartAction = blueprintModule.opsUnique(startAction);
       expect(firstStartAction[prefix].uniqueId).toMatchInlineSnapshot(
         `"@@redux-ops/FETCH_MOVIES_1"`
       );
 
-      const secondStartAction = blueprintModule.opUnique(startAction, firstStartAction);
+      const secondStartAction = blueprintModule.opsUnique(startAction, firstStartAction);
       expect(secondStartAction[prefix].uniqueId).toMatchInlineSnapshot(
         `"@@redux-ops/FETCH_MOVIES_1"`
       );
@@ -97,10 +97,10 @@ describe('blueprint', () => {
       const blueprint = blueprintModule.createBlueprint(FETCH_MOVIES);
       const startAction = blueprint.start();
 
-      const firstStartAction = blueprintModule.opUnique(startAction, '123');
+      const firstStartAction = blueprintModule.opsUnique(startAction, '123');
       expect(firstStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"123"`);
 
-      const secondStartAction = blueprintModule.opUnique(startAction, firstStartAction);
+      const secondStartAction = blueprintModule.opsUnique(startAction, firstStartAction);
       expect(secondStartAction[prefix].uniqueId).toMatchInlineSnapshot(`"123"`);
     });
 
@@ -111,7 +111,7 @@ describe('blueprint', () => {
       const startAction = blueprint.start();
 
       expect(startAction[prefix].action!.uniqueId).toBeUndefined();
-      expect(opUnique(startAction)[prefix].action!.uniqueId).toMatchInlineSnapshot(`undefined`);
+      expect(opsUnique(startAction)[prefix].action!.uniqueId).toMatchInlineSnapshot(`undefined`);
     });
 
     it('should get unique id of blueprint action', () => {
@@ -119,15 +119,15 @@ describe('blueprint', () => {
       const startAction = blueprint.start();
 
       expect(getUniqueId(startAction)).toBeUndefined();
-      expect(getUniqueId(blueprintModule.opUnique(startAction))).toMatchInlineSnapshot(
+      expect(getUniqueId(blueprintModule.opsUnique(startAction))).toMatchInlineSnapshot(
         `"@@redux-ops/FETCH_MOVIES_1"`
       );
     });
 
     it('should create blueprint with actions using unique ids', () => {
       const module: typeof import('./index') = require('./index');
-      const blueprint = module.opUnique(module.createBlueprint(FETCH_MOVIES));
-      const blueprintCustomId = module.opUnique(module.createBlueprint(FETCH_MOVIES), '123');
+      const blueprint = module.opsUnique(module.createBlueprint(FETCH_MOVIES));
+      const blueprintCustomId = module.opsUnique(module.createBlueprint(FETCH_MOVIES), '123');
 
       for (const key in BlueprintActionKey) {
         const keyValue = BlueprintActionKey[key];
@@ -143,18 +143,18 @@ describe('blueprint', () => {
     });
   });
 
-  describe('opBroadcast', () => {
+  describe('opsBroadcast', () => {
     it('should create broadcast blueprint action', () => {
       const blueprint = createBlueprint(FETCH_MOVIES);
       const startAction = blueprint.start();
 
       expect(startAction[prefix].broadcast).toBeUndefined();
-      expect(opBroadcast(startAction)[prefix].broadcast).toBe(true);
+      expect(opsBroadcast(startAction)[prefix].broadcast).toBe(true);
     });
 
     it('should create blueprint with broadcast actions', () => {
       const module: typeof import('./index') = require('./index');
-      const blueprint = module.opBroadcast(module.createBlueprint(FETCH_MOVIES));
+      const blueprint = module.opsBroadcast(module.createBlueprint(FETCH_MOVIES));
 
       for (const key in BlueprintActionKey) {
         const keyValue = BlueprintActionKey[key];

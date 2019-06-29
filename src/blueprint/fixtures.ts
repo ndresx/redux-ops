@@ -7,8 +7,8 @@ export interface MovieFetcherOp extends OpBlueprint {
 }
 
 export const movies = [
-  { id: 1, name: 'The Dark Knight' },
-  { id: 2, name: 'Jurassic World' },
+  { id: 1, name: 'Jurassic World' },
+  { id: 2, name: 'The Dark Knight' },
   { id: 3, name: 'Avatar' },
 ];
 

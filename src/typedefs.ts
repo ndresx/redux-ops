@@ -22,7 +22,7 @@ export interface Ops<TData = any> {
 
 export interface OpsState extends Ops {}
 
-export type OpReducerHandler<A extends AnyAction = AnyAction> = (
+export type OpsReducerHandler<A extends AnyAction = AnyAction> = (
   state: OpsState,
   action: A
 ) => OpsState;

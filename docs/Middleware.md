@@ -6,12 +6,12 @@ The `opsMiddleware` enables the usage of `redux-ops` [Blueprints](Blueprints.md)
 
 ```js
 import { createStore, combineReducers, applyMiddleware } from 'redux';
-import opsReducer, { middleware } from 'redux-ops';
+import opsReducer, { opsMiddleware } from 'redux-ops';
 
 // Set up reducer and apply the middleware
 const store = createStore(
   combineReducers({ ops: opsReducer },
-  applyMiddleware(middleware)
+  applyMiddleware(opsMiddleware)
 );
 ```
 

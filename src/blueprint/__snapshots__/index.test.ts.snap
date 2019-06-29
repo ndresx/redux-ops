@@ -102,11 +102,11 @@ Object {
         "movies": Array [
           Object {
             "id": 1,
-            "name": "The Dark Knight",
+            "name": "Jurassic World",
           },
           Object {
             "id": 2,
-            "name": "Jurassic World",
+            "name": "The Dark Knight",
           },
           Object {
             "id": 3,
@@ -233,7 +233,10 @@ Object {
     "action": undefined,
     "op": Object {
       "payload": Object {
-        "data": "Science-Fiction",
+        "data": Object {
+          "genre": "Science-Fiction",
+          "page": 1,
+        },
         "id": "FETCH_MOVIES",
         "status": "started",
       },
@@ -253,11 +256,11 @@ Object {
         "data": Array [
           Object {
             "id": 1,
-            "name": "The Dark Knight",
+            "name": "Jurassic World",
           },
           Object {
             "id": 2,
-            "name": "Jurassic World",
+            "name": "The Dark Knight",
           },
           Object {
             "id": 3,

@@ -10,7 +10,7 @@ Updates an Operation with a new `status` and `data` as optional argument.
 
 ## `deleteOperation(id)`
 
-Deletes an Operation based on the given `id`s.
+Deletes an Operation based on the given `id`.
 
 ## `resetOperations()`
 

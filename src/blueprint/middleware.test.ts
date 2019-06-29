@@ -1,6 +1,6 @@
 import { combineReducers, createStore, AnyAction } from 'redux';
 
-import { createBlueprint, opUnique, opBroadcast, getUniqueId } from './index';
+import { createBlueprint, opsUnique, opsBroadcast, getUniqueId } from './index';
 import { fetchMovies, didFetchMovies, FETCH_MOVIES, movies, MovieFetcherOp } from './fixtures';
 import { prefix } from '../action_types';
 import reducer from '../reducer';
@@ -77,7 +77,7 @@ describe('middleware', () => {
   describe('unique id', () => {
     it('should overwrite original op action id with unique id', () => {
       const blueprint = createBlueprint(FETCH_MOVIES);
-      const action = opUnique(blueprint.start());
+      const action = opsUnique(blueprint.start());
 
       testMiddleware(action);
       expect(next).toBeCalledTimes(1);
@@ -91,7 +91,7 @@ describe('middleware', () => {
       const blueprint = createBlueprint<MovieFetcherOp>(FETCH_MOVIES, {
         start: fetchMovies,
       });
-      const action = opUnique(blueprint.start('Science-Fiction'));
+      const action = opsUnique(blueprint.start('Science-Fiction'));
 
       testMiddleware(action);
       expect(next).toBeCalledTimes(2);
@@ -104,7 +104,7 @@ describe('middleware', () => {
       const blueprint = createBlueprint<MovieFetcherOp>(FETCH_MOVIES, {
         start: fetchMovies,
       });
-      const action = opUnique(opBroadcast(blueprint.start('Science-Fiction')));
+      const action = opsUnique(opsBroadcast(blueprint.start('Science-Fiction')));
 
       testMiddleware(action);
       expect(next).toBeCalledTimes(3);
@@ -117,7 +117,7 @@ describe('middleware', () => {
   describe('broadcast', () => {
     it('should broadcast blueprint action by creating/deriving a new action from op state', () => {
       const blueprint = createBlueprint<MovieFetcherOp>(FETCH_MOVIES, { success: didFetchMovies });
-      const action = opBroadcast(blueprint.success(movies));
+      const action = opsBroadcast(blueprint.success(movies));
       const opAction = action[prefix].op;
 
       testMiddleware(action);
@@ -137,7 +137,7 @@ describe('middleware', () => {
 
     it('should not broadcast delete action', () => {
       const blueprint = createBlueprint(FETCH_MOVIES);
-      const action = opBroadcast(blueprint.delete());
+      const action = opsBroadcast(blueprint.delete());
 
       testMiddleware(action);
       expect(next).toBeCalledTimes(1);

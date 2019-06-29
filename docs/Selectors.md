@@ -13,19 +13,19 @@ Returns all stored Operations as key/value pair.
 ## `getOpById(state, id)`
 
 Returns the Operation that matches a given `id`.
-Returns `undefined` if no matching Operation can be found.
+Returns `undefined` if no matching Operation are found.
 
 Also available as [utility](Utility.md#getopbyidops-id) function.
 
 ## `getOpByIds(state, ids)`
 
-Returns Operations that match a given array of `ids`. Returns an empty `object` if no matching Operations can be found.
+Returns Operations that match a given array of `ids`. Returns an empty `object` if no matching Operations are found.
 
 Also available as [utility](Utility.md#getopbyidsops-ids) function.
 
 ## `searchOps(state, query)`
 
-Returns Operations that match a given `query` in `string`/`RegEx` format. Returns an empty `object` if no matching Operations can be found.
+Returns Operations that match a given `query` in `string`/`RegEx` format. Returns an empty `object` if no matching Operations are found.
 
 Also available as [utility](Utility.md#searchopsops-query) function.
 

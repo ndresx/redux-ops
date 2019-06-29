@@ -2,7 +2,7 @@ import { Reducer } from 'redux';
 
 import * as actionTypes from './action_types';
 import {
-  OpReducerHandler,
+  OpsReducerHandler,
   OpsState,
   OperationAction,
   DeleteOperationAction,
@@ -11,18 +11,18 @@ import {
 
 export const defaultState: OpsState = {};
 
-const updateOperation: OpReducerHandler<OperationAction> = (state, action) => {
+const updateOperation: OpsReducerHandler<OperationAction> = (state, action) => {
   const { payload } = action;
   return { ...state, [payload.id]: { ...payload } };
 };
 
-const deleteOperation: OpReducerHandler<DeleteOperationAction> = (state, action) => {
+const deleteOperation: OpsReducerHandler<DeleteOperationAction> = (state, action) => {
   const newState = { ...state };
   delete newState[action.payload.id];
   return newState;
 };
 
-const resetOperations: OpReducerHandler<ResetOperationsAction> = () => ({ ...defaultState });
+const resetOperations: OpsReducerHandler<ResetOperationsAction> = () => ({ ...defaultState });
 
 const handlers = {
   [actionTypes.START]: updateOperation,

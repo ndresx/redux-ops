@@ -37,16 +37,16 @@ export interface OpBlueprintOriginalAction extends AnyAction {
 }
 
 export interface BlueprintActionCreator {
-  (action?: OpBlueprintOriginalAction | null, data?: any): OpBlueprintAction;
+  (data?: any, action?: OpBlueprintOriginalAction | null): OpBlueprintAction;
 }
 
 type OpBlueprintActionCreator = (...args: any[]) => any;
 
 export type BlueprintActionComposers = { [key in BlueprintActionKey]?: OpBlueprintActionCreator };
 
-export type ComposedBlueprintAction = BlueprintActionCreator | OpBlueprintActionCreator;
+export type ComposedActionCreator = BlueprintActionCreator | OpBlueprintActionCreator;
 
-export type OpBlueprint = { [key in BlueprintActionKey]: ComposedBlueprintAction } & {
+export type OpBlueprint = { [key in BlueprintActionKey]: ComposedActionCreator } & {
   readonly id: OpId;
 };
 
