@@ -1,8 +1,8 @@
 # Actions
 
-## `startOperation(id, [status, data])`
+## `startOperation(id, [data])`
 
-Starts an Operation with `status` and `data` as optional arguments.
+Starts an Operation with an optional `data` argument.
 
 ## `updateOperation(id, status, [data])`
 

@@ -10,7 +10,6 @@ export type OpId = number | string;
 
 export enum OpStatus {
   Started = 'started',
-  Intermediate = 'intermediate',
   Success = 'success',
   Error = 'error',
 }

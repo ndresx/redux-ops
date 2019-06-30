@@ -5,10 +5,10 @@ import {
   OpsBlueprintOriginalAction,
   OpsBlueprintAction,
   OpsBlueprint,
-  BlueprintActionComposers,
+  OpsBlueprintActionComposers,
   OpsBlueprintActionCreator,
   OpsBlueprintActionTypes,
-  ComposedActionCreator,
+  OpsBlueprintComposedActionCreator,
   OpsBlueprintActionKey,
 } from './typedefs';
 import { OperationAction, DeleteOperationAction, OpId, OpStatus } from '../typedefs';
@@ -48,18 +48,17 @@ export function composeBlueprint<T extends OpsBlueprint>(
 function composeActions(
   blueprintActionCreator: OpsBlueprintActionCreator,
   actionCreator?: Function
-): ComposedActionCreator {
+): OpsBlueprintComposedActionCreator {
   return actionCreator
     ? compose(
         (action, data) => blueprintActionCreator(data, action),
         actionCreator
       )
-    : (data, action) => blueprintActionCreator(data, action);
+    : data => blueprintActionCreator(data);
 }
 
 function createStartAction(id: OpId): OpsBlueprintActionCreator {
-  return (data, action) =>
-    createBlueprintAction(actions.startOperation(id, OpStatus.Started, data), action);
+  return (data, action) => createBlueprintAction(actions.startOperation(id, data), action);
 }
 
 function createUpdateAction(id: OpId, opStatus: OpStatus): OpsBlueprintActionCreator {
@@ -68,12 +67,12 @@ function createUpdateAction(id: OpId, opStatus: OpStatus): OpsBlueprintActionCre
 }
 
 function createDeleteAction(id: OpId): OpsBlueprintActionCreator {
-  return action => createBlueprintAction(actions.deleteOperation(id), action);
+  return (data, action) => createBlueprintAction(actions.deleteOperation(id), action);
 }
 
 export function createBlueprint<T extends OpsBlueprint>(
   id: OpId,
-  composers: BlueprintActionComposers = {}
+  composers: OpsBlueprintActionComposers = {}
 ): T {
   return {
     id,
@@ -81,11 +80,12 @@ export function createBlueprint<T extends OpsBlueprint>(
     success: composeActions(createUpdateAction(id, OpStatus.Success), composers.success),
     error: composeActions(createUpdateAction(id, OpStatus.Error), composers.error),
     delete: composeActions(createDeleteAction(id), composers.delete),
+    ...createBlueprintActionTypes(id),
   } as T;
 }
 
-export function createBlueprintActionTypes(id: OpId): OpsBlueprintActionTypes {
-  return Object.keys(OpStatus).reduce(
+function createBlueprintActionTypes(id: OpId): OpsBlueprintActionTypes {
+  return Object.keys(OpsBlueprintActionKey).reduce(
     (acc, value) => {
       const key = value.toUpperCase();
       acc[key] = `${String(id)}_${key}`;

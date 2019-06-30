@@ -112,8 +112,8 @@ const store = createStore(
 
 ```js
 // We can either create/use existing actions (recommended), or let the Blueprints handle it for us.
-const fetchMovies = () => ({ type: 'FETCH_MOVIES' });
-const didFetchMovies = movies => ({ type: 'FETCH_MOVIES_SUCCESS', payload: { movies } });
+const fetchMovies = () => ({ type: movieFetcher.START });
+const didFetchMovies = movies => ({ type: movieFetcher.SUCCESS, payload: { movies } });
 ```
 
 The [`createBlueprint`](docs/Blueprints.md) function wraps our action creators into actions that will be processed by the middleware.
@@ -152,7 +152,7 @@ fetch('https://example.com/movies.json')
 
 ```js
 // Get the Operation state by using one of the provided selectors
-console.log(selectors.getOpById(store.getState(), 'FETCH_MOVIES'));
+console.log(selectors.getOpById(store.getState(), movieFetcher.id));
 ```
 
 ```js

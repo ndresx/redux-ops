@@ -2,13 +2,16 @@ import {
   OperationActionCreator,
   DeleteOperationActionCreator,
   ResetOperationsActionCreator,
+  OpStatus,
+  OpId,
+  OperationAction,
 } from './typedefs';
 import { START, UPDATE, DELETE, RESET } from './action_types';
 import { createOperation } from './utils';
 
-export const startOperation: OperationActionCreator = (id, status?, data?) => ({
+export const startOperation = <TData = any>(id: OpId, data?: TData): OperationAction<TData> => ({
   type: START,
-  payload: createOperation(id, status, data),
+  payload: createOperation(id, OpStatus.Started, data),
 });
 
 export const updateOperation: OperationActionCreator = (id, status, data?) => ({

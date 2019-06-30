@@ -10,22 +10,27 @@ function createOpsMiddleware(): Middleware {
       const blueprintAction: OpsBlueprintActionData = action[actionTypes.prefix];
       let opAction = blueprintAction.op;
       const opActionPayload = opAction.payload;
-      const opActionId = opActionPayload.id;
       const originalAction = blueprintAction.action;
-      let opStatus: OpStatus | undefined;
+      const opStatus = 'status' in opActionPayload ? opActionPayload.status : undefined;
       let broadcastAction: OpsBlueprintOriginalAction | undefined = undefined;
 
+      if (blueprintAction.broadcast) {
+        let broadcastActionType = opAction.type;
+
+        if (opStatus && broadcastActionType === actionTypes.UPDATE) {
+          broadcastActionType = opStatus.toUpperCase();
+        } else {
+          broadcastActionType = broadcastActionType.replace(actionTypes.prefix, '');
+        }
+
+        broadcastAction = {
+          type: `${opActionPayload.id}_${broadcastActionType}`,
+          payload: { ...opActionPayload },
+        };
+      }
       // Create a custom action based on the operation's status
-      if ('status' in opActionPayload) {
-        opStatus = opActionPayload.status;
-
+      if (opStatus) {
         if (blueprintAction.broadcast) {
-          broadcastAction = {
-            type: `${opActionId}_${opStatus.toUpperCase()}`,
-            payload: opActionPayload,
-            [actionTypes.prefix]: undefined,
-          };
-
           opAction = {
             ...opAction,
             payload: {
@@ -53,23 +58,19 @@ function createOpsMiddleware(): Middleware {
         }
       }
 
-      if (opStatus) {
-        switch (opStatus) {
-          case OpStatus.Started: {
-            next(opAction);
-            originalAction && next(originalAction);
-            broadcastAction && next(broadcastAction);
-            return;
-          }
-          default: {
-            originalAction && next(originalAction);
-            broadcastAction && next(broadcastAction);
-            return next(opAction);
-          }
+      switch (opStatus) {
+        case OpStatus.Started: {
+          next(opAction);
+          originalAction && next(originalAction);
+          broadcastAction && next(broadcastAction);
+          return;
+        }
+        default: {
+          originalAction && next(originalAction);
+          broadcastAction && next(broadcastAction);
+          return next(opAction);
         }
       }
-
-      return next(opAction);
     }
 
     return next(action);

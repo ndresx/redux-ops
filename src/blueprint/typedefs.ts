@@ -11,10 +11,10 @@ export enum OpsBlueprintActionKey {
 }
 
 export type OpsBlueprintActionTypes = {
-  readonly STARTED: string;
-  readonly INTERMEDIATE: string;
+  readonly START: string;
   readonly SUCCESS: string;
   readonly ERROR: string;
+  readonly DELETE: string;
 };
 
 export interface OpsBlueprintAction {
@@ -40,17 +40,28 @@ export interface OpsBlueprintActionCreator {
   (data?: any, action?: OpsBlueprintOriginalAction | null): OpsBlueprintAction;
 }
 
-type OpsOpsBlueprintActionCreator = (...args: any[]) => any;
+type OpsBlueprintAnyActionCreator = (data?: any) => any;
 
-export type BlueprintActionComposers = {
-  [key in OpsBlueprintActionKey]?: OpsOpsBlueprintActionCreator;
+export type OpsBlueprintActionComposers = {
+  [key in OpsBlueprintActionKey]?: OpsBlueprintAnyActionCreator;
 };
 
-export type ComposedActionCreator = OpsBlueprintActionCreator | OpsOpsBlueprintActionCreator;
+export type OpsBlueprintComposedActionCreator =
+  | OpsBlueprintActionCreator
+  | OpsBlueprintAnyActionCreator;
 
-export type OpsBlueprint = { [key in OpsBlueprintActionKey]: ComposedActionCreator } & {
+type OpsBlueprintActionCreators = {
+  [key in Exclude<OpsBlueprintActionKey, OpsBlueprintActionKey.Delete>]: (
+    data?: any
+  ) => OpsBlueprintAction;
+} & {
+  readonly delete: () => OpsBlueprintAction;
+};
+
+export type OpsBlueprint = {
   readonly id: OpId;
-};
+} & OpsBlueprintActionCreators &
+  OpsBlueprintActionTypes;
 
 export type OpsBlueprintFn<T extends (...args: any) => any> = (
   ...args: Parameters<T>

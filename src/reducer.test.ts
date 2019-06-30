@@ -26,6 +26,14 @@ describe('reducer', () => {
     });
   });
 
+  it('should create new operation with data', () => {
+    const data = { genre: 'Science-Fiction' };
+    expect(reducer(state, actions.startOperation(id, data))).toEqual({
+      ...defaultState,
+      [id]: createOperation(id, OpStatus.Started, data),
+    });
+  });
+
   it('should create multiple operations', () => {
     state = reducer(state, actions.startOperation('123'));
     state = reducer(state, actions.startOperation('456'));

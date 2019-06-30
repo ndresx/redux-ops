@@ -2,6 +2,10 @@
 
 exports[` 1`] = `
 Object {
+  "DELETE": "FETCH_MOVIES_DELETE",
+  "ERROR": "FETCH_MOVIES_ERROR",
+  "START": "FETCH_MOVIES_START",
+  "SUCCESS": "FETCH_MOVIES_SUCCESS",
   "delete": [Function],
   "error": [Function],
   "id": "FETCH_MOVIES",
@@ -12,6 +16,10 @@ Object {
 
 exports[` 2`] = `
 Object {
+  "DELETE": "FETCH_MOVIES_DELETE",
+  "ERROR": "FETCH_MOVIES_ERROR",
+  "START": "FETCH_MOVIES_START",
+  "SUCCESS": "FETCH_MOVIES_SUCCESS",
   "delete": [Function],
   "error": [Function],
   "id": "FETCH_MOVIES",
@@ -22,20 +30,15 @@ Object {
 
 exports[` 3`] = `
 Object {
+  "DELETE": "FETCH_MOVIES_DELETE",
+  "ERROR": "FETCH_MOVIES_ERROR",
+  "START": "FETCH_MOVIES_START",
+  "SUCCESS": "FETCH_MOVIES_SUCCESS",
   "delete": [Function],
   "error": [Function],
   "id": "FETCH_MOVIES",
   "start": [Function],
   "success": [Function],
-}
-`;
-
-exports[`blueprint createBlueprint should create blueprint action types 1`] = `
-Object {
-  "ERROR": "FETCH_MOVIES_ERROR",
-  "INTERMEDIATE": "FETCH_MOVIES_INTERMEDIATE",
-  "STARTED": "FETCH_MOVIES_STARTED",
-  "SUCCESS": "FETCH_MOVIES_SUCCESS",
 }
 `;
 

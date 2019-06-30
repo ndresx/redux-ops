@@ -4,7 +4,6 @@ exports[`index should export 1`] = `
 Object {
   "OpStatus": Object {
     "Error": "error",
-    "Intermediate": "intermediate",
     "Started": "started",
     "Success": "success",
   },
@@ -31,7 +30,6 @@ Object {
   "composeBlueprint": [Function],
   "createBlueprint": [Function],
   "createBlueprintAction": [Function],
-  "createBlueprintActionTypes": [Function],
   "default": [Function],
   "defaultState": Object {},
   "getUniqueId": [Function],

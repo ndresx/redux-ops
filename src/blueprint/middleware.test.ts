@@ -118,7 +118,6 @@ describe('middleware', () => {
     it('should broadcast blueprint action by creating/deriving a new action from op state', () => {
       const blueprint = createBlueprint<MovieFetcherOp>(FETCH_MOVIES, { success: didFetchMovies });
       const action = opsBroadcast(blueprint.success(movies));
-      const opAction = action[prefix].op;
 
       testMiddleware(action);
       expect(next).toBeCalledTimes(3);
@@ -126,8 +125,8 @@ describe('middleware', () => {
         [action[prefix].action],
         [
           {
-            type: `${FETCH_MOVIES}_SUCCESS`,
-            payload: opAction.payload,
+            type: blueprint.SUCCESS,
+            payload: action[prefix].op.payload,
             [prefix]: undefined,
           },
         ],
@@ -135,13 +134,21 @@ describe('middleware', () => {
       ]);
     });
 
-    it('should not broadcast delete action', () => {
+    it('should broadcast delete action', () => {
       const blueprint = createBlueprint(FETCH_MOVIES);
       const action = opsBroadcast(blueprint.delete());
 
       testMiddleware(action);
-      expect(next).toBeCalledTimes(1);
-      expect(next).toBeCalledWith(action[prefix].op);
+      expect(next).toBeCalledTimes(2);
+      expect(next.mock.calls).toEqual([
+        [
+          {
+            type: blueprint.DELETE,
+            payload: action[prefix].op.payload,
+          },
+        ],
+        [action[prefix].op],
+      ]);
     });
   });
 });

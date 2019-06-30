@@ -1,10 +1,9 @@
 # Blueprints
 
 - [Introduction](#introduction)
-- [Using Custom Action Creators](#using-custom-action-creators)
 - [Unique Operations](#unique-operations)
 - [Operation Broadcasting](#operation-broadcasting)
-- [API](#api)
+- [API Reference](#api-reference)
 
 ## Introduction
 
@@ -12,7 +11,7 @@ Blueprints consist of a set of actions that are mapped to `redux-ops`' primary o
 
 > The setup of the [`opsMiddleware`](Middleware.md) is required for Blueprints to work.
 
-A Blueprint is created by calling `createBlueprint()` with an id/action type that represents it from now on and an optional [action creator mapping](#using-custom-action-creators) for aforementioned actions.
+A Blueprint is created by calling `createBlueprint()` with an `id`/action type that represents it from now on and an optional [action creator mapping](#custom-action-creators) for aforementioned actions.
 
 ```js
 import { createBlueprint } from 'redux-ops';
@@ -21,7 +20,31 @@ import { createBlueprint } from 'redux-ops';
 const movieFetcher = createBlueprint('FETCH_MOVIES');
 ```
 
-To kick-off the Operation, we need to dispatch the `movieFetcher.start()` action.
+### Blueprint Object
+
+The Blueprint object consists of the `id`/action type, the four default action creators as well as their corresponding action types. In case of the previously created `movieFetcher` Blueprint, the returned object would look like the following one.
+
+```js
+{
+  id: 'FETCH_MOVIES',
+  // Action Creators
+  start: data => Blueprint-Action,
+  success: data => Blueprint-Action,
+  error: data => Blueprint-Action,
+  delete: () => Blueprint-Action,
+  // Action Types
+  START: 'FETCH_MOVIES_START',
+  SUCCESS: 'FETCH_MOVIES_SUCCESS',
+  ERROR: 'FETCH_MOVIES_ERROR',
+  DELETE: 'FETCH_MOVIES_DELETE',
+}
+```
+
+_Please note that the action creator signatures can change depending on the `createBlueprint` custom action creator mapping._
+
+### Usage Example
+
+To kick-off the through the Blueprint generated Operation _(actions)_, we need to dispatch `movieFetcher.start()`.
 
 ```js
 dispatch(movieFetcher.start());
@@ -43,7 +66,7 @@ Blueprints utilize existing `redux-ops` functionality so that their resulting ac
 
 ```js
 // Get the Operation state by using one of the provided selectors
-console.log(selectors.getOpById(store.getState(), 'FETCH_MOVIES'));
+console.log(selectors.getOpById(store.getState(), movieFetcher.id));
 
 // Delete the Operation if needed
 dispatch(movieFetcher.delete());
@@ -51,14 +74,14 @@ dispatch(movieFetcher.delete());
 
 [Live Demo](https://codesandbox.io/s/nervous-river-3bqer)
 
-## Using Custom Action Creators
+### Custom Action Creators
 
 Straight copied from the [main example](../README.md#example), these are some action creators our app might have already defined somewhere.
 
 ```js
 // We can either create/use existing actions (recommended), or let the Blueprints handle it for us.
-const fetchMovies = () => ({ type: 'FETCH_MOVIES' });
-const didFetchMovies = movies => ({ type: 'FETCH_MOVIES_SUCCESS', payload: { movies } });
+const fetchMovies = () => ({ type: movieFetcher.START });
+const didFetchMovies = movies => ({ type: movieFetcher.SUCCESS, payload: { movies } });
 ```
 
 Because we already have them to initiate (`fetchMovies`) and complete (`didFetchMovies`) the Operation, we can leverage them, or let the auto-generated action creators handle non-defined cases such as the `error` one, which we didn't define (yet).
@@ -73,9 +96,9 @@ const movieFetcher = createBlueprint('FETCH_MOVIES', {
 
 Applying this mapping composes the custom action creator with the `redux-ops` internal/aforementioned ones and dispatches the custom actions simultaneously to the built-in Operations.
 
-This has the advantage that we only have to dispatch a single action to manage our request state, but also to update any other app state via the custom action.
+This has the advantage that only a single action needs te dispatched to manage the request state, but also to update any other app state.
 
-`redux-ops` supports TypeScript. `createBlueprint`, `opsUnique` and `opsBroadcast` support a generic type to type the mapped action creators accordingly to their original parameter signature.
+`redux-ops` supports TypeScript. `createBlueprint`, `opsUnique` and `opsBroadcast` support a generic type to type the mapped action creators accordingly to their original parameter signatures.
 
 ```ts
 interface MovieFetcherOp extends OpsBlueprint {
@@ -175,26 +198,13 @@ Through the [middleware](Middleware.md) effectively dispatched actions:
 }
 ```
 
-## API
+## API Reference
 
 ### `createBlueprint(id, [mapping])`
 
 Creates a new Blueprint with the given `id`/action type. The optional mapping can be used to compose new/existing action creators with the built-in Operations (`start`, `success`, `error` and `delete`).
 
 Please check the [introduction](#introduction) for more information and examples.
-
-### `createBlueprintActionTypes(id)`
-
-Creates the following four action types based on the given `id`/action type, e.g. `FETCH_MOVIES`. These can be used to create new actions and is helpful when [broadcasting](#operation-broadcasting) Operations.
-
-```js
-{
-  STARTED: 'FETCH_MOVIES_STARTED',
-  INTERMEDIATE: 'FETCH_MOVIES_INTERMEDIATE',
-  SUCCESS: 'FETCH_MOVIES_SUCCESS',
-  ERROR: 'FETCH_MOVIES_ERROR',
-}
-```
 
 ### `opsUnique(blueprint|blueprintAction)`
 

@@ -1,10 +1,4 @@
-import {
-  createBlueprint,
-  opsUnique,
-  opsBroadcast,
-  getUniqueId,
-  createBlueprintActionTypes,
-} from './index';
+import { createBlueprint, opsUnique, opsBroadcast, getUniqueId } from './index';
 import { OpsBlueprint, OpsBlueprintActionKey } from './typedefs';
 import { fetchMovies, FETCH_MOVIES, movies, didFetchMovies } from './fixtures';
 import { prefix } from '../action_types';
@@ -49,10 +43,6 @@ describe('blueprint', () => {
           error: [new Error('404').message],
         }
       );
-    });
-
-    it('should create blueprint action types', () => {
-      expect(createBlueprintActionTypes(FETCH_MOVIES)).toMatchSnapshot();
     });
   });
 

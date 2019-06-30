@@ -1,24 +1,16 @@
 import { AnyAction } from 'redux';
-import {
-  createBlueprint,
-  createBlueprintActionTypes,
-  OpsBlueprint,
-  OpsBlueprintFn,
-} from 'redux-ops';
-
-const FETCH_MOVIES = 'FETCH_MOVIES';
-const { SUCCESS } = createBlueprintActionTypes(FETCH_MOVIES);
+import { createBlueprint, OpsBlueprint, OpsBlueprintFn } from 'redux-ops';
 
 function fetchMovies(genre: string, page?: number): AnyAction {
   return {
-    type: FETCH_MOVIES,
+    type: movieFetcher.START,
     payload: { genre, page },
   };
 }
 
 function didFetchMovies(movies: object): AnyAction {
   return {
-    type: SUCCESS,
+    type: movieFetcher.SUCCESS,
     payload: { movies },
   };
 }
@@ -28,7 +20,7 @@ interface MovieFetcherOp extends OpsBlueprint {
   readonly success: OpsBlueprintFn<typeof didFetchMovies>;
 }
 
-export const movieFetcher = createBlueprint<MovieFetcherOp>(FETCH_MOVIES, {
+export const movieFetcher = createBlueprint<MovieFetcherOp>('FETCH_MOVIES', {
   start: fetchMovies,
   success: didFetchMovies,
 });
