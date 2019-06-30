@@ -26,7 +26,7 @@ yarn add redux-ops
 
 Maintaining asynchronous and operational states is an integral part of almost every modern (web) app, but an often discussed topic when it comes to their implementation and the Redux state structure to store them accordingly.
 
-`redux-ops` is trying to take this concern away by providing a reducer, an optional middleware, actions, selectors and utilities to
+`redux-ops` is trying to take this concern away by providing a reducer, an optional middleware with action creator Blueprints, actions, selectors and utilities to
 
 - **maintain** aforementioned states in a more consistent way (e.g. requests, transaction-like processes),
 - **communicate** these async/operational state transitions,
@@ -39,7 +39,7 @@ Maintaining asynchronous and operational states is an integral part of almost ev
 
 At its core, `redux-ops` provides actions for the creation, update and deletion of Operations, with the option, to also use it as a data store if needed.
 
-An Operation represents any async or operational task in the form of the following object that gets updated and persisted within the `ops-reducer`.
+An Operation represents any async or operational task in the form of the following object that gets updated and persisted within the `opsReducer`.
 
 ```js
 {
