@@ -4,7 +4,7 @@ A Redux reducer/middleware for managing asynchronous and operational states.
 
 - [Getting Started](#getting-started)
 - [Motivation](#motivation)
-- [Example](#example)
+- [Examples](#examples)
   - [Introduction: Operations](#introduction-operations)
   - [Blueprints & Middleware](#blueprints--middleware)
 - [Documentation](#documentation)
