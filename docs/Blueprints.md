@@ -52,7 +52,7 @@ dispatch(movieFetcher.start());
 
 The middleware will process the Blueprint-Action, start a new Operation with the id `FETCH_MOVIES` (_which can be chosen arbitrarily and is not directly related to existing types_) and additionally dispatch the original `fetchMovies()` action.
 
-The request itself can then be sent in whatever way.
+The request itself can then be sent in whatever way you prefer.
 
 ```js
 // Fetch movies and update the previously started Operation
@@ -76,7 +76,7 @@ dispatch(movieFetcher.delete());
 
 ### Custom Action Creators
 
-Straight copied from the [main example](../README.md#example), these are some action creators our app might have already defined somewhere.
+Straight copied from the [main example](../README.md#examples), these are some action creators our app might have already defined somewhere.
 
 ```js
 // We can either create/use existing actions (recommended), or let the Blueprints handle it for us.
@@ -116,7 +116,7 @@ const movieFetcher = createBlueprint<MovieFetcherOp>('FETCH_MOVIES', {
 
 Each Operation has an identifier `id`. It can be unique, or reusable, e.g. an action type like `FETCH_MOVIES`, or a number like `123`. `redux-ops` doesn't enforce unique ids as not all processes require it, but it provides some functionality to turn Blueprints or its actions into unique Operations.
 
-Based on the [first example](../README.md#example), we can achieve this in different ways. We can define a unique id when creating a new Blueprint, or compose the entire Blueprint object or a Blueprint action with the `opsUnique` function, which injects the unique id.
+Based on the [first example](../README.md#examples), we can achieve this in different ways. We can define a unique id when creating a new Blueprint, or compose the entire Blueprint object or a Blueprint action with the `opsUnique` function, which injects the unique id.
 
 ```js
 // Inject a unique id for all Blueprint actions
@@ -150,7 +150,7 @@ dispatch(actions.update(getUniqueId(startingAction), OpStatus.success));
 
 ## Operation Broadcasting
 
-Operations can be broadcasted based on the given id/action type that has been used to create a Blueprint. Broadcasting is only useful if no custom actions have been passed into the Blueprint creator as it replicates the original Operation and combines it with the current Operation status and `data` payload.
+Operations can be broadcasted based on the given `id`/action type that has been used to create a Blueprint. Broadcasting is only useful if no custom actions have been passed into the Blueprint creator as it replicates the original Operation and combines it with the current Operation status and `data` payload.
 
 _Note: The `data` payload of the original Operation gets moved to the Broadcast-Action to avoid duplicate data in the state._
 

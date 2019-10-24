@@ -41,9 +41,6 @@
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch"
   },
-  "dependencies": {
-    "redux": "^4.0.1"
-  },
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
@@ -62,6 +59,6 @@
     "typescript": "^3.5.2"
   },
   "peerDependencies": {
-    "redux": "^2.0.0 || ^3.0.0 || ^4.0.0-0"
+    "redux": "^4"
   }
 }
