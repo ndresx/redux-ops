@@ -25,10 +25,7 @@ export function createBlueprintAction(
   };
 }
 
-export function composeBlueprint<T extends OpsBlueprint>(
-  blueprint: OpsBlueprint,
-  composer: Function
-): T {
+export function composeBlueprint<T extends OpsBlueprint>(blueprint: T, composer: Function): T {
   return {
     ...blueprint,
     ...Object.keys(OpsBlueprintActionKey).reduce(

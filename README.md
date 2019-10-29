@@ -4,9 +4,9 @@ A Redux reducer/middleware for managing asynchronous and operational states.
 
 - [Getting Started](#getting-started)
 - [Motivation](#motivation)
-- [Example](#example)
-  - [Introduction: **Operations**](#introduction-operations)
-  - [**Blueprints & Middleware**](#blueprints--middleware)
+- [Examples](#examples)
+  - [Introduction: Operations](#introduction-operations)
+  - [Blueprints & Middleware](#blueprints--middleware)
 - [Documentation](#documentation)
 - [License](#license)
 
@@ -33,11 +33,11 @@ Maintaining asynchronous and operational states is an integral part of almost ev
 - **prevent cluttering** of state slices with individual sub-states
 - and to have a **centralized place** to store them.
 
-## Example
+## Examples
 
 ### Introduction: Operations
 
-At its core, `redux-ops` provides actions for the creation, update and deletion of Operations, with the option, to also use it as a data store if needed.
+At its core, `redux-ops` consists of a reducer with a set of actions for the creation, update and deletion of Operations.
 
 An Operation represents any async or operational task in the form of the following object that gets updated and persisted within the `opsReducer`.
 
@@ -49,7 +49,7 @@ An Operation represents any async or operational task in the form of the followi
 }
 ```
 
-In the following example, We are going to fetch some movie data from a server and use these core actions to perform the state transitions.
+In the following example, we are going to fetch some movie data from a server and use these core actions to perform the state transitions.
 
 ```js
 import { createStore, combineReducers } from 'redux';
@@ -130,7 +130,7 @@ const movieFetcher = createBlueprint('FETCH_MOVIES', {
 });
 ```
 
-When creating a new Blueprint, an id/action type needs to be passed in. This identifier can be a `string` or `number` and is, amongst other use cases, also utilized for other concepts such as [Operation broadcasting](docs/Blueprints.md#operation-broadcasting) and [unique Operations](docs/Blueprints.md#unique-operations).
+When creating a new Blueprint, an `id`/action type needs to be passed in. This identifier can be a `string` or `number` and is, amongst other use cases, also utilized for other concepts such as [Operation broadcasting](docs/Blueprints.md#operation-broadcasting) and [unique Operations](docs/Blueprints.md#unique-operations).
 
 To kick-off the Operation, we need to dispatch the `movieFetcher.start()` action.
 
@@ -140,7 +140,7 @@ dispatch(movieFetcher.start());
 
 The middleware will process the Blueprint-Action, start a new Operation with the id `FETCH_MOVIES` (_which can be chosen arbitrarily and is not directly related to existing types_) and additionally dispatch the original `fetchMovies()` action.
 
-The request itself can then be sent in whatever way.
+The request itself can then be sent in whatever way you prefer.
 
 ```js
 // Fetch movies and update the previously started Operation
