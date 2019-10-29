@@ -15,13 +15,13 @@
     "not op_mini all"
   ],
   "dependencies": {
-    "@types/react": "^16.9.10",
-    "@types/react-dom": "16.9.2",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "16.9.3",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-scripts": "3.2.0",
     "redux": "^4.0.4",
-    "redux-ops": "^1.1.0",
+    "redux-ops": "^1.2.0",
     "typescript": "3.6.4"
   }
 }
