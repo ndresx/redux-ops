@@ -1,6 +1,6 @@
 {
   "name": "redux-ops",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A Redux reducer/middleware for managing async and operational states.",
   "main": "./dist/index.js",
   "module": "./dist/index.es.js",
