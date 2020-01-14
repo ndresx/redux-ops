@@ -32,9 +32,13 @@ export interface OpsBlueprintGenericActionData {
   broadcast?: boolean;
 }
 
-export interface OpsBlueprintOriginalAction extends AnyAction {
-  [actionTypes.prefix]?: OpsBlueprintGenericActionData;
-}
+export type OpsBlueprintActionDataEntry = { [actionTypes.prefix]?: OpsBlueprintGenericActionData };
+
+export interface OpsBlueprintBroadcastAction<TData = any>
+  extends OperationAction<TData>,
+    OpsBlueprintActionDataEntry {}
+
+export type OpsBlueprintOriginalAction<T extends {} = AnyAction> = T & OpsBlueprintActionDataEntry;
 
 export interface OpsBlueprintActionCreator {
   (data?: any, action?: OpsBlueprintOriginalAction | null): OpsBlueprintAction;

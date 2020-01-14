@@ -49,7 +49,7 @@ An Operation represents any async or operational task in the form of the followi
 }
 ```
 
-In the following example, we are going to fetch some movie data from a server and use these core actions to perform the state transitions.
+The following example is going to use fetch some movie data from a server and uses these core actions to perform the state transitions.
 
 ```js
 import { createStore, combineReducers } from 'redux';
@@ -111,7 +111,7 @@ const store = createStore(
 ```
 
 ```js
-// We can either create/use existing actions (recommended), or let the Blueprints handle it for us.
+// Create/use existing actions (recommended), or let the Blueprint create these actions internally
 const fetchMovies = () => ({ type: movieFetcher.START });
 const didFetchMovies = movies => ({ type: movieFetcher.SUCCESS, payload: { movies } });
 ```

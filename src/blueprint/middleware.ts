@@ -5,13 +5,12 @@ import { OpStatus, Operation } from '../typedefs';
 import { OpsBlueprintActionData, OpsBlueprintOriginalAction } from './typedefs';
 
 function createOpsMiddleware(): Middleware {
-  return store => next => action => {
+  return ({ dispatch }) => next => action => {
     if (action[actionTypes.prefix]) {
       const blueprintAction: OpsBlueprintActionData = action[actionTypes.prefix];
       let opAction = blueprintAction.op;
-      const opActionPayload = opAction.payload;
       const originalAction = blueprintAction.action;
-      const opStatus = 'status' in opActionPayload ? opActionPayload.status : undefined;
+      const opStatus = 'status' in opAction.payload ? opAction.payload.status : undefined;
       let broadcastAction: OpsBlueprintOriginalAction | undefined = undefined;
 
       if (blueprintAction.broadcast) {
@@ -24,8 +23,8 @@ function createOpsMiddleware(): Middleware {
         }
 
         broadcastAction = {
-          type: `${opActionPayload.id}_${broadcastActionType}`,
-          payload: { ...opActionPayload },
+          type: `${opAction.payload.id}_${broadcastActionType}`,
+          payload: { ...opAction.payload },
         };
       }
 
@@ -49,7 +48,7 @@ function createOpsMiddleware(): Middleware {
         opAction = {
           ...opAction,
           payload: {
-            ...opActionPayload,
+            ...opAction.payload,
             id: uniqueId,
           },
         };
@@ -61,15 +60,15 @@ function createOpsMiddleware(): Middleware {
 
       switch (opStatus) {
         case OpStatus.Started: {
-          next(opAction);
-          originalAction && next(originalAction);
-          broadcastAction && next(broadcastAction);
-          return;
+          dispatch(opAction);
+          originalAction && dispatch(originalAction);
+          broadcastAction && dispatch(broadcastAction);
+          break;
         }
         default: {
-          originalAction && next(originalAction);
-          broadcastAction && next(broadcastAction);
-          return next(opAction);
+          originalAction && dispatch(originalAction);
+          broadcastAction && dispatch(broadcastAction);
+          dispatch(opAction);
         }
       }
     }

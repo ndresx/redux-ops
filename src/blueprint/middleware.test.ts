@@ -21,12 +21,18 @@ describe('middleware', () => {
     middleware({ dispatch, getState: store.getState })(next)(action);
   }
 
-  it('should process random action', () => {
+  function expectNext(action: AnyAction) {
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith(action);
+  }
+
+  it('should pass through random action', () => {
     const action = { type: 'RANDOM' };
 
     testMiddleware(action);
-    expect(next).toBeCalledTimes(1);
-    expect(next).toBeCalledWith(action);
+    expect(dispatch).not.toHaveBeenCalled();
+
+    expectNext(action);
   });
 
   it('should process blueprint action', () => {
@@ -34,8 +40,10 @@ describe('middleware', () => {
     const action = blueprint.start();
 
     testMiddleware(action);
-    expect(next).toBeCalledTimes(1);
-    expect(next).toBeCalledWith(action[prefix].op);
+    expect(dispatch).toHaveBeenCalledTimes(1);
+    expect(dispatch.mock.calls).toEqual([[action[prefix].op]]);
+
+    expectNext(action);
   });
 
   it('should process blueprint start action with always preceding op action', () => {
@@ -43,8 +51,10 @@ describe('middleware', () => {
     const action = blueprint.start();
 
     testMiddleware(action);
-    expect(next).toBeCalledTimes(2);
-    expect(next.mock.calls).toEqual([[action[prefix].op], [action[prefix].action]]);
+    expect(dispatch).toHaveBeenCalledTimes(2);
+    expect(dispatch.mock.calls).toEqual([[action[prefix].op], [action[prefix].action]]);
+
+    expectNext(action);
   });
 
   it('should process blueprint custom action(s) with subsequent op action', () => {
@@ -52,8 +62,10 @@ describe('middleware', () => {
     const action = blueprint.success();
 
     testMiddleware(action);
-    expect(next).toBeCalledTimes(2);
-    expect(next.mock.calls).toEqual([[action[prefix].action], [action[prefix].op]]);
+    expect(dispatch).toHaveBeenCalledTimes(2);
+    expect(dispatch.mock.calls).toEqual([[action[prefix].action], [action[prefix].op]]);
+
+    expectNext(action);
   });
 
   it('should process blueprint delete action', () => {
@@ -61,17 +73,10 @@ describe('middleware', () => {
     const action = blueprint.delete();
 
     testMiddleware(action);
-    expect(next).toBeCalledTimes(1);
-    expect(next).toBeCalledWith(action[prefix].op);
-  });
+    expect(dispatch).toHaveBeenCalledTimes(1);
+    expect(dispatch).toHaveBeenCalledWith(action[prefix].op);
 
-  it('should process broadcast blueprint delete action', () => {
-    const blueprint = createBlueprint(FETCH_MOVIES);
-    const action = blueprint.delete();
-
-    testMiddleware(action);
-    expect(next).toBeCalledTimes(1);
-    expect(next).toBeCalledWith(action[prefix].op);
+    expectNext(action);
   });
 
   describe('unique id', () => {
@@ -80,11 +85,13 @@ describe('middleware', () => {
       const action = opsUnique(blueprint.start());
 
       testMiddleware(action);
-      expect(next).toBeCalledTimes(1);
+      expect(dispatch.mock.calls).toMatchSnapshot();
 
-      const nextActionId = next.mock.calls[0][0].payload.id;
-      expect(nextActionId).not.toBe(action[prefix].op.payload.id);
-      expect(nextActionId).toMatchInlineSnapshot(`"@@redux-ops/FETCH_MOVIES_1"`);
+      const dispatchActionId = dispatch.mock.calls[0][0].payload.id;
+      expect(dispatchActionId).not.toBe(action[prefix].op.payload.id);
+      expect(dispatchActionId).toMatchInlineSnapshot(`"@@redux-ops/FETCH_MOVIES_1"`);
+
+      expectNext(action);
     });
 
     it('should attach unique id to custom action', () => {
@@ -94,10 +101,12 @@ describe('middleware', () => {
       const action = opsUnique(blueprint.start('Science-Fiction'));
 
       testMiddleware(action);
-      expect(next).toBeCalledTimes(2);
+      expect(dispatch.mock.calls).toMatchSnapshot();
 
-      const customAction = next.mock.calls[1][0];
+      const customAction = dispatch.mock.calls[1][0];
       expect(customAction[prefix]).toEqual({ uniqueId: getUniqueId(action) });
+
+      expectNext(action);
     });
 
     it('should attach unique id to broadcast action', () => {
@@ -107,31 +116,44 @@ describe('middleware', () => {
       const action = opsUnique(opsBroadcast(blueprint.start('Science-Fiction')));
 
       testMiddleware(action);
-      expect(next).toBeCalledTimes(3);
+      expect(dispatch.mock.calls).toMatchSnapshot();
 
-      const broadcastAction = next.mock.calls[1][0];
+      const broadcastAction = dispatch.mock.calls[1][0];
       expect(broadcastAction[prefix]).toEqual({ uniqueId: getUniqueId(action) });
+
+      expectNext(action);
     });
   });
 
   describe('broadcast', () => {
-    it('should broadcast blueprint action by creating/deriving a new action from op state', () => {
+    it('should broadcast blueprint action by using the default action creator', () => {
+      const blueprint = createBlueprint<MovieFetcherOp>(FETCH_MOVIES);
+      const action = opsBroadcast(blueprint.success(movies));
+
+      testMiddleware(action);
+      expect(dispatch.mock.calls).toMatchSnapshot();
+
+      expectNext(action);
+    });
+
+    it('should broadcast blueprint action by using a custom action creator', () => {
       const blueprint = createBlueprint<MovieFetcherOp>(FETCH_MOVIES, { success: didFetchMovies });
       const action = opsBroadcast(blueprint.success(movies));
 
       testMiddleware(action);
-      expect(next).toBeCalledTimes(3);
-      expect(next.mock.calls).toEqual([
-        [action[prefix].action],
-        [
-          {
-            type: blueprint.SUCCESS,
-            payload: action[prefix].op.payload,
-            [prefix]: undefined,
-          },
-        ],
-        [action[prefix].op],
-      ]);
+      expect(dispatch.mock.calls).toMatchSnapshot();
+
+      expectNext(action);
+    });
+
+    it('should broadcast unique blueprint action by using a custom action creator', () => {
+      const blueprint = createBlueprint<MovieFetcherOp>(FETCH_MOVIES, { success: didFetchMovies });
+      const action = opsUnique(opsBroadcast(blueprint.success(movies)));
+
+      testMiddleware(action);
+      expect(dispatch.mock.calls).toMatchSnapshot();
+
+      expectNext(action);
     });
 
     it('should broadcast delete action', () => {
@@ -139,16 +161,9 @@ describe('middleware', () => {
       const action = opsBroadcast(blueprint.delete());
 
       testMiddleware(action);
-      expect(next).toBeCalledTimes(2);
-      expect(next.mock.calls).toEqual([
-        [
-          {
-            type: blueprint.DELETE,
-            payload: action[prefix].op.payload,
-          },
-        ],
-        [action[prefix].op],
-      ]);
+      expect(dispatch.mock.calls).toMatchSnapshot();
+
+      expectNext(action);
     });
   });
 });

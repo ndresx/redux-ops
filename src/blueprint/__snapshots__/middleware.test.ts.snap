@@ -1,0 +1,240 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`middleware broadcast should broadcast blueprint action by using a custom action creator 1`] = `
+Array [
+  Array [
+    Object {
+      "payload": Object {
+        "movies": Array [
+          Object {
+            "id": 1,
+            "name": "Jurassic World",
+          },
+          Object {
+            "id": 2,
+            "name": "The Dark Knight",
+          },
+          Object {
+            "id": 3,
+            "name": "Avatar",
+          },
+        ],
+      },
+      "type": "FETCH_MOVIES_SUCCESS_CUSTOM",
+    },
+  ],
+  Array [
+    Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "FETCH_MOVIES",
+        "status": "success",
+      },
+      "type": "FETCH_MOVIES_SUCCESS",
+    },
+  ],
+  Array [
+    Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "FETCH_MOVIES",
+        "status": "success",
+      },
+      "type": "@@redux-ops/UPDATE",
+    },
+  ],
+]
+`;
+
+exports[`middleware broadcast should broadcast blueprint action by using the default action creator 1`] = `
+Array [
+  Array [
+    Object {
+      "payload": Object {
+        "data": Array [
+          Object {
+            "id": 1,
+            "name": "Jurassic World",
+          },
+          Object {
+            "id": 2,
+            "name": "The Dark Knight",
+          },
+          Object {
+            "id": 3,
+            "name": "Avatar",
+          },
+        ],
+        "id": "FETCH_MOVIES",
+        "status": "success",
+      },
+      "type": "FETCH_MOVIES_SUCCESS",
+    },
+  ],
+  Array [
+    Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "FETCH_MOVIES",
+        "status": "success",
+      },
+      "type": "@@redux-ops/UPDATE",
+    },
+  ],
+]
+`;
+
+exports[`middleware broadcast should broadcast delete action 1`] = `
+Array [
+  Array [
+    Object {
+      "payload": Object {
+        "id": "FETCH_MOVIES",
+      },
+      "type": "FETCH_MOVIES_DELETE",
+    },
+  ],
+  Array [
+    Object {
+      "payload": Object {
+        "id": "FETCH_MOVIES",
+      },
+      "type": "@@redux-ops/DELETE",
+    },
+  ],
+]
+`;
+
+exports[`middleware broadcast should broadcast unique blueprint action by using a custom action creator 1`] = `
+Array [
+  Array [
+    Object {
+      "@@redux-ops/": Object {
+        "uniqueId": "@@redux-ops/FETCH_MOVIES_4",
+      },
+      "payload": Object {
+        "movies": Array [
+          Object {
+            "id": 1,
+            "name": "Jurassic World",
+          },
+          Object {
+            "id": 2,
+            "name": "The Dark Knight",
+          },
+          Object {
+            "id": 3,
+            "name": "Avatar",
+          },
+        ],
+      },
+      "type": "FETCH_MOVIES_SUCCESS_CUSTOM",
+    },
+  ],
+  Array [
+    Object {
+      "@@redux-ops/": Object {
+        "uniqueId": "@@redux-ops/FETCH_MOVIES_4",
+      },
+      "payload": Object {
+        "data": undefined,
+        "id": "FETCH_MOVIES",
+        "status": "success",
+      },
+      "type": "FETCH_MOVIES_SUCCESS",
+    },
+  ],
+  Array [
+    Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "@@redux-ops/FETCH_MOVIES_4",
+        "status": "success",
+      },
+      "type": "@@redux-ops/UPDATE",
+    },
+  ],
+]
+`;
+
+exports[`middleware unique id should attach unique id to broadcast action 1`] = `
+Array [
+  Array [
+    Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "@@redux-ops/FETCH_MOVIES_3",
+        "status": "started",
+      },
+      "type": "@@redux-ops/START",
+    },
+  ],
+  Array [
+    Object {
+      "@@redux-ops/": Object {
+        "uniqueId": "@@redux-ops/FETCH_MOVIES_3",
+      },
+      "payload": Object {
+        "genre": "Science-Fiction",
+        "page": undefined,
+      },
+      "type": "FETCH_MOVIES",
+    },
+  ],
+  Array [
+    Object {
+      "@@redux-ops/": Object {
+        "uniqueId": "@@redux-ops/FETCH_MOVIES_3",
+      },
+      "payload": Object {
+        "data": undefined,
+        "id": "FETCH_MOVIES",
+        "status": "started",
+      },
+      "type": "FETCH_MOVIES_START",
+    },
+  ],
+]
+`;
+
+exports[`middleware unique id should attach unique id to custom action 1`] = `
+Array [
+  Array [
+    Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "@@redux-ops/FETCH_MOVIES_2",
+        "status": "started",
+      },
+      "type": "@@redux-ops/START",
+    },
+  ],
+  Array [
+    Object {
+      "@@redux-ops/": Object {
+        "uniqueId": "@@redux-ops/FETCH_MOVIES_2",
+      },
+      "payload": Object {
+        "genre": "Science-Fiction",
+        "page": undefined,
+      },
+      "type": "FETCH_MOVIES",
+    },
+  ],
+]
+`;
+
+exports[`middleware unique id should overwrite original op action id with unique id 1`] = `
+Array [
+  Array [
+    Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "@@redux-ops/FETCH_MOVIES_1",
+        "status": "started",
+      },
+      "type": "@@redux-ops/START",
+    },
+  ],
+]
+`;
