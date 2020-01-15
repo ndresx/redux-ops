@@ -3,8 +3,9 @@
 exports[`index should export 1`] = `
 Object {
   "OpStatus": Object {
+    "Delete": "delete",
     "Error": "error",
-    "Started": "started",
+    "Start": "start",
     "Success": "success",
   },
   "OpsBlueprintActionKey": Object {

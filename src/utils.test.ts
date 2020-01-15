@@ -5,18 +5,18 @@ describe('utils', () => {
   const id = '123';
 
   it('should build operation without data', () => {
-    expect(createOperation(id, OpStatus.Started)).toEqual({
+    expect(createOperation(id, OpStatus.Start)).toEqual({
       id,
-      status: OpStatus.Started,
+      status: OpStatus.Start,
       data: undefined,
     });
   });
 
   it('should build operation with data', () => {
     const data = { abc: 123 };
-    expect(createOperation(id, OpStatus.Started, data)).toEqual({
+    expect(createOperation(id, OpStatus.Start, data)).toEqual({
       id,
-      status: OpStatus.Started,
+      status: OpStatus.Start,
       data,
     });
   });

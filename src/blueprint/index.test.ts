@@ -100,8 +100,10 @@ describe('blueprint', () => {
       });
       const startAction = blueprint.start();
 
-      expect(startAction[prefix].action!.uniqueId).toBeUndefined();
-      expect(opsUnique(startAction)[prefix].action!.uniqueId).toMatchInlineSnapshot(`undefined`);
+      expect(startAction[prefix].originalAction!.uniqueId).toBeUndefined();
+      expect(opsUnique(startAction)[prefix].originalAction!.uniqueId).toMatchInlineSnapshot(
+        `undefined`
+      );
     });
 
     it('should get unique id of blueprint action', () => {

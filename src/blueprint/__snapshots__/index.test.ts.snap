@@ -45,13 +45,15 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with custom actions Delete 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": undefined,
-    "op": Object {
+    "operationAction": Object {
       "payload": Object {
+        "data": undefined,
         "id": "FETCH_MOVIES",
+        "status": "delete",
       },
       "type": "@@redux-ops/DELETE",
     },
+    "originalAction": undefined,
   },
   "type": "@@redux-ops/BLUEPRINT",
 }
@@ -60,8 +62,7 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with custom actions Error 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": undefined,
-    "op": Object {
+    "operationAction": Object {
       "payload": Object {
         "data": "404",
         "id": "FETCH_MOVIES",
@@ -69,6 +70,7 @@ Object {
       },
       "type": "@@redux-ops/UPDATE",
     },
+    "originalAction": undefined,
   },
   "type": "@@redux-ops/BLUEPRINT",
 }
@@ -77,20 +79,20 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with custom actions Start 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": Object {
+    "operationAction": Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "FETCH_MOVIES",
+        "status": "start",
+      },
+      "type": "@@redux-ops/START",
+    },
+    "originalAction": Object {
       "payload": Object {
         "genre": "Science-Fiction",
         "page": 1,
       },
       "type": "FETCH_MOVIES",
-    },
-    "op": Object {
-      "payload": Object {
-        "data": undefined,
-        "id": "FETCH_MOVIES",
-        "status": "started",
-      },
-      "type": "@@redux-ops/START",
     },
   },
   "type": "@@redux-ops/BLUEPRINT",
@@ -100,7 +102,15 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with custom actions Success 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": Object {
+    "operationAction": Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "FETCH_MOVIES",
+        "status": "success",
+      },
+      "type": "@@redux-ops/UPDATE",
+    },
+    "originalAction": Object {
       "payload": Object {
         "movies": Array [
           Object {
@@ -119,14 +129,6 @@ Object {
       },
       "type": "FETCH_MOVIES_SUCCESS_CUSTOM",
     },
-    "op": Object {
-      "payload": Object {
-        "data": undefined,
-        "id": "FETCH_MOVIES",
-        "status": "success",
-      },
-      "type": "@@redux-ops/UPDATE",
-    },
   },
   "type": "@@redux-ops/BLUEPRINT",
 }
@@ -135,13 +137,15 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with default actions Delete 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": undefined,
-    "op": Object {
+    "operationAction": Object {
       "payload": Object {
+        "data": undefined,
         "id": "FETCH_MOVIES",
+        "status": "delete",
       },
       "type": "@@redux-ops/DELETE",
     },
+    "originalAction": undefined,
   },
   "type": "@@redux-ops/BLUEPRINT",
 }
@@ -150,8 +154,7 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with default actions Error 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": undefined,
-    "op": Object {
+    "operationAction": Object {
       "payload": Object {
         "data": undefined,
         "id": "FETCH_MOVIES",
@@ -159,6 +162,7 @@ Object {
       },
       "type": "@@redux-ops/UPDATE",
     },
+    "originalAction": undefined,
   },
   "type": "@@redux-ops/BLUEPRINT",
 }
@@ -167,15 +171,15 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with default actions Start 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": undefined,
-    "op": Object {
+    "operationAction": Object {
       "payload": Object {
         "data": undefined,
         "id": "FETCH_MOVIES",
-        "status": "started",
+        "status": "start",
       },
       "type": "@@redux-ops/START",
     },
+    "originalAction": undefined,
   },
   "type": "@@redux-ops/BLUEPRINT",
 }
@@ -184,8 +188,7 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with default actions Success 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": undefined,
-    "op": Object {
+    "operationAction": Object {
       "payload": Object {
         "data": undefined,
         "id": "FETCH_MOVIES",
@@ -193,6 +196,7 @@ Object {
       },
       "type": "@@redux-ops/UPDATE",
     },
+    "originalAction": undefined,
   },
   "type": "@@redux-ops/BLUEPRINT",
 }
@@ -201,13 +205,15 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with default actions and custom payloads Delete 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": undefined,
-    "op": Object {
+    "operationAction": Object {
       "payload": Object {
+        "data": undefined,
         "id": "FETCH_MOVIES",
+        "status": "delete",
       },
       "type": "@@redux-ops/DELETE",
     },
+    "originalAction": undefined,
   },
   "type": "@@redux-ops/BLUEPRINT",
 }
@@ -216,8 +222,7 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with default actions and custom payloads Error 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": undefined,
-    "op": Object {
+    "operationAction": Object {
       "payload": Object {
         "data": "404",
         "id": "FETCH_MOVIES",
@@ -225,6 +230,7 @@ Object {
       },
       "type": "@@redux-ops/UPDATE",
     },
+    "originalAction": undefined,
   },
   "type": "@@redux-ops/BLUEPRINT",
 }
@@ -233,18 +239,18 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with default actions and custom payloads Start 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": undefined,
-    "op": Object {
+    "operationAction": Object {
       "payload": Object {
         "data": Object {
           "genre": "Science-Fiction",
           "page": 1,
         },
         "id": "FETCH_MOVIES",
-        "status": "started",
+        "status": "start",
       },
       "type": "@@redux-ops/START",
     },
+    "originalAction": undefined,
   },
   "type": "@@redux-ops/BLUEPRINT",
 }
@@ -253,8 +259,7 @@ Object {
 exports[`blueprint createBlueprint should create blueprint with default actions and custom payloads Success 1`] = `
 Object {
   "@@redux-ops/": Object {
-    "action": undefined,
-    "op": Object {
+    "operationAction": Object {
       "payload": Object {
         "data": Array [
           Object {
@@ -275,6 +280,7 @@ Object {
       },
       "type": "@@redux-ops/UPDATE",
     },
+    "originalAction": undefined,
   },
   "type": "@@redux-ops/BLUEPRINT",
 }

@@ -10,18 +10,19 @@ import {
   OpsBlueprintActionTypes,
   OpsBlueprintComposedActionCreator,
   OpsBlueprintActionKey,
+  OpsBlueprintActionData,
 } from './typedefs';
-import { OperationAction, DeleteOperationAction, OpId, OpStatus } from '../typedefs';
+import { OperationAction, OpId, OpStatus } from '../typedefs';
 
 let uniqueCounter = 0;
 
 export function createBlueprintAction(
-  op: OperationAction | DeleteOperationAction,
-  action?: OpsBlueprintOriginalAction | null
+  operationAction: OperationAction,
+  originalAction?: OpsBlueprintOriginalAction | null
 ): OpsBlueprintAction {
   return {
     type: actionTypes.BLUEPRINT,
-    [actionTypes.prefix]: { op, action },
+    [actionTypes.prefix]: { operationAction, originalAction },
   };
 }
 
@@ -97,11 +98,11 @@ export function opsUnique<T extends OpsBlueprint | OpsBlueprintAction>(
   uniqueValue?: OpsBlueprintAction | OpId
 ): T {
   if (blueprint[actionTypes.prefix]) {
-    const opsData = blueprint[actionTypes.prefix];
-    const uniqueId = generateUniqueId(opsData.op.payload.id, uniqueValue);
+    const opsData: OpsBlueprintActionData = blueprint[actionTypes.prefix];
+    const uniqueId = generateUniqueId(opsData.operationAction.payload.id, uniqueValue);
 
-    if (opsData.action) {
-      opsData.action[actionTypes.prefix] = { uniqueId };
+    if (opsData.originalAction) {
+      opsData.originalAction[actionTypes.prefix] = { uniqueId };
     }
 
     blueprint[actionTypes.prefix].uniqueId = uniqueId;

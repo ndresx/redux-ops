@@ -30,7 +30,7 @@ describe('reducer', () => {
     const data = { genre: 'Science-Fiction' };
     expect(reducer(state, actions.startOperation(id, data))).toEqual({
       ...defaultState,
-      [id]: createOperation(id, OpStatus.Started, data),
+      [id]: createOperation(id, OpStatus.Start, data),
     });
   });
 
@@ -46,8 +46,8 @@ describe('reducer', () => {
 
   it('should update existing operation', () => {
     state = reducer(state, actions.startOperation(id));
-    state = reducer(state, actions.updateOperation(id, OpStatus.Started));
-    expect(state).toEqual({ ...defaultState, [id]: createOperation(id, OpStatus.Started) });
+    state = reducer(state, actions.updateOperation(id, OpStatus.Start));
+    expect(state).toEqual({ ...defaultState, [id]: createOperation(id, OpStatus.Start) });
 
     state = reducer(state, actions.updateOperation(id, OpStatus.Success));
     expect(state).toEqual({ ...defaultState, [id]: createOperation(id, OpStatus.Success) });

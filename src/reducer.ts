@@ -1,13 +1,7 @@
 import { Reducer } from 'redux';
 
 import * as actionTypes from './action_types';
-import {
-  OpsReducerHandler,
-  OpsState,
-  OperationAction,
-  DeleteOperationAction,
-  ResetOperationsAction,
-} from './typedefs';
+import { OpsReducerHandler, OpsState, OperationAction, ResetOperationsAction } from './typedefs';
 
 export const defaultState: OpsState = {};
 
@@ -16,7 +10,7 @@ const updateOperation: OpsReducerHandler<OperationAction> = (state, action) => {
   return { ...state, [payload.id]: { ...payload } };
 };
 
-const deleteOperation: OpsReducerHandler<DeleteOperationAction> = (state, action) => {
+const deleteOperation: OpsReducerHandler<OperationAction> = (state, action) => {
   const newState = { ...state };
   delete newState[action.payload.id];
   return newState;

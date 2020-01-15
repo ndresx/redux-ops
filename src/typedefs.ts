@@ -9,7 +9,8 @@ export interface Operation<TData = any> {
 export type OpId = number | string;
 
 export enum OpStatus {
-  Started = 'started',
+  Start = 'start',
+  Delete = 'delete',
   Success = 'success',
   Error = 'error',
 }
@@ -33,12 +34,6 @@ export interface OperationAction<TData = any> extends Action {
   readonly payload: Operation<TData>;
 }
 
-export interface DeleteOperationAction extends AnyAction {
-  readonly payload: {
-    readonly id: OpId;
-  };
-}
-
 export interface ResetOperationsAction extends AnyAction {}
 
 export interface OperationActionCreator {
@@ -46,7 +41,7 @@ export interface OperationActionCreator {
 }
 
 export interface DeleteOperationActionCreator {
-  (id: OpId): DeleteOperationAction;
+  (id: OpId): OperationAction;
 }
 
 export interface ResetOperationsActionCreator {

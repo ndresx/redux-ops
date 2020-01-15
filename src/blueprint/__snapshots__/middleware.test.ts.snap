@@ -1,5 +1,46 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`middleware broadcast should broadcast an updating blueprint action by using the default action creator 1`] = `
+Array [
+  Array [
+    Object {
+      "@@redux-ops/": Object {
+        "uniqueId": "@@redux-ops/FETCH_MOVIES_5",
+      },
+      "payload": Object {
+        "data": Array [
+          Object {
+            "id": 1,
+            "name": "Jurassic World",
+          },
+          Object {
+            "id": 2,
+            "name": "The Dark Knight",
+          },
+          Object {
+            "id": 3,
+            "name": "Avatar",
+          },
+        ],
+        "id": "FETCH_MOVIES",
+        "status": "success",
+      },
+      "type": "FETCH_MOVIES_SUCCESS",
+    },
+  ],
+  Array [
+    Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "@@redux-ops/FETCH_MOVIES_5",
+        "status": "success",
+      },
+      "type": "@@redux-ops/UPDATE",
+    },
+  ],
+]
+`;
+
 exports[`middleware broadcast should broadcast blueprint action by using a custom action creator 1`] = `
 Array [
   Array [
@@ -30,16 +71,6 @@ Array [
         "id": "FETCH_MOVIES",
         "status": "success",
       },
-      "type": "FETCH_MOVIES_SUCCESS",
-    },
-  ],
-  Array [
-    Object {
-      "payload": Object {
-        "data": undefined,
-        "id": "FETCH_MOVIES",
-        "status": "success",
-      },
       "type": "@@redux-ops/UPDATE",
     },
   ],
@@ -51,24 +82,11 @@ Array [
   Array [
     Object {
       "payload": Object {
-        "data": Array [
-          Object {
-            "id": 1,
-            "name": "Jurassic World",
-          },
-          Object {
-            "id": 2,
-            "name": "The Dark Knight",
-          },
-          Object {
-            "id": 3,
-            "name": "Avatar",
-          },
-        ],
+        "data": undefined,
         "id": "FETCH_MOVIES",
-        "status": "success",
+        "status": "start",
       },
-      "type": "FETCH_MOVIES_SUCCESS",
+      "type": "@@redux-ops/START",
     },
   ],
   Array [
@@ -76,9 +94,9 @@ Array [
       "payload": Object {
         "data": undefined,
         "id": "FETCH_MOVIES",
-        "status": "success",
+        "status": "start",
       },
-      "type": "@@redux-ops/UPDATE",
+      "type": "FETCH_MOVIES_START",
     },
   ],
 ]
@@ -89,7 +107,9 @@ Array [
   Array [
     Object {
       "payload": Object {
+        "data": undefined,
         "id": "FETCH_MOVIES",
+        "status": "delete",
       },
       "type": "FETCH_MOVIES_DELETE",
     },
@@ -97,7 +117,9 @@ Array [
   Array [
     Object {
       "payload": Object {
+        "data": undefined,
         "id": "FETCH_MOVIES",
+        "status": "delete",
       },
       "type": "@@redux-ops/DELETE",
     },
@@ -110,7 +132,7 @@ Array [
   Array [
     Object {
       "@@redux-ops/": Object {
-        "uniqueId": "@@redux-ops/FETCH_MOVIES_4",
+        "uniqueId": "@@redux-ops/FETCH_MOVIES_6",
       },
       "payload": Object {
         "movies": Array [
@@ -133,25 +155,40 @@ Array [
   ],
   Array [
     Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "@@redux-ops/FETCH_MOVIES_6",
+        "status": "success",
+      },
+      "type": "@@redux-ops/UPDATE",
+    },
+  ],
+]
+`;
+
+exports[`middleware broadcast should broadcast unique blueprint action by using the default action creator 1`] = `
+Array [
+  Array [
+    Object {
+      "payload": Object {
+        "data": undefined,
+        "id": "@@redux-ops/FETCH_MOVIES_4",
+        "status": "start",
+      },
+      "type": "@@redux-ops/START",
+    },
+  ],
+  Array [
+    Object {
       "@@redux-ops/": Object {
         "uniqueId": "@@redux-ops/FETCH_MOVIES_4",
       },
       "payload": Object {
         "data": undefined,
         "id": "FETCH_MOVIES",
-        "status": "success",
+        "status": "start",
       },
-      "type": "FETCH_MOVIES_SUCCESS",
-    },
-  ],
-  Array [
-    Object {
-      "payload": Object {
-        "data": undefined,
-        "id": "@@redux-ops/FETCH_MOVIES_4",
-        "status": "success",
-      },
-      "type": "@@redux-ops/UPDATE",
+      "type": "FETCH_MOVIES_START",
     },
   ],
 ]
@@ -164,7 +201,7 @@ Array [
       "payload": Object {
         "data": undefined,
         "id": "@@redux-ops/FETCH_MOVIES_3",
-        "status": "started",
+        "status": "start",
       },
       "type": "@@redux-ops/START",
     },
@@ -181,19 +218,6 @@ Array [
       "type": "FETCH_MOVIES",
     },
   ],
-  Array [
-    Object {
-      "@@redux-ops/": Object {
-        "uniqueId": "@@redux-ops/FETCH_MOVIES_3",
-      },
-      "payload": Object {
-        "data": undefined,
-        "id": "FETCH_MOVIES",
-        "status": "started",
-      },
-      "type": "FETCH_MOVIES_START",
-    },
-  ],
 ]
 `;
 
@@ -204,7 +228,7 @@ Array [
       "payload": Object {
         "data": undefined,
         "id": "@@redux-ops/FETCH_MOVIES_2",
-        "status": "started",
+        "status": "start",
       },
       "type": "@@redux-ops/START",
     },
@@ -231,7 +255,7 @@ Array [
       "payload": Object {
         "data": undefined,
         "id": "@@redux-ops/FETCH_MOVIES_1",
-        "status": "started",
+        "status": "start",
       },
       "type": "@@redux-ops/START",
     },

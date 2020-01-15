@@ -6,15 +6,15 @@ import { OpsBlueprintActionData, OpsBlueprintOriginalAction } from './typedefs';
 
 function createOpsMiddleware(): Middleware {
   return ({ dispatch }) => next => action => {
-    if (action[actionTypes.prefix] && action[actionTypes.prefix].op) {
+    if (action[actionTypes.prefix] && action[actionTypes.prefix].operationAction) {
       const blueprintAction: OpsBlueprintActionData = action[actionTypes.prefix];
-      let opAction = blueprintAction.op;
-      const originalAction = blueprintAction.action;
-      const opStatus = 'status' in opAction.payload ? opAction.payload.status : undefined;
+      const { operationAction, originalAction, broadcast, uniqueId } = blueprintAction;
+      const opStatus = operationAction.payload.status;
+      let operationActionMod = { ...operationAction };
       let broadcastAction: OpsBlueprintOriginalAction | undefined = undefined;
 
-      if (blueprintAction.broadcast) {
-        let broadcastActionType = opAction.type;
+      if (broadcast && !originalAction) {
+        let broadcastActionType = operationActionMod.type;
 
         if (opStatus && broadcastActionType === actionTypes.UPDATE) {
           broadcastActionType = opStatus.toUpperCase();
@@ -23,32 +23,28 @@ function createOpsMiddleware(): Middleware {
         }
 
         broadcastAction = {
-          type: `${opAction.payload.id}_${broadcastActionType}`,
-          payload: { ...opAction.payload },
+          type: `${operationActionMod.payload.id}_${broadcastActionType}`,
+          payload: { ...operationActionMod.payload },
         };
-      }
 
-      // Create a custom action based on the operation's status
-      if (opStatus) {
-        if (blueprintAction.broadcast) {
-          opAction = {
-            ...opAction,
+        if (opStatus !== OpStatus.Delete) {
+          // Create a custom action based on the operation's status
+          operationActionMod = {
+            ...operationActionMod,
             payload: {
-              ...opAction.payload,
+              ...operationActionMod.payload,
               data: undefined,
-            } as Operation<any>,
+            } as Operation<undefined>,
           };
         }
       }
 
       // Exchange original op action id with unique id
-      if (blueprintAction.uniqueId) {
-        const { uniqueId } = blueprintAction;
-
-        opAction = {
-          ...opAction,
+      if (uniqueId) {
+        operationActionMod = {
+          ...operationActionMod,
           payload: {
-            ...opAction.payload,
+            ...operationActionMod.payload,
             id: uniqueId,
           },
         };
@@ -59,8 +55,8 @@ function createOpsMiddleware(): Middleware {
       }
 
       switch (opStatus) {
-        case OpStatus.Started: {
-          dispatch(opAction);
+        case OpStatus.Start: {
+          dispatch(operationActionMod);
           originalAction && dispatch(originalAction);
           broadcastAction && dispatch(broadcastAction);
           break;
@@ -68,7 +64,7 @@ function createOpsMiddleware(): Middleware {
         default: {
           originalAction && dispatch(originalAction);
           broadcastAction && dispatch(broadcastAction);
-          dispatch(opAction);
+          dispatch(operationActionMod);
         }
       }
     }

@@ -41,7 +41,7 @@ describe('middleware', () => {
 
     testMiddleware(action);
     expect(dispatch).toHaveBeenCalledTimes(1);
-    expect(dispatch.mock.calls).toEqual([[action[prefix].op]]);
+    expect(dispatch.mock.calls).toEqual([[action[prefix].operationAction]]);
 
     expectNext(action);
   });
@@ -52,7 +52,10 @@ describe('middleware', () => {
 
     testMiddleware(action);
     expect(dispatch).toHaveBeenCalledTimes(2);
-    expect(dispatch.mock.calls).toEqual([[action[prefix].op], [action[prefix].action]]);
+    expect(dispatch.mock.calls).toEqual([
+      [action[prefix].operationAction],
+      [action[prefix].originalAction],
+    ]);
 
     expectNext(action);
   });
@@ -63,7 +66,10 @@ describe('middleware', () => {
 
     testMiddleware(action);
     expect(dispatch).toHaveBeenCalledTimes(2);
-    expect(dispatch.mock.calls).toEqual([[action[prefix].action], [action[prefix].op]]);
+    expect(dispatch.mock.calls).toEqual([
+      [action[prefix].originalAction],
+      [action[prefix].operationAction],
+    ]);
 
     expectNext(action);
   });
@@ -74,7 +80,7 @@ describe('middleware', () => {
 
     testMiddleware(action);
     expect(dispatch).toHaveBeenCalledTimes(1);
-    expect(dispatch).toHaveBeenCalledWith(action[prefix].op);
+    expect(dispatch).toHaveBeenCalledWith(action[prefix].operationAction);
 
     expectNext(action);
   });
@@ -88,7 +94,7 @@ describe('middleware', () => {
       expect(dispatch.mock.calls).toMatchSnapshot();
 
       const dispatchActionId = dispatch.mock.calls[0][0].payload.id;
-      expect(dispatchActionId).not.toBe(action[prefix].op.payload.id);
+      expect(dispatchActionId).not.toBe(action[prefix].operationAction.payload.id);
       expect(dispatchActionId).toMatchInlineSnapshot(`"@@redux-ops/FETCH_MOVIES_1"`);
 
       expectNext(action);
@@ -127,8 +133,28 @@ describe('middleware', () => {
 
   describe('broadcast', () => {
     it('should broadcast blueprint action by using the default action creator', () => {
+      const blueprint = createBlueprint(FETCH_MOVIES);
+      const action = opsBroadcast(blueprint.start());
+
+      testMiddleware(action);
+      expect(dispatch.mock.calls).toMatchSnapshot();
+
+      expectNext(action);
+    });
+
+    it('should broadcast unique blueprint action by using the default action creator', () => {
+      const blueprint = createBlueprint(FETCH_MOVIES);
+      const action = opsUnique(opsBroadcast(blueprint.start()));
+
+      testMiddleware(action);
+      expect(dispatch.mock.calls).toMatchSnapshot();
+
+      expectNext(action);
+    });
+
+    it('should broadcast an updating blueprint action by using the default action creator', () => {
       const blueprint = createBlueprint<MovieFetcherOp>(FETCH_MOVIES);
-      const action = opsBroadcast(blueprint.success(movies));
+      const action = opsUnique(opsBroadcast(blueprint.success(movies)));
 
       testMiddleware(action);
       expect(dispatch.mock.calls).toMatchSnapshot();

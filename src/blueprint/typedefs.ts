@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 
 import * as actionTypes from '../action_types';
-import { OperationAction, DeleteOperationAction, OpId } from '../typedefs';
+import { OperationAction, OpId } from '../typedefs';
 
 export enum OpsBlueprintActionKey {
   Start = 'start',
@@ -23,8 +23,8 @@ export interface OpsBlueprintAction {
 }
 
 export interface OpsBlueprintActionData extends OpsBlueprintGenericActionData {
-  op: OperationAction | DeleteOperationAction;
-  action?: OpsBlueprintOriginalAction | null;
+  operationAction: OperationAction;
+  originalAction?: OpsBlueprintOriginalAction | null;
 }
 
 export interface OpsBlueprintGenericActionData {

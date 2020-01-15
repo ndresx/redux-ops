@@ -2,7 +2,7 @@ import { Operation, OpStatus, Ops, OpId } from './typedefs';
 
 export function createOperation<TData = any>(
   id: OpId,
-  status: OpStatus = OpStatus.Started,
+  status: OpStatus = OpStatus.Start,
   data?: TData
 ): Operation<TData> {
   return { id, status, data };
