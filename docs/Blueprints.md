@@ -183,7 +183,7 @@ Through the [middleware](Middleware.md) effectively dispatched actions:
   type: '@@redux-ops/START',
   payload:  {
     id: 'FETCH_MOVIES',
-    status: 'started',
+    status: 'start',
     data: undefined, // This would be 'Science-Fiction' without broadcasting
   },
 }
@@ -193,7 +193,7 @@ Through the [middleware](Middleware.md) effectively dispatched actions:
 
 ```js
 {
-  type: 'FETCH_MOVIES_STARTED',
+  type: 'FETCH_MOVIES_START',
   payload: 'Science-Fiction',
 }
 ```

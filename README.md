@@ -64,7 +64,7 @@ const store = createStore(combineReducers({ ops: opsReducer }));
 const opId = '74168d';
 dispatch(actions.startOperation(opId));
 
-// State => { ops: { id: '74168d', status: 'started' } }
+// State => { ops: { id: '74168d', status: 'start' } }
 ```
 
 ```js

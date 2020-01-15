@@ -5,8 +5,8 @@
 Can be used to generate an `op` object, consisting of `id`, `status` and `data` property.
 
 ```ts
-createOperation('myId', OpStatus.Started, { name: 'Endgame' });
-// { id: 'myId', status: 'started', data: { name: 'Endgame' }}
+createOperation('myId', OpStatus.Start, { name: 'Endgame' });
+// { id: 'myId', status: 'start', data: { name: 'Endgame' }}
 ```
 
 ## `getOpById(ops, id)`
