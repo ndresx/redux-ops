@@ -16,7 +16,9 @@ export {
   OpsBlueprintActionTypes,
   OpsBlueprintFn,
   OpsBlueprintGenericActionData,
+  OpsBlueprintActionDataEntry,
   OpsBlueprintOriginalAction,
+  OpsBlueprintBroadcastAction,
 } from './blueprint/typedefs';
 import opsMiddleware from './blueprint/middleware';
 

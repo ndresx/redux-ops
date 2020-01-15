@@ -6,7 +6,7 @@ import { OpsBlueprintActionData, OpsBlueprintOriginalAction } from './typedefs';
 
 function createOpsMiddleware(): Middleware {
   return ({ dispatch }) => next => action => {
-    if (action[actionTypes.prefix]) {
+    if (action[actionTypes.prefix] && action[actionTypes.prefix].op) {
       const blueprintAction: OpsBlueprintActionData = action[actionTypes.prefix];
       let opAction = blueprintAction.op;
       const originalAction = blueprintAction.action;
