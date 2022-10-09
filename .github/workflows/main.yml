@@ -70,9 +70,6 @@ jobs:
     - name: "Tests: Unit"
       run: yarn test
 
-    - name: "Tests: E2E"
-      run: yarn test:e2e
-
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
