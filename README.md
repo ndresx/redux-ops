@@ -1,4 +1,4 @@
-# redux-ops [![npm][npm]][npm-url]  [![CI: Build Status](https://img.shields.io/github/workflow/status/ndresx/redux-ops/CI)](https://github.com/ndresx/redux-ops/actions/workflows/main.yml) [![Coverage Status](https://coveralls.io/repos/github/ndresx/redux-ops/badge.svg?branch=master)](https://coveralls.io/github/ndresx/redux-ops?branch=master)
+# redux-ops [![npm][npm]][npm-url] [![CI: Build Status](https://img.shields.io/github/workflow/status/ndresx/redux-ops/CI)](https://github.com/ndresx/redux-ops/actions/workflows/main.yml) [![Coverage Status](https://coveralls.io/repos/github/ndresx/redux-ops/badge.svg?branch=master)](https://coveralls.io/github/ndresx/redux-ops?branch=master)
 
 A Redux reducer/middleware for managing asynchronous and operational states.
 
